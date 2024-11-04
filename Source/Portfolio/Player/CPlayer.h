@@ -23,6 +23,16 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+	void OnMoveForward(float Axis);
+	void OnMoveRight(float Axis);
+	void OnTurn(float Axis);
+	void OnLookUp(float Axis);
+
+	void OnSprint();
+	void OffSprint();
+	
+
 public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 		USpringArmComponent* SpringArmComp;
@@ -30,4 +40,6 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 		UCameraComponent* CameraComp;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+		TSubclassOf<UAnimInstance> AnimClass;
 };

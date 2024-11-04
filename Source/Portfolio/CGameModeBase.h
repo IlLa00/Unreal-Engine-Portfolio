@@ -10,4 +10,6 @@ class PORTFOLIO_API ACGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	ACGameModeBase();
 };
