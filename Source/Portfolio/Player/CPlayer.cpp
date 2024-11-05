@@ -10,7 +10,7 @@ ACPlayer::ACPlayer()
 
 	// Set SkeletalMesh
 	USkeletalMesh* MeshAsset;
-	CHelpers::GetAsset(&MeshAsset, "'/Game/CR/LQ/Modular_001_Bergs10/Mesh/SKM_Bergs10_1.SKM_Bergs10_1'");
+	CHelpers::GetAsset(&MeshAsset, "/Game/Assets/CR/LQ/Modular_001_Bergs10/Mesh/SKM_Bergs10_1");
 	CheckNull(MeshAsset);
 	
 	GetMesh()->SetSkeletalMesh(MeshAsset);
@@ -34,7 +34,7 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->bOrientRotationToMovement = true; 
 
 	// Set AnimClass;
-	CHelpers::GetClass(&AnimClass,"/Script/Engine.AnimBlueprint'/Game/Player/ABP_CPlayer.ABP_CPlayer_C'");
+	CHelpers::GetClass(&AnimClass,"/Game/Player/ABP_CPlayer");
 	CheckNull(AnimClass);
 
 	GetMesh()->SetAnimClass(AnimClass);
