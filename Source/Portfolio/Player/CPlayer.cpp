@@ -3,6 +3,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Portal/CPortal.h"
 
 ACPlayer::ACPlayer()
 {
@@ -47,6 +48,8 @@ ACPlayer::ACPlayer()
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+
+	OnActorBeginOverlap.AddDynamic(this, &ACPlayer::BeginOverlap);
 	
 }
 
@@ -102,5 +105,12 @@ void ACPlayer::OnSprint()
 void ACPlayer::OffSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
+}
+
+void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+	if (OtherActor == Cast<ACPortal>(OtherActor))
+		GetCharacterMovement()->StopMovementImmediately();
+	
 }
 

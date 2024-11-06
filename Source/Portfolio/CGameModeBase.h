@@ -12,4 +12,8 @@ class PORTFOLIO_API ACGameModeBase : public AGameModeBase
 	
 public:
 	ACGameModeBase();
+
+public:
+	void Teleport();
+
 };

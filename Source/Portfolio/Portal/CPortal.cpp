@@ -1,10 +1,16 @@
 #include "CPortal.h"
 #include "Global.h"
+#include "Components/BoxComponent.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Particles/ParticleSystem.h"
+#include "Blueprint/UserWidget.h" 
+#include "Widget/CPortalWidget.h"
 
 ACPortal::ACPortal()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Set Components
 	CHelpers::CreateSceneComponent(this, &MeshComp, "MeshComp");
 	CheckNull(MeshComp);
 
@@ -13,17 +19,54 @@ ACPortal::ACPortal()
 	CheckNull(MeshAsset);
 
 	MeshComp->SetSkeletalMesh(MeshAsset);
+	MeshComp->SetRelativeScale3D(FVector(0.5f));
+
+	CHelpers::CreateSceneComponent(this, &BoxComp, "BoxComp",MeshComp);
+	CheckNull(BoxComp);
+
+	BoxComp->SetCollisionProfileName("OverlapOnlyPawn");
+	BoxComp->SetRelativeScale3D(FVector(10.f, 10.f, 1.f));
+
+	CHelpers::CreateSceneComponent(this, &ParticleComp, "ParticleComp", MeshComp);
+	CheckNull(ParticleComp);
+
+	UParticleSystem* Asset;
+	CHelpers::GetAsset(&Asset, "/Game/Assets/FXVarietyPack/Particles/P_ky_healAura");
+	CheckNull(Asset);
+
+	ParticleComp->SetTemplate(Asset);
+	ParticleComp->SetRelativeScale3D(FVector(2.f));
+
+	// Set Widget
+	CHelpers::GetClass(&WidgetClass, "/Game/Widget/WB_CPortalWidget");
+	CheckNull(WidgetClass);
+
 }
 
 void ACPortal::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	OnActorBeginOverlap.AddDynamic(this, &ACPortal::BeginOverlap);
+
+	PortalWidget = CreateWidget<UCPortalWidget>(GetWorld(), WidgetClass);
+	PortalWidget->AddToViewport();
+	PortalWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void ACPortal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ACPortal::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+	// ÇÃ·¹ÀÌ¾î ¸ØÃç¾ßµÊ
+	PortalWidget->SetVisibility(ESlateVisibility::Visible);
+
+
+	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
+	
 }
 

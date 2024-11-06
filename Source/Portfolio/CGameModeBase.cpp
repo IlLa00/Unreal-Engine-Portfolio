@@ -15,3 +15,8 @@ ACGameModeBase::ACGameModeBase()
 	DefaultPawnClass = Player;
 	
 }
+
+void ACGameModeBase::Teleport()
+{
+		
+}

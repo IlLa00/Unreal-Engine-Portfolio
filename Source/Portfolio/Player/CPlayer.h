@@ -32,6 +32,9 @@ private:
 	void OnSprint();
 	void OffSprint();
 	
+public:
+	UFUNCTION()
+		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
 public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
