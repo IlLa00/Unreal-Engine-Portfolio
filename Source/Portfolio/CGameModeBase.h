@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "CGameModeBase.generated.h"
 
+class ACSpawner;
 
 UCLASS()
 class PORTFOLIO_API ACGameModeBase : public AGameModeBase
@@ -13,7 +14,19 @@ class PORTFOLIO_API ACGameModeBase : public AGameModeBase
 public:
 	ACGameModeBase();
 
-public:
-	void Teleport();
+private:
+	virtual void BeginPlay() override;
 
+public:
+	void Spawn();
+	void Teleport();
+	void SetPlayerArea(AActor* OtherActor);
+
+private:
+	FTimerHandle SpawnTimer;
+
+	ACSpawner* Spawner;
+
+	FName PlayerArea;
+	
 };

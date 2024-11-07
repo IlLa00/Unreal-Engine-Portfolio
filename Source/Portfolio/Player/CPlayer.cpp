@@ -1,9 +1,12 @@
 #include "CPlayer.h"
 #include "Global.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Portal/CPortal.h"
+#include "Engine/TriggerVolume.h"
+#include "CGameModeBase.h"
 
 ACPlayer::ACPlayer()
 {
@@ -95,6 +98,7 @@ void ACPlayer::OnTurn(float Axis)
 
 void ACPlayer::OnLookUp(float Axis)
 {
+
 }
 
 void ACPlayer::OnSprint()
@@ -109,8 +113,15 @@ void ACPlayer::OffSprint()
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	if (OtherActor == Cast<ACPortal>(OtherActor))
-		GetCharacterMovement()->StopMovementImmediately();
-	
+	if (OtherActor == Cast<ACPortal>(OtherActor)) // 포탈과 부딪히면
+		GetCharacterMovement()->StopMovementImmediately(); // 이거 bCanMove 만들어서 제어하자.
+
+	if (OtherActor->IsA(ATriggerVolume::StaticClass())) // 트리거 볼륨에 부딪히면 !만약에 액터태그 관리해야 하면 여기서 for문걸기
+	{
+		ACGameModeBase* MyGameMode = Cast<ACGameModeBase>(GetWorld()->GetAuthGameMode());
+		CheckNull(MyGameMode);
+		
+		MyGameMode->SetPlayerArea(OtherActor);
+	}
 }
 
