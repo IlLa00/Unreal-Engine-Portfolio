@@ -4,6 +4,9 @@
 #include "GameFramework/Actor.h"
 #include "CSpawner.generated.h"
 
+class ACMonster;
+class ACBoss;
+
 UCLASS()
 class PORTFOLIO_API ACSpawner : public AActor
 {
@@ -21,4 +24,15 @@ public:
 public:
 	void Spawn(FVector PlayerLocation, FName PlayerArea);
 
+	FVector SetSpawnRange(FVector PlayerLocation);
+
+public:
+	UPROPERTY(EditDefaultsOnly, Category = "Enemy")
+		int32 Number;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Enemy")
+		TSubclassOf<ACMonster> MonsterClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Enemy")
+		TSubclassOf<ACBoss> BossClass;
 };

@@ -15,8 +15,8 @@ protected:
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Player")
-	float Speed;
+		float Speed;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Player")
-	float Direction;
+		float Direction;
 };
