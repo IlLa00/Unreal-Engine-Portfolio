@@ -20,22 +20,7 @@ ACGameModeBase::ACGameModeBase()
 
 void ACGameModeBase::BeginPlay()
 {
-	TArray<AActor*, FDefaultAllocator> Areas;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATriggerVolume::StaticClass(), Areas); // 월드에 배치된 트리거들 가져오기
-	if (Areas.Num() < 0) return;
-
-	for (const auto& Area : Areas)
-	{
-		AActor* PlayerStart = FindPlayerStart(GetWorld()->GetFirstPlayerController())z;
-		CheckNull(PlayerStart);
-
-		if (PlayerStart->IsOverlappingActor(Area)) // 플레이어 스타트가 있는 지역 초기화
-		{
-			SetPlayerArea(Area);
-			CLog::Print(Area->GetName());
-			break;
-		}
-	}
+	PlayerArea = "Grasslands"; // 플레이어지역 초기 설정, 하드코딩 불편
 	
 	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, this, &ACGameModeBase::Spawn, 5.f, true); // 5초마다 스폰함수 실행
 }

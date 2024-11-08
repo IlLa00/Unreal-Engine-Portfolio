@@ -31,6 +31,8 @@ private:
 
 	void OnSprint();
 	void OffSprint();
+
+	void OnSummon();
 	
 public:
 	UFUNCTION()

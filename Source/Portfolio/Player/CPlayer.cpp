@@ -71,8 +71,10 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput); // 수정할 예정, 옵션에서 설정가능하게
 	PlayerInputComponent->BindAxis("Lookup", this, &APawn::AddControllerPitchInput);
 
-	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ACPlayer::OnSprint);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ACPlayer::OnSprint); // 이것도 나중에 GAS로 관리할 수도 있음
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ACPlayer::OffSprint);
+
+	PlayerInputComponent->BindAction("Summon", IE_Pressed, this, &ACPlayer::OnSummon);
 }
 
 void ACPlayer::OnMoveForward(float Axis)
@@ -91,16 +93,6 @@ void ACPlayer::OnMoveRight(float Axis)
 	AddMovementInput(Direction, Axis);
 }
 
-void ACPlayer::OnTurn(float Axis)
-{
-
-}
-
-void ACPlayer::OnLookUp(float Axis)
-{
-
-}
-
 void ACPlayer::OnSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
@@ -109,6 +101,11 @@ void ACPlayer::OnSprint()
 void ACPlayer::OffSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
+}
+
+void ACPlayer::OnSummon()
+{
+	//Todo.. 펫 스폰해야함
 }
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
