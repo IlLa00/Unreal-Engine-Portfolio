@@ -15,6 +15,9 @@ ACGameModeBase::ACGameModeBase()
 	CheckNull(PlayerClass);
 
 	DefaultPawnClass = PlayerClass;
+
+	CHelpers::GetClass(&SpawnerClass, "/Game/Spawner/BP_CSpawner");
+	CheckNull(SpawnerClass);
 	
 }
 
@@ -22,6 +25,12 @@ void ACGameModeBase::BeginPlay()
 {
 	PlayerArea = "Grasslands"; // 플레이어지역 초기 설정, 하드코딩 불편
 	
+	FVector SpawnLocation = FVector(0, 0, 0); // 기본 위치로 설정
+	FRotator SpawnRotation = FRotator::ZeroRotator; // 회전은 기본값
+
+	Spawner = GetWorld()->SpawnActor<ACSpawner>(SpawnerClass, SpawnLocation, SpawnRotation);
+	CheckNull(Spawner);
+
 	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, this, &ACGameModeBase::Spawn, 5.f, true); // 5초마다 스폰함수 실행
 }
 

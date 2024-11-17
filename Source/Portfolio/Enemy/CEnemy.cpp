@@ -1,9 +1,13 @@
-#include "Enemy/CEnemy.h"
+#include "CEnemy.h"
+#include "Global.h"
+
 
 ACEnemy::ACEnemy()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	CHelpers::CreateSceneComponent(this, &SceneComp, "SceneComp");
+	CheckNull(SceneComp);
 }
 
 void ACEnemy::BeginPlay()

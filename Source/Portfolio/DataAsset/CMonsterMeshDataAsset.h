@@ -16,6 +16,6 @@ public:
 		TObjectPtr<USkeletalMesh> SkeletalMeshAssets[8];
 
 	UPROPERTY(EditAnywhere, Category = "AnimClass")
-		TSubclassOf<UCAnimInstance> AnimClass[8];
+		TSubclassOf<UAnimInstance> AnimClass[8];
 	
 };

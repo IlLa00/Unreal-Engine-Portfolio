@@ -35,7 +35,8 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 {
 	
 	// 지형에 따라서,
-	bool bSpawnBoss;
+	bool bSpawnBoss = false;
+
 	for (int32 i = 0; i < Number; i++) // 소환할 마릿수 만큼 반복
 	{
 		FVector SpawnLocation = SetSpawnRange(PlayerLocation);
@@ -50,17 +51,31 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 				CheckNull(Monster);
 
 				Monster->SetMesh(PlayerArea);
+				FinishSpawning(SpawnTM);
+
+				Monster->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+				Monster->SetAnimClass();
 			}
 			else
 			{
 				// 20% 확률로 실행할 코드 보스 소환
 				bSpawnBoss = true;
-				ACBoss* Boss = GetWorld()->SpawnActor<ACBoss>(BossClass, SpawnLocation)
+				ACBoss* Boss = GetWorld()->SpawnActor<ACBoss>(BossClass, SpawnTM);
+				CheckNull(Boss);
+
+				CLog::Print(Boss->GetActorRotation()); // 이거 왜 롤값이 -179로 나옴?????????
+				Boss->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+				
 			}
 		}
-		else
-			// 보스가 이미 스폰예정이면 나머지는 무조건 쫄몹 소환
-		
+		else // 보스가 이미 스폰예정이면 나머지는 무조건 쫄몹 소환
+		{
+			ACMonster* Monster = GetWorld()->SpawnActorDeferred<ACMonster>(MonsterClass, SpawnTM);
+			CheckNull(Monster);
+
+			Monster->SetMesh(PlayerArea);
+			FinishSpawning(SpawnTM);
+		}
 	}
 
 

@@ -23,10 +23,10 @@ public:
 	void SetPlayerArea(AActor* OtherActor);
 
 private:
-	FTimerHandle SpawnTimer;
-
+	TSubclassOf<ACSpawner> SpawnerClass;
 	ACSpawner* Spawner;
 
+	FTimerHandle SpawnTimer;
 	FName PlayerArea;
 	
 };

@@ -16,6 +16,7 @@ public:
 
 public:
 	void SetMesh(FName PlayerArea);
+	void SetAnimClass();
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "DataAsset")

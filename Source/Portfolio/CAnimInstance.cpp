@@ -10,7 +10,7 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	CheckNull(OwnerPawn);
 
 	Speed = OwnerPawn->GetVelocity().Size2D();
-	Direction = CalculateDirection(OwnerPawn->GetVelocity(), OwnerPawn->GetControlRotation()); // 이거 필요한가?
+	Direction = CalculateDirection(OwnerPawn->GetVelocity(), OwnerPawn->GetControlRotation()); 
 }
 
 void UCAnimInstance::NativeBeginPlay()

@@ -4,7 +4,6 @@
 #include "Enemy/CEnemy.h"
 #include "CBoss.generated.h"
 
-
 UCLASS()
 class PORTFOLIO_API ACBoss : public ACEnemy
 {
@@ -12,4 +11,8 @@ class PORTFOLIO_API ACBoss : public ACEnemy
 	
 public:
 	ACBoss();
+
+public:
+	UPROPERTY(EditDefaultsOnly, Category = "AnimClass")
+		TSubclassOf<UAnimInstance> AnimClass;
 };
