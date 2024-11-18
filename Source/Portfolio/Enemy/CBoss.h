@@ -12,6 +12,9 @@ class PORTFOLIO_API ACBoss : public ACEnemy
 public:
 	ACBoss();
 
+protected:
+	virtual void BeginPlay() override;
+
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "AnimClass")
 		TSubclassOf<UAnimInstance> AnimClass;

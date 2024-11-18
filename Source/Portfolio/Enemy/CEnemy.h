@@ -18,10 +18,4 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
-public:
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
-		USceneComponent* SceneComp;
-		
-
 };

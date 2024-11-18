@@ -51,10 +51,9 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 				CheckNull(Monster);
 
 				Monster->SetMesh(PlayerArea);
-				FinishSpawning(SpawnTM);
+				Monster->FinishSpawning(SpawnTM);
 
 				Monster->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
-				Monster->SetAnimClass();
 			}
 			else
 			{
@@ -74,7 +73,9 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 			CheckNull(Monster);
 
 			Monster->SetMesh(PlayerArea);
-			FinishSpawning(SpawnTM);
+			Monster->FinishSpawning(SpawnTM);
+
+			Monster->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
 		}
 	}
 

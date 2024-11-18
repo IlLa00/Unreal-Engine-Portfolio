@@ -1,0 +1,2 @@
+#include "GAS/CCharacterAttributeSetBase.h"
+

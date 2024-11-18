@@ -14,9 +14,11 @@ class PORTFOLIO_API ACMonster : public ACEnemy
 public:
 	ACMonster();
 
+protected:
+	virtual void BeginPlay() override;
+
 public:
 	void SetMesh(FName PlayerArea);
-	void SetAnimClass();
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "DataAsset")
