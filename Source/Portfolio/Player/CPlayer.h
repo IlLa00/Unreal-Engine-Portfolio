@@ -2,13 +2,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "CPlayer.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
+class UAbilitySystemComponent;
+class UCCharacterAttributeSet;
 
 UCLASS()
-class PORTFOLIO_API ACPlayer : public ACharacter
+class PORTFOLIO_API ACPlayer : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -23,11 +26,12 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
 private:
 	void OnMoveForward(float Axis);
 	void OnMoveRight(float Axis);
-	void OnTurn(float Axis);
-	void OnLookUp(float Axis);
 
 	void OnSprint();
 	void OffSprint();
@@ -38,7 +42,7 @@ public:
 	UFUNCTION()
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
-public:
+protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 		USpringArmComponent* SpringArmComp;
 
@@ -47,4 +51,10 @@ public:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 		TSubclassOf<UAnimInstance> AnimClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		TObjectPtr<UAbilitySystemComponent> ASC;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		TObjectPtr<UCCharacterAttributeSet> AttributeSet;
 };

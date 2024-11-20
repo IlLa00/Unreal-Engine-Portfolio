@@ -7,6 +7,8 @@
 #include "Portal/CPortal.h"
 #include "Engine/TriggerVolume.h"
 #include "CGameModeBase.h"
+#include "AbilitySystemComponent.h"
+#include "GAS/Attribute/CCharacterAttributeSet.h"
 
 ACPlayer::ACPlayer()
 {
@@ -41,9 +43,12 @@ ACPlayer::ACPlayer()
 	CHelpers::GetClass(&AnimClass,"/Game/Player/ABP_CPlayer");
 	CheckNull(AnimClass);
 
-	GetMesh()->SetAnimClass(AnimClass);
+	// Set GAS
+	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
+	CheckNull(ASC);
 
-	//Todo. 점프 + 앉기 + 슬라이딩기능 추가해보기.
+	AttributeSet = CreateDefaultSubobject<UCCharacterAttributeSet>("AttributeSet");
+	CheckNull(AttributeSet);
 
 		
 }
@@ -52,7 +57,11 @@ void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetMesh()->SetAnimClass(AnimClass);
+
 	OnActorBeginOverlap.AddDynamic(this, &ACPlayer::BeginOverlap);
+
+	ASC->InitAbilityActorInfo(this, this);
 	
 }
 
@@ -75,6 +84,11 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ACPlayer::OffSprint);
 
 	PlayerInputComponent->BindAction("Summon", IE_Pressed, this, &ACPlayer::OnSummon);
+}
+
+UAbilitySystemComponent* ACPlayer::GetAbilitySystemComponent() const
+{
+	return ASC;
 }
 
 void ACPlayer::OnMoveForward(float Axis)
