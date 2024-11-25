@@ -1,13 +1,17 @@
 #include "CPlayer.h"
 #include "Global.h"
+#include "AbilitySystemComponent.h"
+#include "GameplayTagContainer.h"
+#include "GameplayTagsManager.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
-#include "Portal/CPortal.h"
 #include "Engine/TriggerVolume.h"
 #include "CGameModeBase.h"
-#include "AbilitySystemComponent.h"
+#include "Blueprint/UserWidget.h" 
+#include "Widget/CPlayerWidget.h"
+#include "Camera/CameraComponent.h"
+#include "Portal/CPortal.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
 
 ACPlayer::ACPlayer()
@@ -18,13 +22,13 @@ ACPlayer::ACPlayer()
 	USkeletalMesh* MeshAsset;
 	CHelpers::GetAsset(&MeshAsset, "/Game/Assets/CR/LQ/Modular_001_Bergs10/Mesh/SKM_Bergs10_1");
 	CheckNull(MeshAsset);
-	
+
 	GetMesh()->SetSkeletalMesh(MeshAsset);
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
 	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 
 	// Set Components
-	CHelpers::CreateSceneComponent(this, &SpringArmComp, "SpringArmComp",GetMesh());
+	CHelpers::CreateSceneComponent(this, &SpringArmComp, "SpringArmComp", GetMesh());
 	CheckNull(SpringArmComp);
 
 	SpringArmComp->TargetArmLength = 200.f;
@@ -32,16 +36,20 @@ ACPlayer::ACPlayer()
 	SpringArmComp->bUsePawnControlRotation = true;
 	bUseControllerRotationYaw = false;
 
-	CHelpers::CreateSceneComponent(this, &CameraComp, "CameraComp",SpringArmComp);
+	CHelpers::CreateSceneComponent(this, &CameraComp, "CameraComp", SpringArmComp);
 	CameraComp->SetRelativeLocation(FVector(0, 70, 0));
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.f; // 나중에 수정해야 함 이렇게 설정안할꺼임
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
-	GetCharacterMovement()->bOrientRotationToMovement = true; 
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 
-	// Set AnimClass;
-	CHelpers::GetClass(&AnimClass,"/Game/Player/ABP_CPlayer");
+	// Set AnimClass
+	CHelpers::GetClass(&AnimClass, "/Game/Player/ABP_CPlayer");
 	CheckNull(AnimClass);
+
+	// Set WidgetClass
+	CHelpers::GetClass(&WidgetClass, "/Game/Widget/BP_CPlayerWidget");
+	CheckNull(WidgetClass);
 
 	// Set GAS
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
@@ -49,8 +57,6 @@ ACPlayer::ACPlayer()
 
 	AttributeSet = CreateDefaultSubobject<UCCharacterAttributeSet>("AttributeSet");
 	CheckNull(AttributeSet);
-
-		
 }
 
 void ACPlayer::BeginPlay()
@@ -59,15 +65,21 @@ void ACPlayer::BeginPlay()
 
 	GetMesh()->SetAnimClass(AnimClass);
 
+	PlayerWidget = CreateWidget<UCPlayerWidget>(GetWorld(), WidgetClass);
+	PlayerWidget->AddToViewport();
+
 	OnActorBeginOverlap.AddDynamic(this, &ACPlayer::BeginOverlap);
 
 	ASC->InitAbilityActorInfo(this, this);
-	
+
+	if (AttributeSet)
+		CLog::Print(AttributeSet->GetBaseHealth());
 }
 
 void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 
 }
 
@@ -109,12 +121,23 @@ void ACPlayer::OnMoveRight(float Axis)
 
 void ACPlayer::OnSprint()
 {
+	if (!TagContatiner.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint"))))
+	{
+		TagContatiner.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
+	}
+
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 }
 
 void ACPlayer::OffSprint()
 {
+	if (TagContatiner.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint"))))
+	{
+		TagContatiner.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
+	}
+
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
+
 }
 
 void ACPlayer::OnSummon()
@@ -131,7 +154,7 @@ void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	{
 		ACGameModeBase* MyGameMode = Cast<ACGameModeBase>(GetWorld()->GetAuthGameMode());
 		CheckNull(MyGameMode);
-		
+
 		MyGameMode->SetPlayerArea(OtherActor);
 	}
 }

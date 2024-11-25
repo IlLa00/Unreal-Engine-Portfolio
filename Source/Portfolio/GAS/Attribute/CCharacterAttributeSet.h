@@ -22,7 +22,7 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 
-protected:
+public:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS Attribute", meta = (AllowPrivateAccess = true)) 
 		FGameplayAttributeData BaseHealth;
 	ATTRIBUTE_ACCESSORS(UCCharacterAttributeSet, BaseHealth);

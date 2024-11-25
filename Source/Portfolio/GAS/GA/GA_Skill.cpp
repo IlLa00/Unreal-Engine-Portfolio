@@ -1,4 +1,4 @@
-#include "GAS/GA/GA_Skill.h"
+#include "GA_Skill.h"
 
 void UGA_Skill::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {

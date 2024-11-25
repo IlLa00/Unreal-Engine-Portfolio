@@ -3,12 +3,15 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 #include "CPlayer.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
+class UCPlayerWidget;
 class UAbilitySystemComponent;
 class UCCharacterAttributeSet;
+
 
 UCLASS()
 class PORTFOLIO_API ACPlayer : public ACharacter, public IAbilitySystemInterface
@@ -52,9 +55,17 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 		TSubclassOf<UAnimInstance> AnimClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+		TSubclassOf<UCPlayerWidget> WidgetClass;
+
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UAbilitySystemComponent> ASC;
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
-		TObjectPtr<UCCharacterAttributeSet> AttributeSet;
+		TObjectPtr<UCCharacterAttributeSet> AttributeSet; // 있어야 어트리뷰트 가져올 수 잇음, 에디터에선 어디서 확인?
+
+private:
+	UCPlayerWidget* PlayerWidget;
+
+	FGameplayTagContainer TagContatiner;
 };
