@@ -13,11 +13,15 @@ ACPet::ACPet()
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
 	GetMesh()->SetRelativeRotation(FRotator(0, 90, 0));
 
+	CHelpers::GetClass(&AnimClass, "/Game/Pet/ABP_CPet");
+	CheckNull(AnimClass);
 }
 
 void ACPet::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetMesh()->SetAnimClass(AnimClass);
 	
 }
 

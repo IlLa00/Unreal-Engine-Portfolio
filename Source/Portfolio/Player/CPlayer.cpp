@@ -13,6 +13,7 @@
 #include "Camera/CameraComponent.h"
 #include "Portal/CPortal.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
+#include "GAS/GA/GA_Summon.h"
 
 ACPlayer::ACPlayer()
 {
@@ -73,7 +74,9 @@ void ACPlayer::BeginPlay()
 	ASC->InitAbilityActorInfo(this, this);
 
 	if (AttributeSet)
-		CLog::Print(AttributeSet->GetBaseHealth());
+		CLog::Print(AttributeSet->GetBaseHealth()); // 디버그용 - 정상작동
+
+	ASC->GiveAbility(FGameplayAbilitySpec(UGA_Summon::StaticClass()));
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -142,7 +145,11 @@ void ACPlayer::OffSprint()
 
 void ACPlayer::OnSummon()
 {
-	//Todo.. 펫 스폰해야함
+	TagContatiner.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Summon"))) ?
+		TagContatiner.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Summon"))) :
+		TagContatiner.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Summon")));
+
+	ASC->TryActivateAbilityByClass(UGA_Summon::StaticClass());
 }
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)

@@ -22,5 +22,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-
+	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+		TSubclassOf<UAnimInstance> AnimClass;
 };
