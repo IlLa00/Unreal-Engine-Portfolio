@@ -6,6 +6,9 @@
 
 class UProgressBar;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChanged, float, NewHealth); // Todo. UI랑 연동해보기.
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStaminaChanged, float, NewStamina);
+
 UCLASS()
 class PORTFOLIO_API UCPlayerWidget : public UUserWidget
 {
@@ -14,13 +17,12 @@ class PORTFOLIO_API UCPlayerWidget : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 
-	// AbilitySystemComponent와 AttributeSet을 바인딩하기 위한 함수
 	void UpdateHealthBar(float Health);
 	void UpdateStaminaBar(float Stamina);
 
-	// 스테미나와 체력 값 변경 시 호출될 함수
 	void OnHealthChanged(float NewHealth);
 	void OnStaminaChanged(float NewStamina);
+
 public:
 	UPROPERTY(meta = (BindWidget))
 		UProgressBar* HealthBar;

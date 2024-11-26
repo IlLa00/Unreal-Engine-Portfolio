@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Components/ProgressBar.h"
 #include "Player/CPlayer.h"
+#include "GAS/Attribute/CCharacterAttributeSet.h"
 
 void UCPlayerWidget::NativeConstruct()
 {
@@ -14,7 +15,8 @@ void UCPlayerWidget::NativeConstruct()
         if (Player && Player->GetAbilitySystemComponent())
         {
             // 체력과 스테미나 값이 변경될 때마다 호출되는 콜백을 설정
-           
+            UpdateHealthBar(Player->GetAttributeSet()->GetCurrentHealth());
+            UpdateStaminaBar(Player->GetAttributeSet()->GetCurrentStamina());
         }
     }
 }

@@ -48,6 +48,8 @@ public:
 	UFUNCTION()
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
+	FORCEINLINE UCCharacterAttributeSet* GetAttributeSet() { return AttributeSet; } // 이렇게 가져와야하는건가싶음
+
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 		USpringArmComponent* SpringArmComp;

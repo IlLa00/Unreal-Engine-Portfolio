@@ -14,6 +14,7 @@
 #include "Portal/CPortal.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
 #include "GAS/GA/Summon.h"
+#include "GAS/GA/Sprint.h"
 #include "GAS/GE/Movement.h"
 
 ACPlayer::ACPlayer()
@@ -81,8 +82,11 @@ void ACPlayer::BeginPlay()
 	if (AttributeSet)
 		CLog::Print(AttributeSet->GetCurrentHealth()); // 디버그용 - 정상작동
 	
-	FGameplayAbilitySpec AbilitySpec(USummon::StaticClass());
+	FGameplayAbilitySpec AbilitySpec(USummon::StaticClass()); // 함수로 만들어야겟음
 	ASC->GiveAbility(AbilitySpec);
+
+	FGameplayAbilitySpec SprintAbilitySpec(USprint::StaticClass());
+	ASC->GiveAbility(SprintAbilitySpec);
 
 	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
 	EffectSpecHandle = ASC->MakeOutgoingSpec(BPMovementEffect, 1.0f, EffectContext);
@@ -132,25 +136,24 @@ void ACPlayer::OnMoveRight(float Axis)
 
 void ACPlayer::OnSprint()
 {
-	if (!TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint"))))
+	if (!TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Sprint"))))
 	{
-		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Sprint")));
 	}
 	
-	ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+	ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(USprint::StaticClass())->Handle);
 
-	GetCharacterMovement()->MaxWalkSpeed = 600.f;
+	ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 }
 
 void ACPlayer::OffSprint()
 {
-	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint"))))
+	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Sprint"))))
 	{
-		TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
+		TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Sprint")));
 	}
 
-	GetCharacterMovement()->MaxWalkSpeed = 400.f;
-
+	ASC->CancelAbilityHandle(ASC->FindAbilitySpecFromClass(USprint::StaticClass())->Handle);
 }
 
 void ACPlayer::OnSummon()
