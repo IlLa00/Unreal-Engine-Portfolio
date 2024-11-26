@@ -2,12 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "GA_Summon.generated.h"
+#include "Summon.generated.h"
 
 class ACPet;
 
 UCLASS()
-class PORTFOLIO_API UGA_Summon : public UGameplayAbility
+class PORTFOLIO_API USummon : public UGameplayAbility
 {
 	GENERATED_BODY()
 

@@ -1,9 +1,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayTagContainer.h"
+#include "GameplayEffectTypes.h"
+#include "GameFramework/Character.h"
 #include "CPlayer.generated.h"
 
 class USpringArmComponent;
@@ -11,6 +12,7 @@ class UCameraComponent;
 class UCPlayerWidget;
 class UAbilitySystemComponent;
 class UCCharacterAttributeSet;
+class UGameplayEffect;
 
 
 UCLASS()
@@ -40,7 +42,8 @@ private:
 	void OffSprint();
 
 	void OnSummon();
-	
+
+
 public:
 	UFUNCTION()
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
@@ -64,8 +67,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UCCharacterAttributeSet> AttributeSet; // 있어야 어트리뷰트 가져올 수 잇음, 에디터에선 어디서 확인?
 
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		TSubclassOf<UGameplayEffect> BPMovementEffect;
+
 private:
 	UCPlayerWidget* PlayerWidget;
 
-	FGameplayTagContainer TagContatiner;
+	FGameplayTagContainer TagContainer;
+	FGameplayEffectSpecHandle EffectSpecHandle;
 };

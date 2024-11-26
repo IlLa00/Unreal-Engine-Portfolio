@@ -13,7 +13,8 @@
 #include "Camera/CameraComponent.h"
 #include "Portal/CPortal.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
-#include "GAS/GA/GA_Summon.h"
+#include "GAS/GA/Summon.h"
+#include "GAS/GE/Movement.h"
 
 ACPlayer::ACPlayer()
 {
@@ -58,6 +59,10 @@ ACPlayer::ACPlayer()
 
 	AttributeSet = CreateDefaultSubobject<UCCharacterAttributeSet>("AttributeSet");
 	CheckNull(AttributeSet);
+
+	CHelpers::GetClass(&BPMovementEffect, "/Game/GAS/BP_GE_Movement");
+	CheckNull(BPMovementEffect);
+
 }
 
 void ACPlayer::BeginPlay()
@@ -71,18 +76,21 @@ void ACPlayer::BeginPlay()
 
 	OnActorBeginOverlap.AddDynamic(this, &ACPlayer::BeginOverlap);
 
-	ASC->InitAbilityActorInfo(this, this);
+	ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 - 데이터 처리하는 오너와 아바타가 같음 
 
 	if (AttributeSet)
-		CLog::Print(AttributeSet->GetBaseHealth()); // 디버그용 - 정상작동
+		CLog::Print(AttributeSet->GetCurrentHealth()); // 디버그용 - 정상작동
+	
+	FGameplayAbilitySpec AbilitySpec(USummon::StaticClass());
+	ASC->GiveAbility(AbilitySpec);
 
-	ASC->GiveAbility(FGameplayAbilitySpec(UGA_Summon::StaticClass()));
+	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+	EffectSpecHandle = ASC->MakeOutgoingSpec(BPMovementEffect, 1.0f, EffectContext);
 }
 
 void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 
 }
 
@@ -124,19 +132,21 @@ void ACPlayer::OnMoveRight(float Axis)
 
 void ACPlayer::OnSprint()
 {
-	if (!TagContatiner.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint"))))
+	if (!TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint"))))
 	{
-		TagContatiner.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
 	}
+	
+	ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 }
 
 void ACPlayer::OffSprint()
 {
-	if (TagContatiner.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint"))))
+	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint"))))
 	{
-		TagContatiner.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
+		TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
 	}
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
@@ -145,11 +155,16 @@ void ACPlayer::OffSprint()
 
 void ACPlayer::OnSummon()
 {
-	TagContatiner.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Summon"))) ?
-		TagContatiner.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Summon"))) :
-		TagContatiner.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Summon")));
-
-	ASC->TryActivateAbilityByClass(UGA_Summon::StaticClass());
+	if (!TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Summon"))))
+	{
+		ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(USummon::StaticClass())->Handle);
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Summon")));
+	}
+	else
+	{
+		ASC->CancelAbilityHandle(ASC->FindAbilitySpecFromClass(USummon::StaticClass())->Handle);
+		TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Summon")));
+	}
 }
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
