@@ -35,6 +35,10 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 private:
+	void SetGAS();
+	void SetGameplayAbility();
+	void SetGameplayEffect();
+
 	void OnMoveForward(float Axis);
 	void OnMoveRight(float Axis);
 
@@ -49,6 +53,7 @@ public:
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
 	FORCEINLINE UCCharacterAttributeSet* GetAttributeSet() { return AttributeSet; } // 이렇게 가져와야하는건가싶음
+	FORCEINLINE UCPlayerWidget* GetPlayerWidget() { return PlayerWidget; }
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
@@ -69,12 +74,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UCCharacterAttributeSet> AttributeSet; // 있어야 어트리뷰트 가져올 수 잇음, 에디터에선 어디서 확인?
 
-	UPROPERTY(EditDefaultsOnly, Category = "GAS")
-		TSubclassOf<UGameplayEffect> BPMovementEffect;
+	/*UPROPERTY(EditDefaultsOnly, Category = "GE")
+		TSubclassOf<UGameplayEffect> BPMovementEffect;*/
+
+	UPROPERTY(EditDefaultsOnly, Category = "GE")
+		TSubclassOf<UGameplayEffect> BPRegenerateStaminaEffect;
 
 private:
 	UCPlayerWidget* PlayerWidget;
 
 	FGameplayTagContainer TagContainer;
-	FGameplayEffectSpecHandle EffectSpecHandle;
+	//FGameplayEffectSpecHandle MovementHandle;
+	FGameplayEffectSpecHandle RegenerateStminaHandle;
 };

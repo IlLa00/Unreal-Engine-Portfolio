@@ -61,8 +61,11 @@ ACPlayer::ACPlayer()
 	AttributeSet = CreateDefaultSubobject<UCCharacterAttributeSet>("AttributeSet");
 	CheckNull(AttributeSet);
 
-	CHelpers::GetClass(&BPMovementEffect, "/Game/GAS/BP_GE_Movement");
-	CheckNull(BPMovementEffect);
+	/*CHelpers::GetClass(&BPMovementEffect, "/Game/GAS/BP_GE_Movement");
+	CheckNull(BPMovementEffect);*/
+
+	CHelpers::GetClass(&BPRegenerateStaminaEffect, "/Game/GAS/BP_GE_RegenerateStamina");
+	CheckNull(BPRegenerateStaminaEffect);
 
 }
 
@@ -77,25 +80,21 @@ void ACPlayer::BeginPlay()
 
 	OnActorBeginOverlap.AddDynamic(this, &ACPlayer::BeginOverlap);
 
-	ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 - 데이터 처리하는 오너와 아바타가 같음 
-
-	if (AttributeSet)
-		CLog::Print(AttributeSet->GetCurrentHealth()); // 디버그용 - 정상작동
-	
-	FGameplayAbilitySpec AbilitySpec(USummon::StaticClass()); // 함수로 만들어야겟음
-	ASC->GiveAbility(AbilitySpec);
-
-	FGameplayAbilitySpec SprintAbilitySpec(USprint::StaticClass());
-	ASC->GiveAbility(SprintAbilitySpec);
-
-	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
-	EffectSpecHandle = ASC->MakeOutgoingSpec(BPMovementEffect, 1.0f, EffectContext);
+	SetGAS();
 }
 
 void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Idle")))) // 아무것도 안하고 있을 때
+	{
+		ASC->ApplyGameplayEffectSpecToSelf(*RegenerateStminaHandle.Data.Get()); // 저절로 스테미나가 참
+	}
+	else
+	{
+		//PrintLine(); // 일단 이렇게
+	}
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -118,6 +117,31 @@ UAbilitySystemComponent* ACPlayer::GetAbilitySystemComponent() const
 	return ASC;
 }
 
+void ACPlayer::SetGAS()
+{
+	ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 - 데이터 처리하는 오너와 아바타가 같음 
+
+	SetGameplayAbility();
+	SetGameplayEffect();
+}
+
+void ACPlayer::SetGameplayAbility()
+{
+	FGameplayAbilitySpec AbilitySpec(USummon::StaticClass()); 
+	ASC->GiveAbility(AbilitySpec);
+
+	FGameplayAbilitySpec SprintAbilitySpec(USprint::StaticClass());
+	ASC->GiveAbility(SprintAbilitySpec);
+}
+
+void ACPlayer::SetGameplayEffect()
+{
+	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+
+	//MovementHandle = ASC->MakeOutgoingSpec(BPMovementEffect, 1.0f, EffectContext);
+	RegenerateStminaHandle = ASC->MakeOutgoingSpec(BPRegenerateStaminaEffect, 1.0f, EffectContext);
+}
+
 void ACPlayer::OnMoveForward(float Axis)
 {
 	FRotator ControlRot = FRotator(0, GetControlRotation().Yaw, 0);
@@ -138,12 +162,15 @@ void ACPlayer::OnSprint()
 {
 	if (!TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Sprint"))))
 	{
+		TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Idle")));
+
 		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Sprint")));
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
 	}
 	
 	ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(USprint::StaticClass())->Handle);
 
-	ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+	// ASC->ApplyGameplayEffectSpecToSelf(*MovementHandle.Data.Get());
 }
 
 void ACPlayer::OffSprint()
@@ -151,6 +178,9 @@ void ACPlayer::OffSprint()
 	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Sprint"))))
 	{
 		TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Sprint")));
+		TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
+
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Idle")));
 	}
 
 	ASC->CancelAbilityHandle(ASC->FindAbilitySpecFromClass(USprint::StaticClass())->Handle);

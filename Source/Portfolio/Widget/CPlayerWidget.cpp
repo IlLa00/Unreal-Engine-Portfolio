@@ -19,6 +19,12 @@ void UCPlayerWidget::NativeConstruct()
             UpdateStaminaBar(Player->GetAttributeSet()->GetCurrentStamina());
         }
     }
+
+    if (Player->GetAttributeSet())
+    {
+        Player->GetAttributeSet()->OnHealthChanged.AddDynamic(this, &UCPlayerWidget::OnHealthChange);
+        Player->GetAttributeSet()->OnStaminaChanged.AddDynamic(this, &UCPlayerWidget::OnStaminaChange);
+    }
 }
 
 void UCPlayerWidget::UpdateHealthBar(float Health)
@@ -37,12 +43,12 @@ void UCPlayerWidget::UpdateStaminaBar(float Stamina)
     }
 }
 
-void UCPlayerWidget::OnHealthChanged(float NewHealth)
+void UCPlayerWidget::OnHealthChange(float NewHealth)
 {
     UpdateHealthBar(NewHealth);
 }
 
-void UCPlayerWidget::OnStaminaChanged(float NewStamina)
+void UCPlayerWidget::OnStaminaChange(float NewStamina)
 {
     UpdateStaminaBar(NewStamina);
 }

@@ -11,6 +11,9 @@
  	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
  	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChanged, float, NewHealth); 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStaminaChanged, float, NewStamina);
+
 UCLASS()
 class PORTFOLIO_API UCCharacterAttributeSet : public UAttributeSet
 {
@@ -40,5 +43,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS Attribute", meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData CurrentStamina;
 	ATTRIBUTE_ACCESSORS(UCCharacterAttributeSet, CurrentStamina);
+
+public:
+	FHealthChanged OnHealthChanged;
+	FStaminaChanged OnStaminaChanged;
 
 };
