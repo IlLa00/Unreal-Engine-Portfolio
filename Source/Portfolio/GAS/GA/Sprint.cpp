@@ -42,7 +42,7 @@ void USprint::DecreaseStamina()
 {
 	// 스테미너 감소 로직
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
-	PrintLine();
+
 	if (ASC)
 	{
 		FGameplayEffectSpecHandle MovementHandle;

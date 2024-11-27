@@ -89,7 +89,8 @@ void ACPlayer::Tick(float DeltaTime)
 
 	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Idle")))) // 아무것도 안하고 있을 때
 	{
-		ASC->ApplyGameplayEffectSpecToSelf(*RegenerateStminaHandle.Data.Get()); // 저절로 스테미나가 참
+		if(AttributeSet->GetCurrentStamina() < AttributeSet->GetBaseStamina()) // 이 조건문 안걸면 디버그할때 보이는 화면과 다르게 스테미너가 좀더 차는거같음
+			ASC->ApplyGameplayEffectSpecToSelf(*RegenerateStminaHandle.Data.Get()); // 저절로 스테미나가 참
 	}
 	else
 	{
