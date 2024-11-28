@@ -3,6 +3,9 @@
 #include "Enemy/CEnemy.h"
 #include "Enemy/CMonster.h"
 #include "Enemy/CBoss.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Enemy/CEnemyController.h"
 
 ACSpawner::ACSpawner()
 {
@@ -20,9 +23,9 @@ ACSpawner::ACSpawner()
 void ACSpawner::BeginPlay()
 {
 	Super::BeginPlay();
+
 	
-	// GetWorld()->SpawnActorDeferred() <- 이거 써야할지 잘 생각해보자
-	// FinishSpawning()
+
 }
 
 void ACSpawner::Tick(float DeltaTime)
@@ -39,6 +42,9 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 
 	for (int32 i = 0; i < Number; i++) // 소환할 마릿수 만큼 반복
 	{
+		ACEnemyController* EnemyController = GetWorld()->SpawnActor<ACEnemyController>();
+		CheckNull(EnemyController);
+
 		FVector SpawnLocation = SetSpawnRange(PlayerLocation);
 		FTransform SpawnTM = FTransform(FRotator(), SpawnLocation, FVector(1));
 
@@ -51,6 +57,9 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 				CheckNull(Monster);
 
 				Monster->SetMesh(PlayerArea);
+				Monster->GetCharacterMovement()->GravityScale = 1.0f;
+				EnemyController->Possess(Monster);
+
 				Monster->FinishSpawning(SpawnTM);
 
 				Monster->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
@@ -62,7 +71,8 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 				ACBoss* Boss = GetWorld()->SpawnActor<ACBoss>(BossClass, SpawnTM);
 				CheckNull(Boss);
 
-				CLog::Print(Boss->GetActorRotation()); // 이거 왜 롤값이 -179로 나옴?????????
+				EnemyController->Possess(Boss);
+
 				Boss->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
 				
 			}
@@ -73,6 +83,8 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 			CheckNull(Monster);
 
 			Monster->SetMesh(PlayerArea);
+			EnemyController->Possess(Monster);
+
 			Monster->FinishSpawning(SpawnTM);
 
 			Monster->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));

@@ -6,6 +6,7 @@
 
 class ACMonster;
 class ACBoss;
+class ACEnemyController;
 
 UCLASS()
 class PORTFOLIO_API ACSpawner : public AActor
@@ -35,4 +36,5 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Enemy")
 		TSubclassOf<ACBoss> BossClass;
+	
 };

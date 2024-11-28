@@ -12,21 +12,16 @@ void ACMonster::BeginPlay()
 {
 	Super::BeginPlay();
 
-	PrintLine();
 	if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->SkeletalMeshAssets[0])
 	{
-		PrintLine();
 		GetMesh()->SetAnimClass(DataAsset->AnimClass[0]);
 	}
 	else if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->SkeletalMeshAssets[1])
 	{
-		PrintLine();
 		GetMesh()->SetAnimClass(DataAsset->AnimClass[1]);
 	}
 
-	// GetMesh()->SetEnableGravity(true);
-	// GetMesh()->SetSimulatePhysics(true);
-	// GetCharacterMovement()->GravityScale = 1.f;
+	
 }
 
 void ACMonster::SetMesh(FName PlayerArea) // 여기문제 없음
