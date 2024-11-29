@@ -16,6 +16,7 @@
 #include "GAS/GA/Summon.h"
 #include "GAS/GA/Sprint.h"
 #include "GAS/GE/Movement.h"
+#include "Equipment/CEquipment.h"
 
 ACPlayer::ACPlayer()
 {
@@ -79,6 +80,9 @@ void ACPlayer::BeginPlay()
 	PlayerWidget->AddToViewport();
 
 	OnActorBeginOverlap.AddDynamic(this, &ACPlayer::BeginOverlap);
+
+	Equipment = GetWorld()->SpawnActor<ACEquipment>();
+	CheckNull(Equipment);
 
 	SetGAS();
 }
