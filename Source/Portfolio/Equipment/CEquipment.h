@@ -24,7 +24,6 @@ public:
 public:
 	void Equip(int32 slot);
 	void Begin_Equip();
-	void End_Equip();
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "DataAsset")
@@ -34,9 +33,9 @@ public:
 		TObjectPtr<UAnimMontage> Montage;
 
 private:
-	FWeaponData EquipWeapons[4]; // 캐릭터가 실제로 보유하고 있는 무기들
+	FWeaponData EquipWeapons[4]; // 캐릭터가 실제로 보유하고 있는 무기들 <- 안써도될듯?
 
 	ACharacter* OwnerCharacter;
 
-	ACWeapon* EquipWeapon[4];
+	ACWeapon* EquipWeapon[4]; // 이거 TArray써야할지도?
 };

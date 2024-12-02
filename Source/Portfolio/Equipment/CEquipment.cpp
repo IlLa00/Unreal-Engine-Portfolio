@@ -23,8 +23,9 @@ void ACEquipment::BeginPlay()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = OwnerCharacter;
 
+	// 스폰시키고 숨기고 필요할때만 보여주는 방식.
 	EquipWeapon[0] = OwnerCharacter->GetWorld()->SpawnActor<ACWeapon>(DataAsset->Datas[0].WeaponClass,SpawnParams);
-	CheckNull(EquipWeapon[0]);
+	CheckNull(EquipWeapon[0]); 
 
 	EquipWeapon[0]->SetActorHiddenInGame(true);
 
@@ -55,10 +56,7 @@ void ACEquipment::Begin_Equip()
 	EquipWeapon[0]->SetActorHiddenInGame(false);
 
 	EquipWeapon[0]->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "hand_r");
-}
 
-void ACEquipment::End_Equip()
-{
 	// 능력 장착
 }
 
