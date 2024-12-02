@@ -47,13 +47,19 @@ private:
 
 	void OnSummon();
 
+	void OnEquipFirstSlot();
+	void OnEquipSecondSlot();
+	void OnEquipThirdSlot();
+	void OnEquipLastSlot();
 
 public:
 	UFUNCTION()
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
 	FORCEINLINE UCCharacterAttributeSet* GetAttributeSet() { return AttributeSet; } // 이렇게 가져와야하는건가싶음
+	FORCEINLINE FGameplayTagContainer GetTagContainer() { return TagContainer; }
 	FORCEINLINE UCPlayerWidget* GetPlayerWidget() { return PlayerWidget; }
+	FORCEINLINE ACEquipment* GetEquipment() { return Equipment; }
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
@@ -77,9 +83,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "GE")
 		TSubclassOf<UGameplayEffect> BPRegenerateStaminaEffect;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Equipment")
+		TSubclassOf<ACEquipment> EquipmentClass;
+
 private:
-	ACEquipment* Equipment;
 	UCPlayerWidget* PlayerWidget;
+	ACEquipment* Equipment;
 
 	FGameplayTagContainer TagContainer;
 	FGameplayEffectSpecHandle RegenerateStminaHandle;

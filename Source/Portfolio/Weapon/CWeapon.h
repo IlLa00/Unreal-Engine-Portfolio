@@ -20,8 +20,8 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
-	USceneComponent* RootComp;
+		USceneComponent* RootComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
-	UStaticMeshComponent* MeshComp;
+		UStaticMeshComponent* MeshComp;
 };

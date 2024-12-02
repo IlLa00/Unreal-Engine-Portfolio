@@ -15,8 +15,6 @@ ACEnemyController::ACEnemyController()
 void ACEnemyController::BeginPlay()
 {
 	Super::BeginPlay();
-
-	PrintLine();
 }
 
 void ACEnemyController::OnPossess(APawn* InPawn)

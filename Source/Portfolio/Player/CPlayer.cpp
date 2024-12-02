@@ -68,6 +68,8 @@ ACPlayer::ACPlayer()
 	CHelpers::GetClass(&BPRegenerateStaminaEffect, "/Game/GAS/BP_GE_RegenerateStamina");
 	CheckNull(BPRegenerateStaminaEffect);
 
+	CHelpers::GetClass(&EquipmentClass, "/Game/Equipment/BP_CEquipment");
+	CheckNull(EquipmentClass)
 }
 
 void ACPlayer::BeginPlay()
@@ -81,8 +83,11 @@ void ACPlayer::BeginPlay()
 
 	OnActorBeginOverlap.AddDynamic(this, &ACPlayer::BeginOverlap);
 
-	Equipment = GetWorld()->SpawnActor<ACEquipment>();
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	Equipment = GetWorld()->SpawnActor<ACEquipment>(EquipmentClass, SpawnParams);
 	CheckNull(Equipment);
+
 
 	SetGAS();
 }
@@ -115,6 +120,11 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ACPlayer::OffSprint);
 
 	PlayerInputComponent->BindAction("Summon", IE_Pressed, this, &ACPlayer::OnSummon);
+
+	PlayerInputComponent->BindAction("EquipFirstSlot", IE_Pressed, this, &ACPlayer::OnEquipFirstSlot);
+	PlayerInputComponent->BindAction("EquipSecondSlot", IE_Pressed, this, &ACPlayer::OnEquipSecondSlot);
+	PlayerInputComponent->BindAction("EquipThirdSlot", IE_Pressed, this, &ACPlayer::OnEquipThirdSlot);
+	PlayerInputComponent->BindAction("EquipLastSlot", IE_Pressed, this, &ACPlayer::OnEquipLastSlot);
 }
 
 UAbilitySystemComponent* ACPlayer::GetAbilitySystemComponent() const
@@ -203,6 +213,27 @@ void ACPlayer::OnSummon()
 		ASC->CancelAbilityHandle(ASC->FindAbilitySpecFromClass(USummon::StaticClass())->Handle);
 		TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Summon")));
 	}
+}
+
+void ACPlayer::OnEquipFirstSlot()
+{
+	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Equip.First")));
+	Equipment->Equip(1);
+}
+
+void ACPlayer::OnEquipSecondSlot()
+{
+	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Equip.Second")));
+}
+
+void ACPlayer::OnEquipThirdSlot()
+{
+	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Equip.Third")));
+}
+
+void ACPlayer::OnEquipLastSlot()
+{
+	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Equip.Last")));
 }
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
