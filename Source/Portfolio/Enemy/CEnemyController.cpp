@@ -15,6 +15,8 @@ ACEnemyController::ACEnemyController()
 void ACEnemyController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	RunBehaviorTree(BTAsset);
 }
 
 void ACEnemyController::OnPossess(APawn* InPawn)
@@ -26,5 +28,5 @@ void ACEnemyController::OnPossess(APawn* InPawn)
 
 void ACEnemyController::OnUnPossess()
 {
-
+	Super::OnUnPossess();
 }
