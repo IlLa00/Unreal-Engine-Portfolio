@@ -1,32 +1,76 @@
 #include "CEnemyController.h"
 #include "Global.h"
-#include "BehaviorTree/BlackboardComponent.h"  
-#include "BehaviorTree/BehaviorTree.h" 
+#include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
+#include "Player/CPlayer.h"
+#include "Enemy/CEnemy.h"
 
 ACEnemyController::ACEnemyController()
 {
-	CHelpers::GetAsset(&BBAsset, "/Game/BehaviorTree/BB_Enemy");
-	CheckNull(BBAsset);
+	CHelpers::CreateActorComponent(this, &PerceptionComp, "PerceptionComp");
+	CheckNull(PerceptionComp);
 
-	CHelpers::GetAsset(&BTAsset, "/Game/BehaviorTree/BT_Enemy");
-	CheckNull(BTAsset);
+	Sight = CreateDefaultSubobject<UAISenseConfig_Sight>("Sight");
+	CheckNull(Sight);
+
+	Sight->SightRadius = 600.f;
+	Sight->LoseSightRadius = 800.f;
+	Sight->PeripheralVisionAngleDegrees = 90.f;
+
+	Sight->DetectionByAffiliation.bDetectEnemies = true;
+	Sight->DetectionByAffiliation.bDetectNeutrals = false;
+	Sight->DetectionByAffiliation.bDetectFriendlies = false;
+	Sight->SetMaxAge(2.f);
+
+	PerceptionComp->ConfigureSense(*Sight);
+
 }
 
 void ACEnemyController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	RunBehaviorTree(BTAsset);
 }
 
 void ACEnemyController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	CLog::Print(InPawn->GetName());
+	ACEnemy* PossesEnemy = Cast<ACEnemy>(InPawn);
+	CheckNull(PossesEnemy);
+
+	if (PossesEnemy->GetBehaviorTree())
+	{
+		RunBehaviorTree(PossesEnemy->GetBehaviorTree());
+	}
+
+	PerceptionComp->OnPerceptionUpdated.AddDynamic(this, &ACEnemyController::OnPerceptionUpdated);
 }
 
 void ACEnemyController::OnUnPossess()
 {
 	Super::OnUnPossess();
+
+	PerceptionComp->OnPerceptionUpdated.Clear();
 }
+
+void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
+{
+	TArray<AActor*> PerceivedActors;
+
+	PerceptionComp->GetCurrentlyPerceivedActors(nullptr, PerceivedActors);
+
+	ACPlayer* Player = nullptr;
+	for (const auto& Actor : PerceivedActors)
+	{
+		Player = Cast<ACPlayer>(Actor);
+
+		if (Player)
+			break;
+	}
+
+	Blackboard->SetValueAsObject("PlayerKey", Player);
+}
+

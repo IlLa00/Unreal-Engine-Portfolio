@@ -4,6 +4,8 @@
 #include "GameFramework/Character.h"
 #include "CEnemy.generated.h"
 
+class UBehaviorTree;
+
 UCLASS()
 class PORTFOLIO_API ACEnemy : public ACharacter
 {
@@ -18,4 +20,11 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+public:
+	UBehaviorTree* GetBehaviorTree() { return BT; }
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Behavior Tree")
+		UBehaviorTree* BT;
 };

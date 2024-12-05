@@ -6,6 +6,8 @@
 
 class UBlackboardData;
 class UBehaviorTree;
+class UAIPerceptionComponent;
+class UAISenseConfig_Sight;
 
 UCLASS()
 class PORTFOLIO_API ACEnemyController : public AAIController
@@ -20,11 +22,15 @@ public:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
 
-public:
-	UPROPERTY(EditDefaultsOnly, Category = "BlackBoard")
-		UBlackboardData* BBAsset;
+private:
+	UFUNCTION()
+	void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
 
-	UPROPERTY(EditDefaultsOnly, Category = "Behavior Tree")
-		UBehaviorTree* BTAsset;
+public:
+	UPROPERTY(EditDefaultsOnly, Category = "Component")
+		UAIPerceptionComponent* PerceptionComp;
+
+private:
+	UAISenseConfig_Sight* Sight;
 
 };
