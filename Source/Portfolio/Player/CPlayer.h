@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayTagContainer.h"
 #include "GameplayEffectTypes.h"
@@ -16,7 +17,7 @@ class UGameplayEffect;
 class ACEquipment;
 
 UCLASS()
-class PORTFOLIO_API ACPlayer : public ACharacter, public IAbilitySystemInterface
+class PORTFOLIO_API ACPlayer : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -30,6 +31,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual FGenericTeamId GetGenericTeamId() const override;
 
 public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -85,6 +88,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Equipment")
 		TSubclassOf<ACEquipment> EquipmentClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Team")
+		int32 TeamId;
 
 private:
 	UCPlayerWidget* PlayerWidget;

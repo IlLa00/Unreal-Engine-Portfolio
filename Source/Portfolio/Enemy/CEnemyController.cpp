@@ -26,6 +26,7 @@ ACEnemyController::ACEnemyController()
 
 	PerceptionComp->ConfigureSense(*Sight);
 
+	TeamId = 1;
 }
 
 void ACEnemyController::BeginPlay()
@@ -42,11 +43,11 @@ void ACEnemyController::OnPossess(APawn* InPawn)
 	CheckNull(PossesEnemy);
 
 	if (PossesEnemy->GetBehaviorTree())
-	{
 		RunBehaviorTree(PossesEnemy->GetBehaviorTree());
-	}
-
+	
 	PerceptionComp->OnPerceptionUpdated.AddDynamic(this, &ACEnemyController::OnPerceptionUpdated);
+	SetGenericTeamId(TeamId);
+
 }
 
 void ACEnemyController::OnUnPossess()
@@ -63,14 +64,20 @@ void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 	PerceptionComp->GetCurrentlyPerceivedActors(nullptr, PerceivedActors);
 
 	ACPlayer* Player = nullptr;
+
 	for (const auto& Actor : PerceivedActors)
 	{
 		Player = Cast<ACPlayer>(Actor);
 
 		if (Player)
-			break;
+		{
+			if (GetBlackboardComponent())
+			{
+				GetBlackboardComponent()->SetValueAsObject("PlayerKey", Player); // 지금 블랙보드가 없음
+				break;
+			}
+			PrintLine();
+		}
 	}
-
-	Blackboard->SetValueAsObject("PlayerKey", Player);
 }
 

@@ -69,7 +69,9 @@ ACPlayer::ACPlayer()
 	CheckNull(BPRegenerateStaminaEffect);
 
 	CHelpers::GetClass(&EquipmentClass, "/Game/Equipment/BP_CEquipment");
-	CheckNull(EquipmentClass)
+	CheckNull(EquipmentClass);
+
+	TeamId = 0;
 }
 
 void ACPlayer::BeginPlay()
@@ -90,6 +92,11 @@ void ACPlayer::BeginPlay()
 
 
 	SetGAS();
+}
+
+FGenericTeamId ACPlayer::GetGenericTeamId() const
+{
+	return FGenericTeamId(TeamId);
 }
 
 void ACPlayer::Tick(float DeltaTime)

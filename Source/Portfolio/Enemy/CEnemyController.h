@@ -24,11 +24,14 @@ public:
 
 private:
 	UFUNCTION()
-	void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
+		void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UAIPerceptionComponent* PerceptionComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TeamId")
+		int32 TeamId;
 
 private:
 	UAISenseConfig_Sight* Sight;
