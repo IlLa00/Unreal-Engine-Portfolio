@@ -36,10 +36,7 @@ protected:
 		TObjectPtr<UAbilitySystemComponent> ASC;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Behavior Tree")
-		UBehaviorTree* BT;
-
-		// tagcontainer < tag tag tag <- »ý¼ºÀÚ
-		// 
+		UBehaviorTree* BT; 
 
 private:
 	FGameplayTagContainer TagContainer;

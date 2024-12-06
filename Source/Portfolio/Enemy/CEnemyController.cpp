@@ -64,18 +64,20 @@ void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 	PerceptionComp->GetCurrentlyPerceivedActors(nullptr, PerceivedActors);
 
 	ACPlayer* Player = nullptr;
-
+	
 	for (const auto& Actor : PerceivedActors)
 	{
 		Player = Cast<ACPlayer>(Actor);
-
+		
 		if (Player)
 		{
 			if (Cast<ACEnemy>(GetPawn()))
 			{
 				ACEnemy* Enemy = Cast<ACEnemy>(GetPawn());
 				Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Approach"));
-				PrintLine();
+
+				if (Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag("AI.State.Approach")))
+					PrintLine(); // 안들어와짐, 태그부여가 안되는거같음.
 			}
 
 			break;
@@ -89,7 +91,6 @@ void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 	{
 		ACEnemy* Enemy = Cast<ACEnemy>(GetPawn());
 		Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
-		PrintLine();
 	}
 	
 }

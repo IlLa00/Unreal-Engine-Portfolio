@@ -48,7 +48,7 @@ void UCBTService_Enemy::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	//		Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
 	//	}
 	//}
-
-	CLog::Print(Enemy->GetTagContainer().Num()); // 왜안찍힘?
+	if(Enemy->GetTagContainer())
+		CLog::Print(Enemy->GetTagContainer().Num()); // 찍히는데 계속 0이뜸, 태그가 안들어가지고있다.
 
 }
