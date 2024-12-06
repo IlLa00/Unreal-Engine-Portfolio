@@ -71,13 +71,26 @@ void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 
 		if (Player)
 		{
-			if (GetBlackboardComponent())
+			if (Cast<ACEnemy>(GetPawn()))
 			{
-				GetBlackboardComponent()->SetValueAsObject("PlayerKey", Player); // 지금 블랙보드가 없음
-				break;
+				ACEnemy* Enemy = Cast<ACEnemy>(GetPawn());
+				Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Approach"));
+				PrintLine();
 			}
-			PrintLine();
+
+			break;
 		}
 	}
+
+	if (GetBlackboardComponent())
+		GetBlackboardComponent()->SetValueAsObject("PlayerKey", Player);
+
+	if (!Player && Cast<ACEnemy>(GetPawn()))
+	{
+		ACEnemy* Enemy = Cast<ACEnemy>(GetPawn());
+		Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
+		PrintLine();
+	}
+	
 }
 

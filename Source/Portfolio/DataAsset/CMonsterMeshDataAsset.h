@@ -7,6 +7,22 @@
 class UCAnimInstance;
 
 USTRUCT(BlueprintType)
+struct FMontageData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+	TArray<TObjectPtr<UAnimMontage>> AttackMontage;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UAnimMontage> HittedMontage;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UAnimMontage> DeadMontage;
+};
+
+USTRUCT(BlueprintType)
 struct FEquipmentData
 {
 	GENERATED_BODY()
@@ -17,6 +33,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UAnimInstance> AnimClass;
+
+	UPROPERTY(EditAnywhere)
+		FMontageData MontageDatas;
 
 	UPROPERTY(EditAnywhere)
 		AActor* DropEmitter;

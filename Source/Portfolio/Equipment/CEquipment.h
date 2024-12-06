@@ -6,6 +6,7 @@
 #include "CEquipment.generated.h"
 
 class ACWeapon;
+class ACPlayer;
 
 UCLASS()
 class PORTFOLIO_API ACEquipment : public AActor
@@ -35,7 +36,7 @@ public:
 private:
 	FWeaponData EquipWeapons[4]; // 캐릭터가 실제로 보유하고 있는 무기들 <- 안써도될듯?
 
-	ACharacter* OwnerCharacter;
+	ACPlayer* OwnerCharacter;
 
 	ACWeapon* EquipWeapon[4]; // 이거 TArray써야할지도?
 };

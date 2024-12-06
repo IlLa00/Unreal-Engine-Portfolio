@@ -1,6 +1,6 @@
 #include "CEquipment.h"
 #include "Global.h"
-#include "GameFramework/Character.h"
+#include "Player/CPlayer.h"
 
 ACEquipment::ACEquipment()
 {
@@ -17,7 +17,7 @@ void ACEquipment::BeginPlay()
 	
 	//EquipWeapons[0] = DataAsset->Datas[0];
 
-	OwnerCharacter = Cast<ACharacter>(GetOwner());
+	OwnerCharacter = Cast<ACPlayer>(GetOwner());
 	CheckNull(OwnerCharacter);
 
 	FActorSpawnParameters SpawnParams;
@@ -42,11 +42,9 @@ void ACEquipment::Equip(int32 slot)
 {
 	CheckNull(Montage);
 
-	// 장착 몽타주 재생
 	OwnerCharacter->PlayAnimMontage(Montage);
 	
 	// 위젯 변화
-
 	// 무기 장착중인지 아닌지?
 }
 

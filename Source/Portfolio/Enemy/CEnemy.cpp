@@ -1,5 +1,8 @@
 #include "CEnemy.h"
 #include "Global.h"
+#include "AbilitySystemComponent.h"
+#include "GameplayTagContainer.h"
+#include "GameplayTagsManager.h"
 #include "CEnemyController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -7,6 +10,8 @@ ACEnemy::ACEnemy()
 {
 	PrimaryActorTick.bCanEverTick = true;	
 
+	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
+	CheckNull(ASC);
 }
 
 void ACEnemy::BeginPlay()
@@ -18,7 +23,8 @@ void ACEnemy::BeginPlay()
 
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
 	
-	
+	ASC->InitAbilityActorInfo(this, this);
+
 }
 
 void ACEnemy::Tick(float DeltaTime)
@@ -31,5 +37,10 @@ void ACEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+UAbilitySystemComponent* ACEnemy::GetAbilitySystemComponent() const
+{
+	return ASC;
 }
 

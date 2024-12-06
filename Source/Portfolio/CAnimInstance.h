@@ -1,6 +1,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
+#include "GameplayEffectTypes.h"
 #include "Animation/AnimInstance.h"
 #include "CAnimInstance.generated.h"
 
@@ -14,9 +16,12 @@ protected:
 	virtual void NativeBeginPlay() override;
 
 protected:
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Player")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
 		float Speed;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Player")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
 		float Direction;
+
+	UPROPERTY(BlueprintReadOnly, Category = "GameplayTag")
+		FGameplayTagContainer TagContainer;
 };

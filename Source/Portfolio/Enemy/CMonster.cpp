@@ -21,6 +21,7 @@ void ACMonster::BeginPlay()
 		GetMesh()->SetAnimClass(DataAsset->Datas[1].AnimClass);
 	}
 
+
 	
 }
 
@@ -32,13 +33,13 @@ void ACMonster::SetMesh(FName PlayerArea) // 여기문제 없음
 		{
 			GetMesh()->SetSkeletalMesh(DataAsset->Datas[0].SkeletalMeshAssets);
 			GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
-			GetMesh()->SetRelativeRotation(FRotator(0, 90, 0));
+			GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 		}
 		else
 		{
 			GetMesh()->SetSkeletalMesh(DataAsset->Datas[1].SkeletalMeshAssets);
 			GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
-			GetMesh()->SetRelativeRotation(FRotator(0, 90, 0));
+			GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 		}
 	}
 }
