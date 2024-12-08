@@ -1,10 +1,13 @@
 #include "CMonster.h"
 #include "Global.h"
+#include "Components/TextRenderComponent.h"
 #include "DataAsset/CMonsterMeshDataAsset.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 ACMonster::ACMonster()
 {
+	PrimaryActorTick.bCanEverTick = true;
+
 	GetCharacterMovement()->MaxWalkSpeed = 200.f; // 이거 수정해야할지도?
 }
 
@@ -20,9 +23,12 @@ void ACMonster::BeginPlay()
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[1].AnimClass);
 	}
-
-
 	
+}
+
+void ACMonster::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }
 
 void ACMonster::SetMesh(FName PlayerArea) // 여기문제 없음

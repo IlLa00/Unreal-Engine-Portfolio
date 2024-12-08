@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "CEnemy.generated.h"
 
+class UTextRenderComponent;
 class UAbilitySystemComponent;
 class UBehaviorTree;
 
@@ -29,15 +30,18 @@ public:
 
 	UBehaviorTree* GetBehaviorTree() { return BT; }
 
-	FORCEINLINE FGameplayTagContainer GetTagContainer() { return TagContainer; }
+	FORCEINLINE virtual FGameplayTagContainer& GetTagContainer() { return TagContainer; }
 
 protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Text")
+		UTextRenderComponent* TextComp;
+
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UAbilitySystemComponent> ASC;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Behavior Tree")
 		UBehaviorTree* BT; 
 
-private:
-	FGameplayTagContainer TagContainer;
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		FGameplayTagContainer TagContainer;
 };

@@ -2,10 +2,13 @@
 #include "Global.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "GameplayTagContainer.h"
+#include "GameplayTagsManager.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Player/CPlayer.h"
 #include "Enemy/CEnemy.h"
+#include "Enemy/CMonster.h"
 
 ACEnemyController::ACEnemyController()
 {
@@ -44,7 +47,7 @@ void ACEnemyController::OnPossess(APawn* InPawn)
 
 	if (PossesEnemy->GetBehaviorTree())
 		RunBehaviorTree(PossesEnemy->GetBehaviorTree());
-	
+
 	PerceptionComp->OnPerceptionUpdated.AddDynamic(this, &ACEnemyController::OnPerceptionUpdated);
 	SetGenericTeamId(TeamId);
 
@@ -63,23 +66,16 @@ void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 
 	PerceptionComp->GetCurrentlyPerceivedActors(nullptr, PerceivedActors);
 
+	ACEnemy* Enemy = Cast<ACEnemy>(GetPawn());
+	CheckNull(Enemy);
+
 	ACPlayer* Player = nullptr;
-	
+
 	for (const auto& Actor : PerceivedActors)
 	{
-		Player = Cast<ACPlayer>(Actor);
-		
-		if (Player)
+		if (Cast<ACPlayer>(Actor))
 		{
-			if (Cast<ACEnemy>(GetPawn()))
-			{
-				ACEnemy* Enemy = Cast<ACEnemy>(GetPawn());
-				Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Approach"));
-
-				if (Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag("AI.State.Approach")))
-					PrintLine(); // 안들어와짐, 태그부여가 안되는거같음.
-			}
-
+			Player = Cast<ACPlayer>(Actor);
 			break;
 		}
 	}
@@ -87,11 +83,22 @@ void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 	if (GetBlackboardComponent())
 		GetBlackboardComponent()->SetValueAsObject("PlayerKey", Player);
 
-	if (!Player && Cast<ACEnemy>(GetPawn()))
+	if (Player)
 	{
-		ACEnemy* Enemy = Cast<ACEnemy>(GetPawn());
-		Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
+		if(Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Idle"))))
+			Enemy->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Idle")));
+
+		if (!Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach"))))
+			Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach")));
 	}
-	
+	else
+	{
+		if (Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach"))))
+			Enemy->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach")));
+
+		if (!Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Idle"))))
+			Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
+	}
+
 }
 
