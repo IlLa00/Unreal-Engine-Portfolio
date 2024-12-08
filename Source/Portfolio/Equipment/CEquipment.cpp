@@ -55,6 +55,12 @@ void ACEquipment::Begin_Equip()
 
 	EquipWeapon[0]->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "hand_r");
 
+	EquipWeapon[0]->GetD
 	// ´É·Â ÀåÂø
+}
+
+void ACEquipment::MainAction()
+{
+	// TryAbility~
 }
 

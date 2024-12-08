@@ -18,11 +18,5 @@ bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& 
 	ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetPawn());
 	CheckNullResult(Enemy, false);
 
-	if (Enemy->GetTagContainer().HasTag(GameplayTag))
-	{
-		CLog::Print(GameplayTag.ToString()); // todo.. 데코레이터문제인거같음 여기서 값 디버그해보자
-		return true;
-	}
-	PrintLine();
-	return false;
+	return Enemy->GetTagContainer().HasTag(GameplayTag);
 }

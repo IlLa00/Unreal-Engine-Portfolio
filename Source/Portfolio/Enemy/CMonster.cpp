@@ -23,7 +23,6 @@ void ACMonster::BeginPlay()
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[1].AnimClass);
 	}
-	
 }
 
 void ACMonster::Tick(float DeltaTime)

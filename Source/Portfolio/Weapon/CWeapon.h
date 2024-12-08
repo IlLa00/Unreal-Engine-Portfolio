@@ -4,6 +4,8 @@
 #include "GameFramework/Actor.h"
 #include "CWeapon.generated.h"
 
+class UCWeaponDataAsset;
+
 UCLASS()
 class PORTFOLIO_API ACWeapon : public AActor
 {
@@ -24,4 +26,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UStaticMeshComponent* MeshComp;
+
+private:
+	UCWeaponDataAsset* DataAsset;
 };

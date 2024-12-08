@@ -55,6 +55,9 @@ private:
 	void OnEquipThirdSlot();
 	void OnEquipLastSlot();
 
+	void OnMainAction();
+	void OffMainAction();
+
 public:
 	UFUNCTION()
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);

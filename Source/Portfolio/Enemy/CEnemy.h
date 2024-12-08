@@ -38,10 +38,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UAbilitySystemComponent> ASC;
-
+		
 	UPROPERTY(EditDefaultsOnly, Category = "Behavior Tree")
 		UBehaviorTree* BT; 
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		FGameplayTagContainer TagContainer;
+
 };

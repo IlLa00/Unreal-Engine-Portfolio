@@ -243,6 +243,17 @@ void ACPlayer::OnEquipLastSlot()
 	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Equip.Last")));
 }
 
+void ACPlayer::OnMainAction()
+{
+	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Main")));
+	Equipment->MainAction();
+}
+
+void ACPlayer::OffMainAction()
+{
+	TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Main")));
+}
+
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
 	if (OtherActor == Cast<ACPortal>(OtherActor)) // Æ÷Å»°ú ºÎµúÈ÷¸é

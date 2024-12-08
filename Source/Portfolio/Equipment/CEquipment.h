@@ -26,17 +26,16 @@ public:
 	void Equip(int32 slot);
 	void Begin_Equip();
 
+	void MainAction();
+
 public:
-	UPROPERTY(EditDefaultsOnly, Category = "DataAsset")
-		UCWeaponDataAsset* DataAsset;
+	//UPROPERTY(EditDefaultsOnly, Category = "DataAsset")
+	//	UCWeaponDataAsset* DataAsset; // 이게 여기있어야함?
 
 	UPROPERTY(EditDefaultsOnly, Category = "Montage")
 		TObjectPtr<UAnimMontage> Montage;
 
 private:
-	FWeaponData EquipWeapons[4]; // 캐릭터가 실제로 보유하고 있는 무기들 <- 안써도될듯?
-
 	ACPlayer* OwnerCharacter;
-
 	ACWeapon* EquipWeapon[4]; // 이거 TArray써야할지도?
 };
