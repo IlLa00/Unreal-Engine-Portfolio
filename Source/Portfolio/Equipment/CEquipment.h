@@ -29,13 +29,13 @@ public:
 	void MainAction();
 
 public:
-	//UPROPERTY(EditDefaultsOnly, Category = "DataAsset")
-	//	UCWeaponDataAsset* DataAsset; // 이게 여기있어야함?
+	UPROPERTY(EditDefaultsOnly, Category = "DataAsset")
+		UCWeaponDataAsset* DataAsset; // 이게 여기있어야함?
 
 	UPROPERTY(EditDefaultsOnly, Category = "Montage")
-		TObjectPtr<UAnimMontage> Montage;
+		TObjectPtr<UAnimMontage> EquipMontage;
 
 private:
 	ACPlayer* OwnerCharacter;
-	ACWeapon* EquipWeapon[4]; // 이거 TArray써야할지도?
+	ACWeapon* EquipWeapon[4]; 
 };

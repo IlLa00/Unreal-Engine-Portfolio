@@ -5,7 +5,7 @@
 #include "GameplayTagsManager.h"
 #include "Components/TextRenderComponent.h"
 #include "CEnemyController.h"
-#include "GameFramework/CharacterMovementComponent.h"
+// #include "GameFramework/CharacterMovementComponent.h"
 
 ACEnemy::ACEnemy()
 {
@@ -47,12 +47,6 @@ void ACEnemy::Tick(float DeltaTime)
 			TextComp->SetText(FText::FromString(Tag.ToString()));
 		}
 	}
-}
-
-void ACEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 UAbilitySystemComponent* ACEnemy::GetAbilitySystemComponent() const

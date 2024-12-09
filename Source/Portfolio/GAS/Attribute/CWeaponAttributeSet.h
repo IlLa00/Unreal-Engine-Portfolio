@@ -29,23 +29,22 @@ private:
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS Attribute", meta = (AllowPrivateAccess = true))
-	FGameplayAttributeData BaseDamage;
+		FGameplayAttributeData BaseDamage;
 	ATTRIBUTE_ACCESSORS(UCWeaponAttributeSet, BaseDamage);
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS Attribute", meta = (AllowPrivateAccess = true))
-	FGameplayAttributeData CurrentDamage;
+		FGameplayAttributeData CurrentDamage;
 	ATTRIBUTE_ACCESSORS(UCWeaponAttributeSet, CurrentDamage);
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS Attribute", meta = (AllowPrivateAccess = true))
-	FGameplayAttributeData BaseProficiency;
+		FGameplayAttributeData BaseProficiency;
 	ATTRIBUTE_ACCESSORS(UCWeaponAttributeSet, BaseProficiency);
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS Attribute", meta = (AllowPrivateAccess = true))
-	FGameplayAttributeData CurrentProficiency;
+		FGameplayAttributeData CurrentProficiency;
 	ATTRIBUTE_ACCESSORS(UCWeaponAttributeSet, CurrentProficiency);
 
 private:
-	UCWeaponDataAsset* DataAsset;
 	bool IsBaseDamageSet;
 	bool IsBaseProficiencySet;
 };

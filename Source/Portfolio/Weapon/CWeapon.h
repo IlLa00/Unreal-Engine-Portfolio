@@ -2,12 +2,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "AbilitySystemInterface.h"
 #include "CWeapon.generated.h"
 
+class UAttributeSet;
+class UCWeaponAttributeSet;
 class UCWeaponDataAsset;
 
 UCLASS()
-class PORTFOLIO_API ACWeapon : public AActor
+class PORTFOLIO_API ACWeapon : public AActor, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 	
@@ -20,6 +23,10 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UCWeaponAttributeSet* GetAttiribute() { return Attribute; }
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		USceneComponent* RootComp;
@@ -27,6 +34,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UStaticMeshComponent* MeshComp;
 
-private:
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		TObjectPtr<UAbilitySystemComponent> ASC;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		TObjectPtr<UCWeaponAttributeSet> Attribute;
+
+protected:
 	UCWeaponDataAsset* DataAsset;
 };

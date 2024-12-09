@@ -1,6 +1,7 @@
 #include "CEquipment.h"
 #include "Global.h"
 #include "Player/CPlayer.h"
+#include "Weapon/CWeapon.h"
 
 ACEquipment::ACEquipment()
 {
@@ -15,7 +16,8 @@ void ACEquipment::BeginPlay()
 
 	CheckNull(DataAsset);
 	
-	//EquipWeapons[0] = DataAsset->Datas[0];
+	/*EquipWeapon[0] = Cast<ACWeapon>(DataAsset->Datas[0].WeaponClass);
+	CheckNull(EquipWeapon[0]);*/
 
 	OwnerCharacter = Cast<ACPlayer>(GetOwner());
 	CheckNull(OwnerCharacter);
@@ -40,9 +42,9 @@ void ACEquipment::Tick(float DeltaTime)
 
 void ACEquipment::Equip(int32 slot)
 {
-	CheckNull(Montage);
+	CheckNull(EquipMontage);
 
-	OwnerCharacter->PlayAnimMontage(Montage);
+	OwnerCharacter->PlayAnimMontage(EquipMontage);
 	
 	// 위젯 변화
 	// 무기 장착중인지 아닌지?
@@ -55,7 +57,7 @@ void ACEquipment::Begin_Equip()
 
 	EquipWeapon[0]->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "hand_r");
 
-	EquipWeapon[0]->GetD
+	// EquipWeapon[0]->GetD
 	// 능력 장착
 }
 

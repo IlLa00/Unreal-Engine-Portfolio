@@ -1,16 +1,13 @@
 #include "CWeaponAttributeSet.h"
 #include "Global.h"
-#include "DataAsset/CWeaponDataAsset.h"
 
 UCWeaponAttributeSet::UCWeaponAttributeSet()
 {
-	CheckNull(DataAsset);
-
-	if (IsBaseDamageSet && IsBaseProficiencySet)
-	{
-		InitCurrentDamage(GetBaseDamage()); // current와 base값을 같게함
-		InitCurrentProficiency(GetBaseProficiency());
-	}
+	//if (IsBaseDamageSet && IsBaseProficiencySet)
+	//{
+	//	InitCurrentDamage(GetBaseDamage()); // current와 base값을 같게함
+	//	InitCurrentProficiency(GetBaseProficiency());
+	//}
 	
 }
 

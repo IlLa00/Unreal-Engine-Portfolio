@@ -4,6 +4,12 @@
 #include "Pet/CPetController.h"
 #include "Pet/CPet.h"
 
+USummon::USummon()
+{
+	CHelpers::GetClass(&PetClass, "/Game/Pet/BP_CPet");
+	CheckNull(PetClass);
+}
+
 void USummon::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
@@ -13,9 +19,9 @@ void USummon::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGa
 
 	FTransform SpawnTM; // Todo.. 나중에 위치나 회전 고려해보기
 	SpawnTM.SetLocation(ActorInfo->AvatarActor->GetActorLocation() + FVector(0, 100, 0));
-	SpawnTM.SetRotation(FQuat(ActorInfo->PlayerController->PlayerCameraManager->GetCameraRotation()));
+	// SpawnTM.SetRotation(FQuat(ActorInfo->PlayerController->PlayerCameraManager->GetCameraRotation()));
 
-	Pet = ActorInfo->OwnerActor->GetWorld()->SpawnActor<ACPet>(ACPet::StaticClass(), SpawnTM);
+	Pet = ActorInfo->OwnerActor->GetWorld()->SpawnActor<ACPet>(PetClass, SpawnTM);
 	CheckNull(Pet);
 
 	PetController->Possess(Pet);
