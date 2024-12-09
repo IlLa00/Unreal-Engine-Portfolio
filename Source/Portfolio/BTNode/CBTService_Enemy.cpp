@@ -46,8 +46,6 @@ void UCBTService_Enemy::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 		}
 
-
-
 	}
 	else
 	{

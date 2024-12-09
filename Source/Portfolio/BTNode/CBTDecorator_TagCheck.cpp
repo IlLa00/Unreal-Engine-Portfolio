@@ -2,6 +2,8 @@
 #include "Global.h"
 #include "Enemy/CEnemyController.h"
 #include "Enemy/CEnemy.h"
+#include "Pet/CPetController.h"
+#include "Pet/CPet.h"
 
 UCBTDecorator_TagCheck::UCBTDecorator_TagCheck()
 {
@@ -11,6 +13,8 @@ UCBTDecorator_TagCheck::UCBTDecorator_TagCheck()
 bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
 	Super::CalculateRawConditionValue(OwnerComp, NodeMemory);
+
+	// OwnerComp.GetOwner()
 
 	ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
 	CheckNullResult(AIC, false);

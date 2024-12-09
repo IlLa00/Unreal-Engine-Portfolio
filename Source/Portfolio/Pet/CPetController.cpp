@@ -42,13 +42,13 @@ void ACPetController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	PrintLine();
-
 	ACPet* PossessedPet = Cast<ACPet>(InPawn);
 	CheckNull(PossessedPet);
 
 	if (PossessedPet->GetBehaviorTree())
 		RunBehaviorTree(PossessedPet->GetBehaviorTree());
+
+	PossessedPet->SetOwner(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
 
 	PerceptionComp->OnPerceptionUpdated.AddDynamic(this, &ACPetController::OnPerceptionUpdated);
 

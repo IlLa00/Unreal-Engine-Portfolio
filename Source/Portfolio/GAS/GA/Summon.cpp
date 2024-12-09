@@ -17,20 +17,16 @@ void USummon::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGa
 	PetController = ActorInfo->OwnerActor->GetWorld()->SpawnActor<ACPetController>(ACPetController::StaticClass());
 	CheckNull(PetController);
 
-	FTransform SpawnTM; // Todo.. 나중에 위치나 회전 고려해보기
+	FTransform SpawnTM; 
 	SpawnTM.SetLocation(ActorInfo->AvatarActor->GetActorLocation() + FVector(0, 100, 0));
 
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner = Cast<AActor>(ActorInfo->AvatarActor);
+	// FActorSpawnParameters SpawnParams; 그럼 있을 필요가 없쥬?
+	// SpawnParams.Owner = Cast<AActor>(ActorInfo->AvatarActor);
 
-	CLog::Print(SpawnParams.Owner->GetName()); // 여기는 오너가 플레이어라고 잘나오는데?
-
-	Pet = ActorInfo->OwnerActor->GetWorld()->SpawnActor<ACPet>(PetClass, SpawnTM, SpawnParams);
+	Pet = ActorInfo->OwnerActor->GetWorld()->SpawnActor<ACPet>(PetClass, SpawnTM);
 	CheckNull(Pet);
 
-	CLog::Print(Pet->GetName()); // 서비스에서 나타내는 폰과 같음
-
-	PetController->Possess(Pet);
+	PetController->Possess(Pet); // 여기서 오너가 바뀜, SetOwner()가 있음
 }
 
 void USummon::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
