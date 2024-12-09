@@ -31,6 +31,8 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 	AIC->GetBlackboardComponent()->SetValueAsVector("PlayerLocation", Pet->GetOwner()->GetActorLocation()); // 이거 안되고있음 오너인식안되는듯
 
+	CLog::Print(Pet->GetOwner()->GetName()); // 왜 컨트롤러가나옴?
+
 	/*
 	1. 플레이어와 멀어지면 = 플레이어 근처로 다가오게 ( 워크스피드 높이자 )
 	2. 플레이어 근처이고 + 주변에 몬스터가 없으면 = 순찰 (EQS)
