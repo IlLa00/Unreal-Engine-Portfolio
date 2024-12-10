@@ -9,7 +9,6 @@
 #include "Pet/CPet.h"
 #include "Player/CPlayer.h"
 #include "Enemy/CEnemy.h"
-#include "BTNode/CBlackboardKeyType_ObjectArray.h"
 
 ACPetController::ACPetController()
 {

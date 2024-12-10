@@ -30,6 +30,7 @@ ACPet::ACPet()
 
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
 	CheckNull(ASC);
+
 }
 
 void ACPet::BeginPlay()
@@ -44,7 +45,6 @@ void ACPet::BeginPlay()
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
 
 	ASC->InitAbilityActorInfo(this, this);
-	
 }
 
 void ACPet::Tick(float DeltaTime)

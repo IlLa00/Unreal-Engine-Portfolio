@@ -1,4 +1,5 @@
 #include "CBTTaskNode_Attack.h"
+#include "Global.h"
 
 UCBTTaskNode_Attack::UCBTTaskNode_Attack()
 {
