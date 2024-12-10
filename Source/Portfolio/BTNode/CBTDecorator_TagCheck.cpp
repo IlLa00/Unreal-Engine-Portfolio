@@ -4,6 +4,7 @@
 #include "Enemy/CEnemy.h"
 #include "Pet/CPetController.h"
 #include "Pet/CPet.h"
+#include "BehaviorTree/BehaviorTree.h"
 
 UCBTDecorator_TagCheck::UCBTDecorator_TagCheck()
 {
@@ -14,13 +15,26 @@ bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& 
 {
 	Super::CalculateRawConditionValue(OwnerComp, NodeMemory);
 
-	// OwnerComp.GetOwner()
+	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Enemy").ToString())
+	{
+		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
+		CheckNullResult(AIC, false);
 
-	ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
-	CheckNullResult(AIC, false);
+		ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetPawn());
+		CheckNullResult(Enemy, false);
 
-	ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetPawn());
-	CheckNullResult(Enemy, false);
+		return Enemy->GetTagContainer().HasTag(GameplayTag);
+	}
+	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
+	{
+		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
+		CheckNullResult(AIC, false);
 
-	return Enemy->GetTagContainer().HasTag(GameplayTag);
+		ACPet* Pet = Cast<ACPet>(AIC->GetPawn());
+		CheckNullResult(Pet, false);
+
+		return Pet->GetTagContainer().HasTag(GameplayTag);
+	}
+
+	return false;
 }

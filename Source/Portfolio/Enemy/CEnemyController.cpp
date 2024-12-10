@@ -9,6 +9,7 @@
 #include "Player/CPlayer.h"
 #include "Enemy/CEnemy.h"
 #include "Enemy/CMonster.h"
+#include "Pet/CPet.h"
 
 ACEnemyController::ACEnemyController()
 {
@@ -66,13 +67,21 @@ void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 
 	PerceptionComp->GetCurrentlyPerceivedActors(nullptr, PerceivedActors);
 
+	for (const auto& Actor : PerceivedActors)
+	{
+		CLog::Print(Actor->GetName()); // 펫이 안나옴.
+	}
+
 	ACEnemy* Enemy = Cast<ACEnemy>(GetPawn());
 	CheckNull(Enemy);
 
 	ACPlayer* Player = nullptr;
+	ACPet* Pet = nullptr;
 
 	for (const auto& Actor : PerceivedActors)
 	{
+		//CLog::Print(Actor->GetName()); // 왜 안찍힘? 프린트라인은 찍히면서? 프린트라인은 찍힘으로써 이 반복문은 들어오는게 맞음 사실 무조건임
+
 		if (Cast<ACPlayer>(Actor))
 		{
 			Player = Cast<ACPlayer>(Actor);
@@ -81,6 +90,9 @@ void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 	}
 
 	if (GetBlackboardComponent())
+	{
 		GetBlackboardComponent()->SetValueAsObject("PlayerKey", Player);
+		GetBlackboardComponent()->SetValueAsObject("PetKey", Pet);
+	}
 }
 

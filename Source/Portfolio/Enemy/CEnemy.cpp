@@ -5,7 +5,6 @@
 #include "GameplayTagsManager.h"
 #include "Components/TextRenderComponent.h"
 #include "CEnemyController.h"
-// #include "GameFramework/CharacterMovementComponent.h"
 
 ACEnemy::ACEnemy()
 {
@@ -34,6 +33,7 @@ void ACEnemy::BeginPlay()
 	ASC->InitAbilityActorInfo(this, this);
 
 	TagContainer.AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
+
 }
 
 void ACEnemy::Tick(float DeltaTime)

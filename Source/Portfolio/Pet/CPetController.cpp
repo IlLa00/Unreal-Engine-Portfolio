@@ -18,8 +18,8 @@ ACPetController::ACPetController()
 	Sight = CreateDefaultSubobject<UAISenseConfig_Sight>("Sight");
 	CheckNull(Sight);
 
-	Sight->SightRadius = 600.f;
-	Sight->LoseSightRadius = 800.f;
+	Sight->SightRadius = 1000.f;
+	Sight->LoseSightRadius = 1200.f;
 	Sight->PeripheralVisionAngleDegrees = 180.f;
 
 	Sight->DetectionByAffiliation.bDetectEnemies = true;
@@ -68,31 +68,44 @@ void ACPetController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 
 	PerceptionComp->GetCurrentlyPerceivedActors(nullptr, PerceivedActors);
 
+	for (const auto& Actor : PerceivedActors)
+	{
+		CLog::Print(Actor->GetName());
+	}
+
 	ACPet* Pet = Cast<ACPet>(GetPawn());
 	CheckNull(Pet);
 
 	ACPlayer* Player = nullptr;
 	ACEnemy* Enemy = nullptr;
+	//TArray<ACEnemy*> Enemies;
 
 	for (const auto& Actor : PerceivedActors)
 	{
+		// CLog::Print(Actor->GetClass()->GetName());
+
+		/*if (Cast<ACPlayer>(Actor))
+		{
+			Enemy = Cast<ACEnemy>(Actor);
+		}*/
+
 		if (Cast<ACPlayer>(Actor))
 		{
 			Player = Cast<ACPlayer>(Actor);
 			break;
 		}
-
-		if (Cast<ACEnemy>(Actor))
+		/*if (Cast<ACEnemy>(Actor))
 		{
-			Enemy = Cast<ACEnemy>(Actor);
-			break;
-		}
+			Enemies.Add(Cast<ACEnemy>(Actor));
+		}*/
+
 	}
 
 	if (GetBlackboardComponent())
 	{
 		GetBlackboardComponent()->SetValueAsObject("PlayerKey", Player);
 		GetBlackboardComponent()->SetValueAsObject("EnemyKey", Enemy);
+		// GetBlackboardComponent()->SetValue()
 	}
 
 

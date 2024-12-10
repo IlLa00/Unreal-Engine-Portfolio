@@ -90,7 +90,6 @@ void ACPlayer::BeginPlay()
 	Equipment = GetWorld()->SpawnActor<ACEquipment>(EquipmentClass, SpawnParams);
 	CheckNull(Equipment);
 
-
 	SetGAS();
 }
 

@@ -50,14 +50,22 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 				Pet->GetTagContainer().Reset();
 				Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("Pet.State.Attack")));
 			}
-			Pet->GetTagContainer().Reset();
-			Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("Pet.State.Approach")));
+			else
+			{
+				Pet->GetTagContainer().Reset();
+				Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("Pet.State.Approach")));
+			}
 		}
-		Pet->GetTagContainer().Reset();
-		Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("Pet.State.Patrol"));
+		else
+		{
+			Pet->GetTagContainer().Reset();
+			Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("Pet.State.Patrol"));
+		}
 	}
-
-	Pet->GetTagContainer().Reset();
-	Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("Pet.State.ChasingPlayer"));
+	else
+	{
+		Pet->GetTagContainer().Reset();
+		Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("Pet.State.ChasingPlayer"));
+	}
 
 }
