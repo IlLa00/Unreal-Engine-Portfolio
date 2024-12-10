@@ -24,8 +24,8 @@ ACEnemyController::ACEnemyController()
 	Sight->PeripheralVisionAngleDegrees = 90.f;
 
 	Sight->DetectionByAffiliation.bDetectEnemies = true;
-	Sight->DetectionByAffiliation.bDetectNeutrals = false;
-	Sight->DetectionByAffiliation.bDetectFriendlies = false;
+	Sight->DetectionByAffiliation.bDetectNeutrals = true;
+	Sight->DetectionByAffiliation.bDetectFriendlies = true;
 	Sight->SetMaxAge(2.f);
 
 	PerceptionComp->ConfigureSense(*Sight);
@@ -67,25 +67,24 @@ void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 
 	PerceptionComp->GetCurrentlyPerceivedActors(nullptr, PerceivedActors);
 
-	for (const auto& Actor : PerceivedActors)
-	{
-		CLog::Print(Actor->GetName()); // 펫이 안나옴.
-	}
-
 	ACEnemy* Enemy = Cast<ACEnemy>(GetPawn());
 	CheckNull(Enemy);
 
 	ACPlayer* Player = nullptr;
 	ACPet* Pet = nullptr;
 
+
+
+
 	for (const auto& Actor : PerceivedActors)
 	{
-		//CLog::Print(Actor->GetName()); // 왜 안찍힘? 프린트라인은 찍히면서? 프린트라인은 찍힘으로써 이 반복문은 들어오는게 맞음 사실 무조건임
-
-		if (Cast<ACPlayer>(Actor))
+		if (Actor->IsA<ACPet>())
+		{
+			Pet = Cast<ACPet>(Actor);
+		}
+		if (Actor->IsA<ACPlayer>())
 		{
 			Player = Cast<ACPlayer>(Actor);
-			break;
 		}
 	}
 
