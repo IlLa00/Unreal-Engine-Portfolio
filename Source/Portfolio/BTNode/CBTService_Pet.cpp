@@ -45,7 +45,7 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 		{
 			float DistanceToEnemy = Pet->GetDistanceTo(Enemy);
 
-			if (DistanceToEnemy < 150.f)
+			if (DistanceToEnemy < 500.f)
 			{
 				Pet->GetTagContainer().Reset();
 				Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("Pet.State.Attack")));
