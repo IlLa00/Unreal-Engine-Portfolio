@@ -10,6 +10,7 @@ class UCapsuleComponent;
 class UTextRenderComponent;
 class UAbilitySystemComponent;
 class UBehaviorTree;
+class UCPetDataAsset;
 
 UCLASS()
 class PORTFOLIO_API ACPet : public ACharacter, public IAbilitySystemInterface
@@ -31,6 +32,7 @@ public:
 	UBehaviorTree* GetBehaviorTree() { return BT; }
 
 	FORCEINLINE virtual FGameplayTagContainer& GetTagContainer() { return TagContainer; }
+	FORCEINLINE virtual UCPetDataAsset* GetDataAsset() { return DataAsset; }
 
 public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
@@ -47,4 +49,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		FGameplayTagContainer TagContainer;
+
+	UPROPERTY(EditDefaultsOnly, Category = "DataAsset")
+		UCPetDataAsset* DataAsset;
 };

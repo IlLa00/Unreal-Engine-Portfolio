@@ -5,6 +5,7 @@
 #include "GameplayTagsManager.h"
 #include "Components/TextRenderComponent.h"
 #include "CPetController.h"
+#include "GAS/GA/AI_Attack.h"
 
 ACPet::ACPet()
 {
@@ -45,6 +46,9 @@ void ACPet::BeginPlay()
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
 
 	ASC->InitAbilityActorInfo(this, this);
+
+	FGameplayAbilitySpec AttackSpec(UAI_Attack::StaticClass());
+	ASC->GiveAbility(AttackSpec);
 }
 
 void ACPet::Tick(float DeltaTime)
