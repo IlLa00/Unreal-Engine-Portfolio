@@ -45,6 +45,7 @@ void ACProjectile::Tick(float DeltaTime)
 
 void ACProjectile::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	// 여기서 부딪힌 곳에 피격 파티클 추가 + 액터 삭제 + (사운드 추가)
 
 	if (OtherActor->IsA<ACPlayer>())
 		return;
