@@ -15,7 +15,7 @@
 #include "GAS/Attribute/CCharacterAttributeSet.h"
 #include "GAS/GA/Summon.h"
 #include "GAS/GA/Sprint.h"
-#include "GAS/GE/Movement.h"
+// #include "GAS/GE/Movement.h"
 #include "Equipment/CEquipment.h"
 
 ACPlayer::ACPlayer()
@@ -61,9 +61,6 @@ ACPlayer::ACPlayer()
 
 	AttributeSet = CreateDefaultSubobject<UCCharacterAttributeSet>("AttributeSet");
 	CheckNull(AttributeSet);
-
-	/*CHelpers::GetClass(&BPMovementEffect, "/Game/GAS/BP_GE_Movement");
-	CheckNull(BPMovementEffect);*/
 
 	CHelpers::GetClass(&BPRegenerateStaminaEffect, "/Game/GAS/BP_GE_RegenerateStamina");
 	CheckNull(BPRegenerateStaminaEffect);

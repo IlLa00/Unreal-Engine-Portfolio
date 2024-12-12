@@ -10,6 +10,7 @@ class UCapsuleComponent;
 class UTextRenderComponent;
 class UAbilitySystemComponent;
 class UBehaviorTree;
+class UCPetAttributeSet;
 class UCPetDataAsset;
 
 UCLASS()
@@ -33,6 +34,7 @@ public:
 
 	FORCEINLINE virtual FGameplayTagContainer& GetTagContainer() { return TagContainer; }
 	FORCEINLINE virtual UCPetDataAsset* GetDataAsset() { return DataAsset; }
+	FORCEINLINE virtual UCPetAttributeSet* GetAttributeSet() { return Attribute; }
 
 public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
@@ -49,7 +51,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		FGameplayTagContainer TagContainer;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		TObjectPtr<UCPetAttributeSet> Attribute;
 
-	UPROPERTY(EditDefaultsOnly, Category = "DataAsset")
-		UCPetDataAsset* DataAsset;
+protected:
+	UCPetDataAsset* DataAsset;
 };

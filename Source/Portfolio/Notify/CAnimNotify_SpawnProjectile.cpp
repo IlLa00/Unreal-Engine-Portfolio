@@ -27,7 +27,10 @@ void UCAnimNotify_SpawnProjectile::Notify(USkeletalMeshComponent* MeshComp, UAni
 		SpawnTM.SetLocation(OwnerCharacter->GetMesh()->GetSocketLocation("WeaponSocket"));
 		SpawnTM.SetRotation(FQuat(OwnerCharacter->GetActorForwardVector().Rotation()));
 
-		MeshComp->GetOwner()->GetWorld()->SpawnActor<ACProjectile>(ProjectileClass, SpawnTM);
+		FActorSpawnParameters SpawnParam;
+		SpawnParam.Owner = OwnerCharacter;
+
+		MeshComp->GetOwner()->GetWorld()->SpawnActor<ACProjectile>(ProjectileClass, SpawnTM, SpawnParam);
 	}
 
 }

@@ -2,11 +2,7 @@
 
 UCPetAttributeSet::UCPetAttributeSet()
 {
-	BaseHealth = 100.f;
-	BaseAttack = 10.f;
 
-	InitCurrentHealth(GetBaseHealth()); // current와 base값을 같게함
-	InitCurrentAttack(GetBaseAttack());
 }
 
 void UCPetAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -15,6 +11,12 @@ void UCPetAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 
 void UCPetAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
+    Super::PostAttributeChange(Attribute, OldValue, NewValue);
+
+    if (Attribute == GetCurrentHealthAttribute()) // 스테미나가 변경된거면
+    {
+        OnHealthChanged.Broadcast(NewValue); // UI연동
+    }
 }
 
 void UCPetAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

@@ -26,9 +26,12 @@ public:
 
 public:
 	UPROPERTY(meta = (BindWidget))
-		UProgressBar* HealthBar;
+		UProgressBar* PlayerHealthBar;
 
 	UPROPERTY(meta = (BindWidget))
-		UProgressBar* StaminaBar;
+		UProgressBar* PlayerStaminaBar;
+
+	UPROPERTY(meta = (BindWidget))
+		UProgressBar* PetHealthBar;
 
 };

@@ -6,6 +6,8 @@
 #include "Components/TextRenderComponent.h"
 #include "CPetController.h"
 #include "GAS/GA/AI_Attack.h"
+#include "GAS/Attribute/CPetAttributeSet.h"
+#include "DataAsset/CPetDataAsset.h"
 
 ACPet::ACPet()
 {
@@ -32,6 +34,11 @@ ACPet::ACPet()
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
 	CheckNull(ASC);
 
+	Attribute = CreateDefaultSubobject<UCPetAttributeSet>("Attribute");
+	CheckNull(Attribute);
+
+	CHelpers::GetAsset(&DataAsset, "/Game/DataAsset/DA_Pet");
+	CheckNull(DataAsset);
 }
 
 void ACPet::BeginPlay()
@@ -49,6 +56,9 @@ void ACPet::BeginPlay()
 
 	FGameplayAbilitySpec AttackSpec(UAI_Attack::StaticClass());
 	ASC->GiveAbility(AttackSpec);
+
+	Attribute->SetBaseHealth(DataAsset->BaseHealth);
+	Attribute->SetBaseDamage(DataAsset->BaseDamage);
 }
 
 void ACPet::Tick(float DeltaTime)

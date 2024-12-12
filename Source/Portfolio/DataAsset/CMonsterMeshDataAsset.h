@@ -23,7 +23,7 @@ public:
 };
 
 USTRUCT(BlueprintType)
-struct FEquipmentData
+struct FMonsterData
 {
 	GENERATED_BODY()
 
@@ -38,6 +38,12 @@ public:
 		FMontageData MontageDatas;
 
 	UPROPERTY(EditAnywhere)
+		float BaseHealth;
+
+	UPROPERTY(EditAnywhere)
+		float BaseDamage;
+
+	UPROPERTY(EditAnywhere)
 		AActor* DropEmitter;
 };
 
@@ -49,6 +55,6 @@ class PORTFOLIO_API UCMonsterMeshDataAsset : public UDataAsset
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Monster Data")
-		FEquipmentData Datas[8];
+		FMonsterData Datas[8];
 	
 };

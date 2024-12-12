@@ -9,6 +9,8 @@
 class UTextRenderComponent;
 class UAbilitySystemComponent;
 class UBehaviorTree;
+class UCMonsterMeshDataAsset;
+class UCMonsterAttributeSet;
 
 UCLASS()
 class PORTFOLIO_API ACEnemy : public ACharacter, public IAbilitySystemInterface
@@ -21,7 +23,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
@@ -30,6 +32,7 @@ public:
 	UBehaviorTree* GetBehaviorTree() { return BT; }
 
 	FORCEINLINE virtual FGameplayTagContainer& GetTagContainer() { return TagContainer; }
+	FORCEINLINE virtual UCMonsterAttributeSet* GetAttributeSet() { return Attribute; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Text")
@@ -44,4 +47,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		FGameplayTagContainer TagContainer;
 
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		TObjectPtr<UCMonsterAttributeSet> Attribute;
+
+protected:
+	UCMonsterMeshDataAsset* DataAsset;
 };

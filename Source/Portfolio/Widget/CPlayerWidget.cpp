@@ -3,6 +3,8 @@
 #include "Components/ProgressBar.h"
 #include "Player/CPlayer.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
+#include "Pet/CPet.h"
+#include "GAS/Attribute/CPetAttributeSet.h"
 
 void UCPlayerWidget::NativeConstruct()
 {
@@ -25,21 +27,52 @@ void UCPlayerWidget::NativeConstruct()
         Player->GetAttributeSet()->OnHealthChanged.AddDynamic(this, &UCPlayerWidget::OnHealthChange);
         Player->GetAttributeSet()->OnStaminaChanged.AddDynamic(this, &UCPlayerWidget::OnStaminaChange);
     }
+
+    ACPet* Pet = nullptr;
+
+    TArray<AActor*> Actors;
+    Player->GetAttachedActors(Actors);
+
+    if (Actors.Num() > 0)
+    {
+        for (const auto& Actor : Actors)
+        {
+            if (Actor->IsA<ACPet>())
+            {
+                Pet = Cast<ACPet>(Actor);
+                break;
+            }
+        }
+    }
+
+    if (Pet)
+    {
+        if (Pet && Pet->GetAbilitySystemComponent())
+        {
+            // 체력과 스테미나 값이 변경될 때마다 호출되는 콜백을 설정
+            UpdateHealthBar(Pet->GetAttributeSet()->GetCurrentHealth());
+        }
+    }
+
+    if (Pet->GetAttributeSet())
+    {
+        Pet->GetAttributeSet()->OnHealthChanged.AddDynamic(this, &UCPlayerWidget::OnHealthChange);
+    }
 }
 
 void UCPlayerWidget::UpdateHealthBar(float Health)
 {
-    if (HealthBar)
+    if (PlayerHealthBar)
     {
-        HealthBar->SetPercent(Health / 100.f);  // 0 ~ 100 사이로 비율 계산
+        PlayerHealthBar->SetPercent(Health / 100.f);  // 0 ~ 100 사이로 비율 계산
     }
 }
 
 void UCPlayerWidget::UpdateStaminaBar(float Stamina)
 {
-    if (StaminaBar)
+    if (PlayerStaminaBar)
     {
-        StaminaBar->SetPercent(Stamina / 100.f);  // 0 ~ 100 사이로 비율 계산
+        PlayerStaminaBar->SetPercent(Stamina / 100.f);  // 0 ~ 100 사이로 비율 계산
     }
 }
 

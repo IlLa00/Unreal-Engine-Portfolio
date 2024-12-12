@@ -4,8 +4,6 @@
 #include "CEnemy.h"
 #include "CMonster.generated.h"
 
-class UCMonsterMeshDataAsset;
-
 UCLASS()
 class PORTFOLIO_API ACMonster : public ACEnemy
 {
@@ -20,8 +18,4 @@ protected:
 
 public:
 	void SetMesh(FName PlayerArea);
-
-public:
-	UPROPERTY(EditDefaultsOnly, Category = "DataAsset")
-		UCMonsterMeshDataAsset* DataAsset;
 };

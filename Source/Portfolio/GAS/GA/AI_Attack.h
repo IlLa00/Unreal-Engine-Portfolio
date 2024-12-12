@@ -8,7 +8,7 @@ UCLASS()
 class PORTFOLIO_API UAI_Attack : public UGameplayAbility_Montage
 {
 	GENERATED_BODY()
-	
+
 public:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 };

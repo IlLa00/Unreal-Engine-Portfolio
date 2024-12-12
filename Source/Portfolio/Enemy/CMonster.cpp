@@ -3,6 +3,7 @@
 #include "Components/TextRenderComponent.h"
 #include "DataAsset/CMonsterMeshDataAsset.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GAS/Attribute/CMonsterAttributeSet.h"
 
 ACMonster::ACMonster()
 {
@@ -18,11 +19,21 @@ void ACMonster::BeginPlay()
 	if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[0].SkeletalMeshAssets)
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[0].AnimClass);
+		if (Attribute)
+		{
+			Attribute->SetBaseHealth(DataAsset->Datas[0].BaseHealth);
+			Attribute->SetBaseDamage(DataAsset->Datas[0].BaseDamage);
+		}
 	}
 	else if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[1].SkeletalMeshAssets)
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[1].AnimClass);
-	}
+		if (Attribute)
+		{
+			Attribute->SetBaseHealth(DataAsset->Datas[1].BaseHealth);
+			Attribute->SetBaseDamage(DataAsset->Datas[1].BaseDamage);
+		}
+	};
 }
 
 void ACMonster::Tick(float DeltaTime)
@@ -30,7 +41,7 @@ void ACMonster::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ACMonster::SetMesh(FName PlayerArea) // 여기문제 없음
+void ACMonster::SetMesh(FName PlayerArea) 
 {
 	if (DataAsset && PlayerArea == "Grasslands")
 	{

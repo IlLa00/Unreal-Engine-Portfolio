@@ -11,6 +11,9 @@
  	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
  	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChanged, float, NewHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStaminaChanged, float, NewStamina);
+
 UCLASS()
 class PORTFOLIO_API UCPetAttributeSet : public UAttributeSet
 {
@@ -34,10 +37,13 @@ public:
 	ATTRIBUTE_ACCESSORS(UCPetAttributeSet, CurrentHealth);
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS Attribute", meta = (AllowPrivateAccess = true))
-	FGameplayAttributeData BaseAttack;
-	ATTRIBUTE_ACCESSORS(UCPetAttributeSet, BaseAttack);
+	FGameplayAttributeData BaseDamage;
+	ATTRIBUTE_ACCESSORS(UCPetAttributeSet, BaseDamage);
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS Attribute", meta = (AllowPrivateAccess = true))
-	FGameplayAttributeData CurrentAttack;
-	ATTRIBUTE_ACCESSORS(UCPetAttributeSet, CurrentAttack);
+	FGameplayAttributeData CurrentDamage;
+	ATTRIBUTE_ACCESSORS(UCPetAttributeSet, CurrentDamage);
+
+public:
+	FHealthChanged OnHealthChanged;
 };

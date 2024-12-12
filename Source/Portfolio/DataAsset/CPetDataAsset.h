@@ -30,8 +30,8 @@ public:
 		FMontageDatas MontageDatas;
 
 	UPROPERTY(EditAnywhere, Category = "Attribute")
-		float BaseDamage;
+		float BaseHealth;
 
 	UPROPERTY(EditAnywhere, Category = "Attribute")
-		float BaseProficiency;
+		float BaseDamage;
 };

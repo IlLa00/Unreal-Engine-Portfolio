@@ -4,6 +4,8 @@
 #include "GameplayTagContainer.h"
 #include "GameplayTagsManager.h"
 #include "Components/TextRenderComponent.h"
+#include "DataAsset/CMonsterMeshDataAsset.h"
+#include "GAS/Attribute/CMonsterAttributeSet.h"
 #include "CEnemyController.h"
 
 ACEnemy::ACEnemy()
@@ -19,6 +21,13 @@ ACEnemy::ACEnemy()
 
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
 	CheckNull(ASC);
+
+	CHelpers::GetAsset(&DataAsset, "/Game/DataAsset/DA_Monster");
+	CheckNull(DataAsset);
+
+	Attribute = CreateDefaultSubobject<UCMonsterAttributeSet>("Attribute");
+	CheckNull(Attribute);
+
 }
 
 void ACEnemy::BeginPlay()

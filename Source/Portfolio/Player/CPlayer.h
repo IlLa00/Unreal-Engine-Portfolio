@@ -84,7 +84,7 @@ protected:
 		TObjectPtr<UAbilitySystemComponent> ASC;
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
-		TObjectPtr<UCCharacterAttributeSet> AttributeSet; // 있어야 어트리뷰트 가져올 수 잇음, 에디터에선 어디서 확인?
+		TObjectPtr<UCCharacterAttributeSet> AttributeSet; 
 
 	UPROPERTY(EditDefaultsOnly, Category = "GE")
 		TSubclassOf<UGameplayEffect> BPRegenerateStaminaEffect;
