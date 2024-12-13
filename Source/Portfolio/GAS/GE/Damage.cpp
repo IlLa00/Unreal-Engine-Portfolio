@@ -7,27 +7,28 @@
 
 UDamage::UDamage()
 {
+	
+}
+
+void UDamage::SetModify(AActor* OwnerActor, AActor* OtherActor)
+{
 	DurationPolicy = EGameplayEffectDurationType::Instant;
 
 	FGameplayModifierInfo Modifier;
 	Modifier.ModifierOp = EGameplayModOp::Additive;
 
-	Modifiers.Add(Modifier);
-}
-
-void UDamage::SetModify(AActor* OwnerActor, AActor* OtherActor)
-{
 	if (OtherActor->IsA<ACEnemy>())
 	{
 		ACEnemy* Enemy = Cast<ACEnemy>(OtherActor);
 		if (Enemy)
 		{
-			Modifiers[0].Attribute = Enemy->GetAttributeSet()->GetBaseHealthAttribute();
+			Modifier.Attribute = Enemy->GetAttributeSet()->GetCurrentHealthAttribute();
 
 			ACPet* Pet = Cast<ACPet>(OwnerActor);
 			if (Pet)
 			{
-				Modifiers[0].ModifierMagnitude = FScalableFloat((Pet->GetAttributeSet()->GetBaseDamage()) * -1);
+				Modifier.ModifierMagnitude = FScalableFloat((Pet->GetAttributeSet()->GetCurrentDamage()) * -1);
+				Modifiers.Add(Modifier);
 			}
 		}
 	}

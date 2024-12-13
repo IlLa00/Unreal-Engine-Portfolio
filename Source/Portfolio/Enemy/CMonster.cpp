@@ -14,26 +14,37 @@ ACMonster::ACMonster()
 
 void ACMonster::BeginPlay()
 {
-	Super::BeginPlay();
 
+	// 여기 수정할 수 있을듯
 	if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[0].SkeletalMeshAssets)
 	{
-		GetMesh()->SetAnimClass(DataAsset->Datas[0].AnimClass);
+		GetMesh()->SetAnimClass(DataAsset->Datas[Index].AnimClass);
 		if (Attribute)
 		{
-			Attribute->SetBaseHealth(DataAsset->Datas[0].BaseHealth);
-			Attribute->SetBaseDamage(DataAsset->Datas[0].BaseDamage);
+			Attribute->SetBaseHealth(DataAsset->Datas[Index].BaseHealth);
+			Attribute->SetBaseDamage(DataAsset->Datas[Index].BaseDamage);
+
+			Attribute->SetCurrentHealth(Attribute->GetBaseHealth());
+			Attribute->SetCurrentDamage(Attribute->GetBaseDamage());
+
+			CLog::Print(Attribute->GetCurrentHealth());
+			CLog::Print(Attribute->GetCurrentDamage());
 		}
 	}
 	else if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[1].SkeletalMeshAssets)
 	{
-		GetMesh()->SetAnimClass(DataAsset->Datas[1].AnimClass);
+		GetMesh()->SetAnimClass(DataAsset->Datas[Index].AnimClass);
 		if (Attribute)
 		{
-			Attribute->SetBaseHealth(DataAsset->Datas[1].BaseHealth);
-			Attribute->SetBaseDamage(DataAsset->Datas[1].BaseDamage);
+			Attribute->SetBaseHealth(DataAsset->Datas[Index].BaseHealth);
+			Attribute->SetBaseDamage(DataAsset->Datas[Index].BaseDamage);
+
+			Attribute->SetCurrentHealth(Attribute->GetBaseHealth());
+			Attribute->SetCurrentDamage(Attribute->GetBaseDamage());
 		}
 	};
+
+	Super::BeginPlay();
 }
 
 void ACMonster::Tick(float DeltaTime)
@@ -47,15 +58,21 @@ void ACMonster::SetMesh(FName PlayerArea)
 	{
 		if (FMath::FRand() < 0.5f) 
 		{
-			GetMesh()->SetSkeletalMesh(DataAsset->Datas[0].SkeletalMeshAssets);
+			Index = 0;
+			/*GetMesh()->SetSkeletalMesh(DataAsset->Datas[Index].SkeletalMeshAssets);
 			GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
-			GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
+			GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));*/
 		}
 		else
 		{
-			GetMesh()->SetSkeletalMesh(DataAsset->Datas[1].SkeletalMeshAssets);
+			Index = 1;
+
+			/*GetMesh()->SetSkeletalMesh(DataAsset->Datas[Index].SkeletalMeshAssets);
 			GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
-			GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
+			GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));*/
 		}
+		GetMesh()->SetSkeletalMesh(DataAsset->Datas[Index].SkeletalMeshAssets);
+		GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
+		GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 	}
 }

@@ -52,12 +52,12 @@ void UCPlayerWidget::NativeConstruct()
             // 체력과 스테미나 값이 변경될 때마다 호출되는 콜백을 설정
             UpdateHealthBar(Pet->GetAttributeSet()->GetCurrentHealth());
         }
+        if (Pet->GetAttributeSet())
+        {
+            Pet->GetAttributeSet()->OnHealthChanged.AddDynamic(this, &UCPlayerWidget::OnHealthChange);
+        }
     }
 
-    if (Pet->GetAttributeSet())
-    {
-        Pet->GetAttributeSet()->OnHealthChanged.AddDynamic(this, &UCPlayerWidget::OnHealthChange);
-    }
 }
 
 void UCPlayerWidget::UpdateHealthBar(float Health)

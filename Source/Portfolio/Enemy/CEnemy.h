@@ -7,10 +7,12 @@
 #include "CEnemy.generated.h"
 
 class UTextRenderComponent;
+class UWidgetComponent;
 class UAbilitySystemComponent;
 class UBehaviorTree;
 class UCMonsterMeshDataAsset;
 class UCMonsterAttributeSet;
+class UCEnemyHealthWidget;
 
 UCLASS()
 class PORTFOLIO_API ACEnemy : public ACharacter, public IAbilitySystemInterface
@@ -31,12 +33,17 @@ public:
 
 	UBehaviorTree* GetBehaviorTree() { return BT; }
 
+	FORCEINLINE virtual UCEnemyHealthWidget* GetHealthWidget() { return HealthWidgetObject; }
 	FORCEINLINE virtual FGameplayTagContainer& GetTagContainer() { return TagContainer; }
 	FORCEINLINE virtual UCMonsterAttributeSet* GetAttributeSet() { return Attribute; }
+	FORCEINLINE virtual UCMonsterMeshDataAsset* GetDataAsset() { return DataAsset; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Text")
 		UTextRenderComponent* TextComp;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+		UWidgetComponent* HealthWidgetComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UAbilitySystemComponent> ASC;
@@ -52,4 +59,8 @@ protected:
 
 protected:
 	UCMonsterMeshDataAsset* DataAsset;
+	int32 Index;
+
+public:
+	UCEnemyHealthWidget* HealthWidgetObject;
 };

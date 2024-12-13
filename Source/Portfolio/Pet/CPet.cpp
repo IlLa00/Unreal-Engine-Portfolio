@@ -6,6 +6,7 @@
 #include "Components/TextRenderComponent.h"
 #include "CPetController.h"
 #include "GAS/GA/AI_Attack.h"
+#include "GAS/GA/AI_GetHit.h"
 #include "GAS/Attribute/CPetAttributeSet.h"
 #include "DataAsset/CPetDataAsset.h"
 
@@ -56,6 +57,9 @@ void ACPet::BeginPlay()
 
 	FGameplayAbilitySpec AttackSpec(UAI_Attack::StaticClass());
 	ASC->GiveAbility(AttackSpec);
+
+	FGameplayAbilitySpec HitSpec(UAI_GetHit::StaticClass());
+	ASC->GiveAbility(HitSpec);
 
 	Attribute->SetBaseHealth(DataAsset->BaseHealth);
 	Attribute->SetBaseDamage(DataAsset->BaseDamage);

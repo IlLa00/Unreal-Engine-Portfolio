@@ -27,6 +27,7 @@ void UCBTService_Enemy::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 	ACPlayer* Player = Cast<ACPlayer>(AIC->GetBlackboardComponent()->GetValueAsObject("PlayerKey"));
 
+
 	if (Player) // 플레이어가 감지가 되면
 	{
 		float DistanceToPlayer = Enemy->GetDistanceTo(Player);
@@ -38,22 +39,14 @@ void UCBTService_Enemy::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		}
 		else
 		{
-		if (Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Idle"))))
-			Enemy->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Idle")));
-
-		if (!Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach"))))
+			Enemy->GetTagContainer().Reset();
 			Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach")));
-
 		}
-
 	}
 	else
 	{
-		if (Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach"))))
-			Enemy->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach")));
-
-		if (!Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Idle"))))
-			Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
+		Enemy->GetTagContainer().Reset();
+		Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
 	}
 	
 

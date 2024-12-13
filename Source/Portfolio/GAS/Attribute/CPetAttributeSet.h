@@ -11,8 +11,7 @@
  	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
  	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChanged, float, NewHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStaminaChanged, float, NewStamina);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPetHealthChanged, float, NewHealth);
 
 UCLASS()
 class PORTFOLIO_API UCPetAttributeSet : public UAttributeSet
@@ -45,5 +44,5 @@ public:
 	ATTRIBUTE_ACCESSORS(UCPetAttributeSet, CurrentDamage);
 
 public:
-	FHealthChanged OnHealthChanged;
+	FPetHealthChanged OnHealthChanged;
 };

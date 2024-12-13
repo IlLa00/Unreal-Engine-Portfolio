@@ -34,7 +34,6 @@ void ACProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ACProjectile::OnBoxBeginOverlap);
-
 }
 
 void ACProjectile::Tick(float DeltaTime)
@@ -52,17 +51,15 @@ void ACProjectile::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 
 	if (OtherActor->IsA<ACEnemy>())
 	{
-		PrintLine();
 		ACEnemy* Enemy = Cast<ACEnemy>(OtherActor);
 		if (Enemy && Enemy->GetAbilitySystemComponent())
 		{
 			UDamage* GE = NewObject<UDamage>(this, UDamage::StaticClass());
+			GE->SetModify(GetOwner(), Enemy);
 
 			FGameplayEffectContextHandle EffectContext = Enemy->GetAbilitySystemComponent()->MakeEffectContext();
 			FGameplayEffectSpecHandle EffectSpecHandle = Enemy->GetAbilitySystemComponent()->MakeOutgoingSpec(GE->GetClass(), 1.0f, EffectContext);
 			FGameplayEffectSpec* EffectSpec = EffectSpecHandle.Data.Get();
-
-			GE->SetModify(GetOwner(), Enemy);
 
 			Enemy->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpec, Enemy->GetAbilitySystemComponent());	
 		}
