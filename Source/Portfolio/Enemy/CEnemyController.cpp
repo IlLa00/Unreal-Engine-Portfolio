@@ -73,9 +73,6 @@ void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 	ACPlayer* Player = nullptr;
 	ACPet* Pet = nullptr;
 
-
-
-
 	for (const auto& Actor : PerceivedActors)
 	{
 		if (Actor->IsA<ACPet>())
@@ -93,5 +90,6 @@ void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 		GetBlackboardComponent()->SetValueAsObject("PlayerKey", Player);
 		GetBlackboardComponent()->SetValueAsObject("PetKey", Pet);
 	}
+
 }
 

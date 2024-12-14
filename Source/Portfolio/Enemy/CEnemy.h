@@ -37,6 +37,7 @@ public:
 	FORCEINLINE virtual FGameplayTagContainer& GetTagContainer() { return TagContainer; }
 	FORCEINLINE virtual UCMonsterAttributeSet* GetAttributeSet() { return Attribute; }
 	FORCEINLINE virtual UCMonsterMeshDataAsset* GetDataAsset() { return DataAsset; }
+	FORCEINLINE virtual int32 GetIndex() { return Index; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Text")

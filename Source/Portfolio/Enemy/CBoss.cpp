@@ -1,5 +1,6 @@
 #include "Enemy/CBoss.h"
 #include "Global.h"
+#include "GameFramework/FloatingPawnMovement.h"
 
 ACBoss::ACBoss()
 {
@@ -13,6 +14,9 @@ ACBoss::ACBoss()
 	GetMesh()->SetSkeletalMesh(MeshAsset);
 	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
+
+	CHelpers::CreateActorComponent(this, &FloatingComp, "FloatingComp");
+	CheckNull(FloatingComp);
 	
 }
 

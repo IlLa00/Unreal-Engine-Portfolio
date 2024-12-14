@@ -59,17 +59,10 @@ void ACMonster::SetMesh(FName PlayerArea)
 		if (FMath::FRand() < 0.5f) 
 		{
 			Index = 0;
-			/*GetMesh()->SetSkeletalMesh(DataAsset->Datas[Index].SkeletalMeshAssets);
-			GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
-			GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));*/
 		}
 		else
 		{
 			Index = 1;
-
-			/*GetMesh()->SetSkeletalMesh(DataAsset->Datas[Index].SkeletalMeshAssets);
-			GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
-			GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));*/
 		}
 		GetMesh()->SetSkeletalMesh(DataAsset->Datas[Index].SkeletalMeshAssets);
 		GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
