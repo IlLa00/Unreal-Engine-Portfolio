@@ -50,7 +50,7 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 
 		if (!bSpawnBoss)
 		{
-			if (FMath::FRand() < 0.8f)
+			if (FMath::FRand() < 0.1f)
 			{
 				// 80% È®·ü·Î ½ÇÇàÇÒ ÄÚµå·Î ÂÌ¸÷ ¼ÒÈ¯
 				ACMonster* Monster = GetWorld()->SpawnActorDeferred<ACMonster>(MonsterClass, SpawnTM);

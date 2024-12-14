@@ -22,6 +22,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
 		float Direction;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
+		float FlyHeight;
+
 	UPROPERTY(BlueprintReadOnly, Category = "GameplayTag")
 		FGameplayTagContainer TagContainer;
 };

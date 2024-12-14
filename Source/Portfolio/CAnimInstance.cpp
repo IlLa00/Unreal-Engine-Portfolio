@@ -1,5 +1,6 @@
 #include "CAnimInstance.h"
 #include "Global.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Player/CPlayer.h"
 #include "Enemy/CEnemy.h"
 
@@ -12,6 +13,8 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	Speed = OwnerCharacter->GetVelocity().Size2D();
 	Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
+	FlyHeight = OwnerCharacter->GetCharacterMovement()->Velocity.Z;
+
 
 	if (Cast<ACPlayer>(OwnerCharacter))
 	{

@@ -19,6 +19,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	FORCEINLINE UFloatingPawnMovement* GetFloatingComp() { return FloatingComp; }
+
+protected:
 	UPROPERTY(EditDefaultsOnly, Category = "AnimClass")
 		TSubclassOf<UAnimInstance> AnimClass;
 
