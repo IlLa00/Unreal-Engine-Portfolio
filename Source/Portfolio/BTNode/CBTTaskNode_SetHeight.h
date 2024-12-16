@@ -18,5 +18,5 @@ protected:
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Value")
-		float Height;
+		bool IsFly;
 };

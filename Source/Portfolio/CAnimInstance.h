@@ -15,15 +15,18 @@ protected:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	virtual void NativeBeginPlay() override;
 
-protected:
+public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
 		float Speed;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
+		float FlyingSpeed;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
 		float Direction;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
-		float FlyHeight;
+		bool IsFly;
 
 	UPROPERTY(BlueprintReadOnly, Category = "GameplayTag")
 		FGameplayTagContainer TagContainer;

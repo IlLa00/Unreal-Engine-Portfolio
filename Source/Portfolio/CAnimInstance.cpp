@@ -1,8 +1,10 @@
 #include "CAnimInstance.h"
 #include "Global.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "Player/CPlayer.h"
 #include "Enemy/CEnemy.h"
+#include "Enemy/CBoss.h"
 
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
@@ -13,8 +15,15 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	Speed = OwnerCharacter->GetVelocity().Size2D();
 	Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
-	FlyHeight = OwnerCharacter->GetCharacterMovement()->Velocity.Z;
 
+	if (OwnerCharacter->IsA<ACBoss>())
+	{
+		ACBoss* Boss = Cast<ACBoss>(OwnerCharacter);
+		if (Boss)
+		{
+			FlyingSpeed = Boss->GetFloatingComp()->MaxSpeed;
+		}
+	}
 
 	if (Cast<ACPlayer>(OwnerCharacter))
 	{

@@ -9,6 +9,7 @@
 #include "Player/CPlayer.h"
 #include "Enemy/CEnemy.h"
 #include "Enemy/CMonster.h"
+#include "Enemy/CBoss.h"
 #include "Pet/CPet.h"
 
 ACEnemyController::ACEnemyController()
@@ -43,11 +44,26 @@ void ACEnemyController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	ACEnemy* PossesEnemy = Cast<ACEnemy>(InPawn);
-	CheckNull(PossesEnemy);
+	if (InPawn->IsA<ACMonster>())
+	{
+		ACMonster* PossesMonster = Cast<ACMonster>(InPawn);
+		CheckNull(PossesMonster);
 
-	if (PossesEnemy->GetBehaviorTree())
-		RunBehaviorTree(PossesEnemy->GetBehaviorTree());
+		if (PossesMonster->GetBehaviorTree())
+			RunBehaviorTree(PossesMonster->GetBehaviorTree());
+	}
+	else if (InPawn->IsA<ACBoss>())
+	{
+		ACBoss* PossesBoss = Cast<ACBoss>(InPawn);
+		CheckNull(PossesBoss);
+
+		if (PossesBoss->GetBehaviorTree())
+			RunBehaviorTree(PossesBoss->GetBehaviorTree());
+
+		Sight->SightRadius = 2000.f;
+		Sight->LoseSightRadius = 2500.f;
+		Sight->PeripheralVisionAngleDegrees = 180.f; // z축이 너무 차이가 나서 시야감지가 안됨..
+	}
 
 	PerceptionComp->OnPerceptionUpdated.AddDynamic(this, &ACEnemyController::OnPerceptionUpdated);
 	SetGenericTeamId(TeamId);

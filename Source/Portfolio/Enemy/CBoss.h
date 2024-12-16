@@ -5,6 +5,7 @@
 #include "CBoss.generated.h"
 
 class UFloatingPawnMovement;
+class UCBossDataAsset;
 
 UCLASS()
 class PORTFOLIO_API ACBoss : public ACEnemy
@@ -17,9 +18,11 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
 public:
 	FORCEINLINE UFloatingPawnMovement* GetFloatingComp() { return FloatingComp; }
+	FORCEINLINE UCBossDataAsset* GetBossDataAsset() { return BossDataAsset; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "AnimClass")
@@ -27,4 +30,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UFloatingPawnMovement* FloatingComp;
+
+private:
+	UCBossDataAsset* BossDataAsset;
 };

@@ -29,30 +29,23 @@ void UCBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	ACPlayer* Player = Cast<ACPlayer>(AIC->GetBlackboardComponent()->GetValueAsObject("PlayerKey"));
 	ACPet* Pet = Cast<ACPet>(AIC->GetBlackboardComponent()->GetValueAsObject("PetKey"));
 
-	// 감지된 대상이 없으면 랜덤위치에서 날아다니거나 + 지면에서 걷기
+	if (AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")) // 플레이어가 감지가 되면
+	{
+		float DistanceToTarget = Boss->GetDistanceTo(Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")));
 
-	//if (AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")) // 플레이어가 감지가 되면
-	//{
-	//	float DistanceToTarget = Boss->GetDistanceTo(Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")));
-
-	//	if (DistanceToTarget < 150.f)
-	//	{
-	//		Boss->GetTagContainer().Reset();
-	//		Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Attack")));
-	//	}
-	//	else
-	//	{
-	//		Boss->GetTagContainer().Reset();
-	//		Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach")));
-	//	}
-	//}
-	//else
-	//{
-	//	Boss->GetTagContainer().Reset();
-	//	Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
-	//}
-
-	Boss->GetTagContainer().Reset();
+		if (DistanceToTarget < 150.f)
+		{
+			Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Attack")));
+		}
+		else
+		{
+			Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach")));
+		}
+	}
+	else
+	{
+		Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
+	}
 	Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
 }
 

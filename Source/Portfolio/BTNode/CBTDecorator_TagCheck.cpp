@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Enemy/CEnemyController.h"
 #include "Enemy/CEnemy.h"
+#include "Enemy/CBoss.h"
 #include "Pet/CPetController.h"
 #include "Pet/CPet.h"
 #include "BehaviorTree/BehaviorTree.h"
@@ -34,6 +35,16 @@ bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& 
 		CheckNullResult(Pet, false);
 
 		return Pet->GetTagContainer().HasTag(GameplayTag);
+	}
+	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Boss").ToString())
+	{
+		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
+		CheckNullResult(AIC, false);
+
+		ACBoss* Boss = Cast<ACBoss>(AIC->GetPawn());
+		CheckNullResult(Boss, false);
+
+		return Boss->GetTagContainer().HasTag(GameplayTag);
 	}
 
 	return false;

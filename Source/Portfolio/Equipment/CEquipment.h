@@ -37,5 +37,7 @@ public:
 
 private:
 	ACPlayer* OwnerCharacter;
-	ACWeapon* EquipWeapon[4]; 
+	ACWeapon* EquipWeapon[4];
+
+	ACWeapon* CurrentEquipWeapon;
 };

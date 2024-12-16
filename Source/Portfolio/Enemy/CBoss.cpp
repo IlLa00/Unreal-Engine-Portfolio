@@ -1,6 +1,8 @@
 #include "Enemy/CBoss.h"
 #include "Global.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "DataAsset/CBossDataAsset.h"
 
 ACBoss::ACBoss()
 {
@@ -18,6 +20,8 @@ ACBoss::ACBoss()
 	CHelpers::CreateActorComponent(this, &FloatingComp, "FloatingComp");
 	CheckNull(FloatingComp);
 	
+	CHelpers::GetAsset(&BossDataAsset, "/Game/DataAsset/DA_Boss");
+	CheckNull(BossDataAsset);
 }
 
 void ACBoss::BeginPlay()
@@ -25,4 +29,13 @@ void ACBoss::BeginPlay()
 	Super::BeginPlay();
 
 	GetMesh()->SetAnimClass(AnimClass);
+
+	
+}
+
+void ACBoss::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+
 }
