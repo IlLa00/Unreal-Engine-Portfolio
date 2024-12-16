@@ -54,8 +54,8 @@ void ACRifle::BeginPlay()
 
 	if (Attribute)
 	{
-		CLog::Print(Attribute->GetBaseDamage()); // ¿Ö 0¶ä?
-		CLog::Print(Attribute->GetBaseProficiency()); // ¿Ö 0¶ä?
+		CLog::Print(Attribute->GetBaseDamage());
+		CLog::Print(Attribute->GetBaseProficiency()); 
 	}
 	
 }

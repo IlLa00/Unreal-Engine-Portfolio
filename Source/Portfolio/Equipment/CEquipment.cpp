@@ -39,7 +39,7 @@ void ACEquipment::BeginPlay()
 		EquipWeapon[1]->SetActorHiddenInGame(true);
 	}
 
-	/*if (DataAsset->Datas[2].WeaponClass)
+	if (DataAsset->Datas[2].WeaponClass)
 	{
 		EquipWeapon[2] = OwnerCharacter->GetWorld()->SpawnActor<ACWeapon>(DataAsset->Datas[2].WeaponClass, SpawnParams);
 		CheckNull(EquipWeapon[2]);
@@ -47,6 +47,7 @@ void ACEquipment::BeginPlay()
 		EquipWeapon[2]->SetActorHiddenInGame(true);
 	}
 
+	/*
 	if (DataAsset->Datas[3].WeaponClass)
 	{
 		EquipWeapon[3] = OwnerCharacter->GetWorld()->SpawnActor<ACWeapon>(DataAsset->Datas[3].WeaponClass, SpawnParams);
@@ -80,7 +81,7 @@ void ACEquipment::Equip(int32 slot)
 }
 
 void ACEquipment::Begin_Equip()
-{
+{ 
 	// 무기 손 소켓에 붙이기
 	CurrentEquipWeapon->SetActorHiddenInGame(false);
 
