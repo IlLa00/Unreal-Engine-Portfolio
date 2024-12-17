@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Engine/TriggerVolume.h"
+#include "Components/TextRenderComponent.h"
 #include "CGameModeBase.h"
 #include "Blueprint/UserWidget.h" 
 #include "Widget/CPlayerWidget.h"
@@ -15,7 +16,6 @@
 #include "GAS/Attribute/CCharacterAttributeSet.h"
 #include "GAS/GA/Summon.h"
 #include "GAS/GA/Sprint.h"
-// #include "GAS/GE/Movement.h"
 #include "Equipment/CEquipment.h"
 
 ACPlayer::ACPlayer()
@@ -42,6 +42,13 @@ ACPlayer::ACPlayer()
 
 	CHelpers::CreateSceneComponent(this, &CameraComp, "CameraComp", SpringArmComp);
 	CameraComp->SetRelativeLocation(FVector(0, 70, 0));
+
+	CHelpers::CreateSceneComponent(this, &TextComp, "TextComp", GetMesh());
+	CheckNull(TextComp);
+
+	TextComp->SetRelativeLocation(FVector(0, 0, 200));
+	TextComp->SetRelativeRotation(FRotator(0, -90, 0));
+	TextComp->SetHorizontalAlignment(EHTA_Center);
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.f; // 나중에 수정해야 함 이렇게 설정안할꺼임
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
@@ -107,6 +114,14 @@ void ACPlayer::Tick(float DeltaTime)
 	else
 	{
 		//PrintLine(); // 일단 이렇게
+	}
+
+	if (TagContainer.Num() > 0)
+	{
+		for (const FGameplayTag& Tag : TagContainer)
+		{
+			TextComp->SetText(FText::FromString(Tag.ToString()));
+		}
 	}
 }
 
@@ -220,23 +235,22 @@ void ACPlayer::OnSummon()
 
 void ACPlayer::OnEquipFirstSlot()
 {
-	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Equip.First")));
 	Equipment->Equip(1);
 }
 
 void ACPlayer::OnEquipSecondSlot()
 {
-	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Equip.Second")));
+	Equipment->Equip(2);
 }
 
 void ACPlayer::OnEquipThirdSlot()
 {
-	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Equip.Third")));
+	Equipment->Equip(3);
 }
 
 void ACPlayer::OnEquipLastSlot()
 {
-	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Equip.Last")));
+	Equipment->Equip(4);
 }
 
 void ACPlayer::OnMainAction()

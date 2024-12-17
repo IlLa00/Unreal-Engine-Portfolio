@@ -40,4 +40,5 @@ private:
 	ACWeapon* EquipWeapon[4];
 
 	ACWeapon* CurrentEquipWeapon;
+	ACWeapon* NewWeapon;
 };

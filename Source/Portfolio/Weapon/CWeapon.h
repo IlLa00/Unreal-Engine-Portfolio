@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 #include "CWeapon.generated.h"
 
 class UAttributeSet;
@@ -26,6 +27,7 @@ public:
 public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual UCWeaponAttributeSet* GetAttiribute() { return Attribute; }
+	virtual FGameplayTag* GetTag() { return &Tag; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
@@ -39,6 +41,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UCWeaponAttributeSet> Attribute;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		FGameplayTag Tag;
 
 protected:
 	UCWeaponDataAsset* DataAsset;

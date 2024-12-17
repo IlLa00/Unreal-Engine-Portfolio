@@ -1,5 +1,6 @@
 #include "CSword.h"
 #include "Global.h"
+#include "GameplayTagContainer.h"
 
 ACSword::ACSword()
 {
@@ -14,13 +15,19 @@ ACSword::ACSword()
 	CheckNull(MeshAsset);
 
 	MeshComp->SetStaticMesh(MeshAsset);
-	// MeshComp->SetRelativeScale3D(FVector(0.2));
-
 }
 
 void ACSword::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (Tag.IsValid())
+	{
+		PrintLine();
+		CLog::Print(Tag.ToString());
+	}
+	else
+		PrintLine();
 }
 
 void ACSword::Tick(float DeltaTime)

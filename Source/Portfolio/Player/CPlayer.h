@@ -10,6 +10,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UTextRenderComponent;
 class UCPlayerWidget;
 class UAbilitySystemComponent;
 class UCCharacterAttributeSet;
@@ -62,7 +63,7 @@ public:
 	UFUNCTION()
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
-	FORCEINLINE UCCharacterAttributeSet* GetAttributeSet() { return AttributeSet; } // 이렇게 가져와야하는건가싶음
+	FORCEINLINE UCCharacterAttributeSet* GetAttributeSet() { return AttributeSet; } 
 	FORCEINLINE FGameplayTagContainer GetTagContainer() { return TagContainer; }
 	FORCEINLINE UCPlayerWidget* GetPlayerWidget() { return PlayerWidget; }
 	FORCEINLINE ACEquipment* GetEquipment() { return Equipment; }
@@ -76,6 +77,9 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 		TSubclassOf<UAnimInstance> AnimClass;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+		UTextRenderComponent* TextComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 		TSubclassOf<UCPlayerWidget> WidgetClass;

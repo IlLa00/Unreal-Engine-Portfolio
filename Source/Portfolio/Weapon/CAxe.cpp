@@ -21,6 +21,8 @@ ACAxe::ACAxe()
 void ACAxe::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CLog::Print(Tag.ToString());
 	
 }
 

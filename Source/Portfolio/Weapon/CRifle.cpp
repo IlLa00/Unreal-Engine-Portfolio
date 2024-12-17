@@ -21,9 +21,6 @@ ACRifle::ACRifle()
 
 	MeshComp->SetStaticMesh(MeshAsset);
 	MeshComp->SetRelativeScale3D(FVector(0.2));
-
-	/*Attribute = CreateDefaultSubobject<UCWeaponAttributeSet>("Attribute");
-	CheckNull(Attribute);*/
 }
 
 void ACRifle::BeginPlay()

@@ -2,12 +2,13 @@
 #include "Global.h"
 #include "Player/CPlayer.h"
 #include "Weapon/CWeapon.h"
+#include "GameplayTagContainer.h"
 
 ACEquipment::ACEquipment()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	
+
 }
 
 void ACEquipment::BeginPlay()
@@ -30,7 +31,7 @@ void ACEquipment::BeginPlay()
 
 		EquipWeapon[0]->SetActorHiddenInGame(true);
 	}
-	
+
 	if (DataAsset->Datas[1].WeaponClass)
 	{
 		EquipWeapon[1] = OwnerCharacter->GetWorld()->SpawnActor<ACWeapon>(DataAsset->Datas[1].WeaponClass, SpawnParams);
@@ -47,15 +48,14 @@ void ACEquipment::BeginPlay()
 		EquipWeapon[2]->SetActorHiddenInGame(true);
 	}
 
-	/*
 	if (DataAsset->Datas[3].WeaponClass)
 	{
 		EquipWeapon[3] = OwnerCharacter->GetWorld()->SpawnActor<ACWeapon>(DataAsset->Datas[3].WeaponClass, SpawnParams);
 		CheckNull(EquipWeapon[3]);
 
 		EquipWeapon[3]->SetActorHiddenInGame(true);
-	}*/
-	
+	}
+
 }
 
 void ACEquipment::Tick(float DeltaTime)
@@ -69,27 +69,34 @@ void ACEquipment::Equip(int32 slot)
 	CheckNull(EquipMontage);
 
 	OwnerCharacter->PlayAnimMontage(EquipMontage);
+
+	NewWeapon = EquipWeapon[slot - 1];
+
 	
-	CurrentEquipWeapon = EquipWeapon[slot];
 	// 위젯 변화
 	// 무기 장착중인지 아닌지?
-
-	if (CurrentEquipWeapon == EquipWeapon[slot])
-	{
-		PrintLine();
-	}
 }
 
 void ACEquipment::Begin_Equip()
-{ 
+{
 	// 무기 손 소켓에 붙이기
-	CurrentEquipWeapon->SetActorHiddenInGame(false);
+	CheckNull(NewWeapon);
 
-	CurrentEquipWeapon->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "hand_r_Weapon");
+	if (CurrentEquipWeapon)
+	{
+		CurrentEquipWeapon->SetActorHiddenInGame(true);
+		CurrentEquipWeapon->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+		CurrentEquipWeapon = nullptr;
 
-	// EquipWeapon[0]->GetD
-	// 능력 장착
+		// OwnerCharacter->GetTagContainer().RemoveTag((FGameplayTag::RequestGameplayTag(FName(CurrentEquipWeapon->GetTag()->ToString()))));
+	}
 
+	NewWeapon->SetActorHiddenInGame(false); 
+	NewWeapon->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "hand_r_Weapon");
+
+	CurrentEquipWeapon = NewWeapon;
+
+	// OwnerCharacter->GetTagContainer().AddTag((FGameplayTag::RequestGameplayTag(FName(NewWeapon->GetTag()->ToString()))));
 }
 
 void ACEquipment::MainAction()
