@@ -28,6 +28,7 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual UCWeaponAttributeSet* GetAttiribute() { return Attribute; }
 	virtual FGameplayTag* GetTag() { return &Tag; }
+	virtual FName GetSocketName() { return AttachSocketName; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
@@ -35,6 +36,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UStaticMeshComponent* MeshComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Socket")
+		FName AttachSocketName;
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UAbilitySystemComponent> ASC;

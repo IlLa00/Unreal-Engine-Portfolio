@@ -92,7 +92,7 @@ void ACEquipment::Begin_Equip()
 	}
 
 	NewWeapon->SetActorHiddenInGame(false); 
-	NewWeapon->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "hand_r_Weapon");
+	NewWeapon->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, NewWeapon->GetSocketName());
 
 	CurrentEquipWeapon = NewWeapon;
 
@@ -102,5 +102,6 @@ void ACEquipment::Begin_Equip()
 void ACEquipment::MainAction()
 {
 	// TryAbility~
+	// CurrentWeapon->
 }
 

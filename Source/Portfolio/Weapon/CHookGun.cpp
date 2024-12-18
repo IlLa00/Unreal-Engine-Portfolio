@@ -1,5 +1,7 @@
 #include "CHookGun.h"
 #include "Global.h"
+#include "AbilitySystemComponent.h"
+#include "GAS/GA/HookGun.h"
 
 ACHookGun::ACHookGun()
 {
@@ -17,11 +19,19 @@ ACHookGun::ACHookGun()
 
 	MeshComp->SetStaticMesh(MeshAsset);
 
+	AttachSocketName = "hand_r_HookGun";
 }
 
 void ACHookGun::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (ASC)
+	{
+		FGameplayAbilitySpec AbilitySpec(UHookGun::StaticClass());
+		ASC->GiveAbility(AbilitySpec);
+	}
+
 
 }
 

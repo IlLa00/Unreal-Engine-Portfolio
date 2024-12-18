@@ -1,5 +1,7 @@
 #include "CAxe.h"
 #include "Global.h"
+#include "AbilitySystemComponent.h"
+#include "GAS/GA/Axe.h"
 
 ACAxe::ACAxe()
 {
@@ -16,13 +18,21 @@ ACAxe::ACAxe()
 	CheckNull(MeshAsset);
 
 	MeshComp->SetStaticMesh(MeshAsset);
+
+	AttachSocketName = "hand_r_Axe";
 }
 
 void ACAxe::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CLog::Print(Tag.ToString());
+	if (ASC)
+	{
+		FGameplayAbilitySpec AbilitySpec(UAxe::StaticClass());
+		ASC->GiveAbility(AbilitySpec);
+	}
+
+	
 	
 }
 

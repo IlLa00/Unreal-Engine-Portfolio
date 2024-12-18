@@ -1,6 +1,8 @@
 #include "CSword.h"
 #include "Global.h"
+#include "AbilitySystemComponent.h"
 #include "GameplayTagContainer.h"
+#include "GAS/GA/Sword.h"
 
 ACSword::ACSword()
 {
@@ -15,19 +17,19 @@ ACSword::ACSword()
 	CheckNull(MeshAsset);
 
 	MeshComp->SetStaticMesh(MeshAsset);
+
+	AttachSocketName = "hand_r_Sword";
 }
 
 void ACSword::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (Tag.IsValid())
+	if (ASC)
 	{
-		PrintLine();
-		CLog::Print(Tag.ToString());
+		FGameplayAbilitySpec AbilitySpec(USword::StaticClass());
+		ASC->GiveAbility(AbilitySpec);
 	}
-	else
-		PrintLine();
 }
 
 void ACSword::Tick(float DeltaTime)

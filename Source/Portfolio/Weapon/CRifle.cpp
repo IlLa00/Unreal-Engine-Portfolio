@@ -21,6 +21,8 @@ ACRifle::ACRifle()
 
 	MeshComp->SetStaticMesh(MeshAsset);
 	MeshComp->SetRelativeScale3D(FVector(0.2));
+
+	AttachSocketName = "hand_r_Rifle";
 }
 
 void ACRifle::BeginPlay()
@@ -47,14 +49,6 @@ void ACRifle::BeginPlay()
 			break;
 		}
 	}
-
-
-	if (Attribute)
-	{
-		CLog::Print(Attribute->GetBaseDamage());
-		CLog::Print(Attribute->GetBaseProficiency()); 
-	}
-	
 }
 
 void ACRifle::Tick(float DeltaTime)
