@@ -29,11 +29,9 @@ void ACAxe::BeginPlay()
 	if (ASC)
 	{
 		FGameplayAbilitySpec AbilitySpec(UAxe::StaticClass());
+		WeaponAbilitySpec = AbilitySpec;
 		ASC->GiveAbility(AbilitySpec);
 	}
-
-	
-	
 }
 
 void ACAxe::Tick(float DeltaTime)

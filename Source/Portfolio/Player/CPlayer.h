@@ -64,7 +64,7 @@ public:
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
 	FORCEINLINE UCCharacterAttributeSet* GetAttributeSet() { return AttributeSet; } 
-	FORCEINLINE FGameplayTagContainer GetTagContainer() { return TagContainer; }
+	FORCEINLINE FGameplayTagContainer& GetTagContainer() { return TagContainer; }
 	FORCEINLINE UCPlayerWidget* GetPlayerWidget() { return PlayerWidget; }
 	FORCEINLINE ACEquipment* GetEquipment() { return Equipment; }
 

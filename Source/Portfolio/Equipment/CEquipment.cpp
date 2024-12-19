@@ -73,9 +73,7 @@ void ACEquipment::Equip(int32 slot)
 
 	NewWeapon = EquipWeapon[slot - 1];
 
-	
 	// 위젯 변화
-	// 무기 장착중인지 아닌지?
 }
 
 void ACEquipment::Begin_Equip()
@@ -87,17 +85,24 @@ void ACEquipment::Begin_Equip()
 	{
 		CurrentEquipWeapon->SetActorHiddenInGame(true);
 		CurrentEquipWeapon->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+		OwnerCharacter->GetTagContainer().RemoveTag(*(CurrentEquipWeapon->GetTag()));
+
+		if (CurrentEquipWeapon == NewWeapon)
+		{
+			CurrentEquipWeapon = nullptr;
+			return;
+		}
+
 		CurrentEquipWeapon = nullptr;
 
-		// OwnerCharacter->GetTagContainer().RemoveTag((FGameplayTag::RequestGameplayTag(FName(CurrentEquipWeapon->GetTag()->ToString()))));
 	}
 
 	NewWeapon->SetActorHiddenInGame(false); 
 	NewWeapon->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, NewWeapon->GetSocketName());
 
-	CurrentEquipWeapon = NewWeapon;
+	OwnerCharacter->GetTagContainer().AddTag(*(NewWeapon->GetTag()));
 
-	// OwnerCharacter->GetTagContainer().AddTag((FGameplayTag::RequestGameplayTag(FName(NewWeapon->GetTag()->ToString()))));
+	CurrentEquipWeapon = NewWeapon;
 }
 
 void ACEquipment::MainAction()
