@@ -143,6 +143,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("EquipSecondSlot", IE_Pressed, this, &ACPlayer::OnEquipSecondSlot);
 	PlayerInputComponent->BindAction("EquipThirdSlot", IE_Pressed, this, &ACPlayer::OnEquipThirdSlot);
 	PlayerInputComponent->BindAction("EquipLastSlot", IE_Pressed, this, &ACPlayer::OnEquipLastSlot);
+
+	PlayerInputComponent->BindAction("MainAction", IE_Pressed, this, &ACPlayer::OnMainAction);
 }
 
 UAbilitySystemComponent* ACPlayer::GetAbilitySystemComponent() const
@@ -255,13 +257,13 @@ void ACPlayer::OnEquipLastSlot()
 
 void ACPlayer::OnMainAction()
 {
-	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Main")));
+	// TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Main")));
 	Equipment->MainAction();
 }
 
 void ACPlayer::OffMainAction()
 {
-	TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Main")));
+	// TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Main")));
 }
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)

@@ -28,6 +28,7 @@ void ACSword::BeginPlay()
 	if (ASC)
 	{
 		FGameplayAbilitySpec AbilitySpec(USword::StaticClass());
+		WeaponAbilitySpec = AbilitySpec;
 		ASC->GiveAbility(AbilitySpec);
 	}
 }

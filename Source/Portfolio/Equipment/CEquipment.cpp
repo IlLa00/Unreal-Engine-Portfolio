@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Player/CPlayer.h"
 #include "Weapon/CWeapon.h"
+#include "AbilitySystemComponent.h"
 #include "GameplayTagContainer.h"
 
 ACEquipment::ACEquipment()
@@ -101,7 +102,10 @@ void ACEquipment::Begin_Equip()
 
 void ACEquipment::MainAction()
 {
-	// TryAbility~
-	// CurrentWeapon->
+	CheckNull(CurrentEquipWeapon);
+
+	CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetWeaponAbilitySpec().Handle);
+
+	// 스테미너 감소
 }
 

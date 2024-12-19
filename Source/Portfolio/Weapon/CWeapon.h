@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "AbilitySystemInterface.h"
+#include "AbilitySystemComponent.h"
 #include "GameplayTagContainer.h"
 #include "CWeapon.generated.h"
 
@@ -29,6 +30,7 @@ public:
 	virtual UCWeaponAttributeSet* GetAttiribute() { return Attribute; }
 	virtual FGameplayTag* GetTag() { return &Tag; }
 	virtual FName GetSocketName() { return AttachSocketName; }
+	virtual FGameplayAbilitySpec GetWeaponAbilitySpec() { return WeaponAbilitySpec;}
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
@@ -51,4 +53,5 @@ protected:
 
 protected:
 	UCWeaponDataAsset* DataAsset;
+	FGameplayAbilitySpec WeaponAbilitySpec;
 };
