@@ -5,6 +5,8 @@
 #include "GAS/Attribute/CCharacterAttributeSet.h"
 #include "Pet/CPet.h"
 #include "GAS/Attribute/CPetAttributeSet.h"
+#include "Components/EditableTextBox.h"
+#include "Components/Image.h"
 
 void UCPlayerWidget::NativeConstruct()
 {
@@ -74,6 +76,16 @@ void UCPlayerWidget::UpdateStaminaBar(float Stamina)
     {
         PlayerStaminaBar->SetPercent(Stamina / 100.f);  // 0 ~ 100 사이로 비율 계산
     }
+}
+
+void UCPlayerWidget::UpdateEquipWeaponName(FText WeaponName)
+{
+    EquipWeaponName->SetText(WeaponName)
+}
+
+void UCPlayerWidget::UpdateEquipWeaponImage(UImage* WeaponImage)
+{
+    EquipWeaponImage->Brush.SetResourceObject(WeaponImage);
 }
 
 void UCPlayerWidget::OnHealthChange(float NewHealth)

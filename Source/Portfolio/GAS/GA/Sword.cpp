@@ -12,23 +12,34 @@ USword::USword()
 
 void USword::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
 	ACPlayer* Player = Cast<ACPlayer>(ActorInfo->AvatarActor->GetOwner());
 	CheckNull(Player);
 	
-	if (Player->GetCurrentMontage())
+	if (Player->GetCurrentMontage() == AttackMontageClasses[0])
 	{
-		ComboCount++;
+		Player->StopAnimMontage();
+		Player->PlayAnimMontage(AttackMontageClasses[1]);
 	}
+	else if (Player->GetCurrentMontage() == AttackMontageClasses[1])
+	{
+		Player->StopAnimMontage();
+		Player->PlayAnimMontage(AttackMontageClasses[2]);
+	}
+	else if (Player->GetCurrentMontage() == AttackMontageClasses[2])
+	{
+		Player->StopAnimMontage();
+		Player->PlayAnimMontage(AttackMontageClasses[3]);
+	}
+	else
+		Player->PlayAnimMontage(AttackMontageClasses[0]);
 	
-	Player->PlayAnimMontage(AttackMontageClasses[ComboCount]);
-	
-	
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
 void USword::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
 {
 	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
 
-	ComboCount = 0; // 여기서 하는게 맞나?
+	// ComboCount = 0; // 여기서 하는게 맞나?
 }

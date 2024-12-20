@@ -5,6 +5,8 @@
 #include "CPlayerWidget.generated.h"
 
 class UProgressBar;
+class UEditableTextBox;
+class UImage;
 
 UCLASS()
 class PORTFOLIO_API UCPlayerWidget : public UUserWidget
@@ -23,6 +25,8 @@ public:
 	void UpdateHealthBar(float Health);
 	void UpdateStaminaBar(float Stamina);
 
+	void UpdateEquipWeaponName(FText WeaponName);
+	void UpdateEquipWeaponImage(UImage* WeaponImage);
 
 public:
 	UPROPERTY(meta = (BindWidget))
@@ -34,4 +38,9 @@ public:
 	UPROPERTY(meta = (BindWidget))
 		UProgressBar* PetHealthBar;
 
+	UPROPERTY(meta = (BindWidget))
+		UEditableTextBox* EquipWeaponName;
+
+	UPROPERTY(meta = (BindWidget))
+		UImage* EquipWeaponImage;
 };

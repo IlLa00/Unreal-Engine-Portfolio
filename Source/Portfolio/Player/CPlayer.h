@@ -57,7 +57,9 @@ private:
 	void OnEquipLastSlot();
 
 	void OnMainAction();
-	void OffMainAction();
+
+	void OnSubAction();
+	void OffSubAction();
 
 public:
 	UFUNCTION()
@@ -67,6 +69,7 @@ public:
 	FORCEINLINE FGameplayTagContainer& GetTagContainer() { return TagContainer; }
 	FORCEINLINE UCPlayerWidget* GetPlayerWidget() { return PlayerWidget; }
 	FORCEINLINE ACEquipment* GetEquipment() { return Equipment; }
+	FORCEINLINE USpringArmComponent* GetSpringArmComp() { return SpringArmComp; }
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")

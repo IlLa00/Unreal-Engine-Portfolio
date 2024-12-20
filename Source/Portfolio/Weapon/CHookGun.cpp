@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "AbilitySystemComponent.h"
 #include "GAS/GA/HookGun.h"
+#include "GAS/GA/Aim.h"
 
 ACHookGun::ACHookGun()
 {
@@ -29,7 +30,12 @@ void ACHookGun::BeginPlay()
 	if (ASC)
 	{
 		FGameplayAbilitySpec AbilitySpec(UHookGun::StaticClass());
+		WeaponAbilitySpec = AbilitySpec;
 		ASC->GiveAbility(AbilitySpec);
+
+		FGameplayAbilitySpec SubAbilitySpec(UAim::StaticClass());
+		WeaponSubAbilitySpec = SubAbilitySpec;
+		ASC->GiveAbility(SubAbilitySpec);
 	}
 
 

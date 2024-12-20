@@ -4,6 +4,7 @@
 #include "DataAsset/CWeaponDataAsset.h"
 #include "GAS/Attribute/CWeaponAttributeSet.h"
 #include "GAS/GA/Rifle.h"
+#include "GAS/GA/Aim.h"
 
 ACRifle::ACRifle()
 {
@@ -35,7 +36,12 @@ void ACRifle::BeginPlay()
 	if (ASC)
 	{
 		FGameplayAbilitySpec AbilitySpec(URifle::StaticClass());
+		WeaponAbilitySpec = AbilitySpec;
 		ASC->GiveAbility(AbilitySpec);
+
+		FGameplayAbilitySpec SubAbilitySpec(UAim::StaticClass());
+		WeaponSubAbilitySpec = SubAbilitySpec;
+		ASC->GiveAbility(SubAbilitySpec);
 	}
 
 

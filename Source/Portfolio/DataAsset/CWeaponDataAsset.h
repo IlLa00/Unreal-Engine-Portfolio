@@ -4,6 +4,7 @@
 #include "Engine/DataAsset.h"
 #include "CWeaponDataAsset.generated.h"
 
+class UImage;
 class ACWeapon;
 
 USTRUCT(BlueprintType)
@@ -14,6 +15,12 @@ struct FWeaponData
 public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<ACWeapon> WeaponClass; 
+
+	UPROPERTY(EditAnywhere)
+		FName WeaponName;
+
+	UPROPERTY(EditAnywhere)
+		UImage* WeaponImage;
 
 	UPROPERTY(EditAnywhere)
 		float BaseDamage;

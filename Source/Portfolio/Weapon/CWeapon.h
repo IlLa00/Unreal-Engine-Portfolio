@@ -31,6 +31,8 @@ public:
 	virtual FGameplayTag* GetTag() { return &Tag; }
 	virtual FName GetSocketName() { return AttachSocketName; }
 	virtual FGameplayAbilitySpec GetWeaponAbilitySpec() { return WeaponAbilitySpec;}
+	virtual FGameplayAbilitySpec GetWeaponSubAbilitySpec() { return WeaponSubAbilitySpec; }
+	virtual UCWeaponDataAsset* GetDataAsset() { return DataAsset; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
@@ -54,4 +56,5 @@ protected:
 protected:
 	UCWeaponDataAsset* DataAsset;
 	FGameplayAbilitySpec WeaponAbilitySpec;
+	FGameplayAbilitySpec WeaponSubAbilitySpec;
 };

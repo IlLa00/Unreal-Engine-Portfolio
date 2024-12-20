@@ -4,6 +4,8 @@
 #include "Weapon/CWeapon.h"
 #include "AbilitySystemComponent.h"
 #include "GameplayTagContainer.h"
+#include "Widget/CPlayerWidget.h"
+#include "DataAsset/CWeaponDataAsset.h"
 
 ACEquipment::ACEquipment()
 {
@@ -74,6 +76,8 @@ void ACEquipment::Equip(int32 slot)
 	NewWeapon = EquipWeapon[slot - 1];
 
 	// 위젯 변화
+	OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponImage(NewWeapon->GetDataAsset()->Datas); // 
+	OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponName();
 }
 
 void ACEquipment::Begin_Equip()
@@ -114,3 +118,19 @@ void ACEquipment::MainAction()
 	// 스테미너 감소
 }
 
+
+void ACEquipment::OnSubAction()
+{
+	CheckNull(CurrentEquipWeapon);
+
+	CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetWeaponSubAbilitySpec().Handle);
+
+}
+
+void ACEquipment::OffSubAction()
+{
+	CheckNull(CurrentEquipWeapon);
+	
+	// 여기 서브능력 진행중인지 아닌지 검사하는 조건 추가해야할듯
+	CurrentEquipWeapon->GetAbilitySystemComponent()->CancelAbilityHandle(CurrentEquipWeapon->GetWeaponSubAbilitySpec().Handle);
+}
