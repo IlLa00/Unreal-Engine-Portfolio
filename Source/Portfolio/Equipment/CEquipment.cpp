@@ -11,7 +11,6 @@ ACEquipment::ACEquipment()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-
 }
 
 void ACEquipment::BeginPlay()
@@ -76,13 +75,14 @@ void ACEquipment::Equip(int32 slot)
 	NewWeapon = EquipWeapon[slot - 1];
 
 	// 위젯 변화
-	OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponImage(NewWeapon->GetDataAsset()->Datas); // 
-	OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponName();
+	// OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponImage(NewWeapon->GetDataAsset()->Datas); 
+	// OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponName(NewWeapon->GetDataAsset()->Datas);
+
+	// 우클릭 풀어야됨
 }
 
 void ACEquipment::Begin_Equip()
 {
-	// 무기 손 소켓에 붙이기
 	CheckNull(NewWeapon);
 
 	if (CurrentEquipWeapon)

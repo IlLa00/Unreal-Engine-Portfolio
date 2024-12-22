@@ -80,7 +80,7 @@ void UCPlayerWidget::UpdateStaminaBar(float Stamina)
 
 void UCPlayerWidget::UpdateEquipWeaponName(FText WeaponName)
 {
-    EquipWeaponName->SetText(WeaponName)
+    EquipWeaponName->SetText(WeaponName);
 }
 
 void UCPlayerWidget::UpdateEquipWeaponImage(UImage* WeaponImage)

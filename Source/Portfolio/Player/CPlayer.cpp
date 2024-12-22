@@ -113,7 +113,7 @@ void ACPlayer::Tick(float DeltaTime)
 	}
 	else
 	{
-		//PrintLine(); // 일단 이렇게
+		// PrintLine(); // 일단 이렇게
 	}
 
 	if (TagContainer.Num() > 0)
@@ -176,7 +176,6 @@ void ACPlayer::SetGameplayEffect()
 {
 	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
 
-	//MovementHandle = ASC->MakeOutgoingSpec(BPMovementEffect, 1.0f, EffectContext);
 	RegenerateStminaHandle = ASC->MakeOutgoingSpec(BPRegenerateStaminaEffect, 1.0f, EffectContext);
 }
 
@@ -207,8 +206,6 @@ void ACPlayer::OnSprint()
 	}
 	
 	ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(USprint::StaticClass())->Handle);
-
-	// ASC->ApplyGameplayEffectSpecToSelf(*MovementHandle.Data.Get());
 }
 
 void ACPlayer::OffSprint()
