@@ -145,6 +145,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("EquipLastSlot", IE_Pressed, this, &ACPlayer::OnEquipLastSlot);
 
 	PlayerInputComponent->BindAction("MainAction", IE_Pressed, this, &ACPlayer::OnMainAction);
+	PlayerInputComponent->BindAction("MainAction", IE_Pressed, this, &ACPlayer::OffMainAction);
 
 	PlayerInputComponent->BindAction("SubAction", IE_Pressed, this, &ACPlayer::OnSubAction);
 	PlayerInputComponent->BindAction("SubAction", IE_Released, this, &ACPlayer::OffSubAction);
@@ -257,7 +258,12 @@ void ACPlayer::OnEquipLastSlot()
 
 void ACPlayer::OnMainAction()
 {
-	Equipment->MainAction();
+	Equipment->OnMainAction();
+}
+
+void ACPlayer::OffMainAction()
+{
+	Equipment->OffMainAction();
 }
 
 void ACPlayer::OnSubAction()
@@ -281,6 +287,20 @@ void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		CheckNull(MyGameMode);
 
 		MyGameMode->SetPlayerArea(OtherActor);
+	}
+}
+
+void ACPlayer::SetUsePawnControlRotation(bool bUse)
+{
+	if (bUse)
+	{
+		SpringArmComp->bUsePawnControlRotation = true;
+		bUseControllerRotationYaw = false;
+	}
+	else
+	{
+		// SpringArmComp->bUsePawnControlRotation = false; 왜 이렇게하니 됨..?
+		bUseControllerRotationYaw = true;
 	}
 }
 

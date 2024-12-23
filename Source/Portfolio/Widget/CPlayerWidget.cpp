@@ -83,7 +83,7 @@ void UCPlayerWidget::UpdateEquipWeaponName(FText WeaponName)
     EquipWeaponName->SetText(WeaponName);
 }
 
-void UCPlayerWidget::UpdateEquipWeaponImage(UImage* WeaponImage)
+void UCPlayerWidget::UpdateEquipWeaponImage(UTexture* WeaponImage)
 {
     EquipWeaponImage->Brush.SetResourceObject(WeaponImage);
 }

@@ -21,7 +21,8 @@ void ACWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	ASC->InitAbilityActorInfo(this, this);
+	if(ASC)
+		ASC->InitAbilityActorInfo(this, this);
 }
 
 void ACWeapon::Tick(float DeltaTime)

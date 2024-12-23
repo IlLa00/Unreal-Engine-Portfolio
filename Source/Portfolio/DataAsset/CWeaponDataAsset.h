@@ -20,7 +20,7 @@ public:
 		FName WeaponName;
 
 	UPROPERTY(EditAnywhere)
-		UImage* WeaponImage;
+		UTexture* WeaponImage;
 
 	UPROPERTY(EditAnywhere)
 		float BaseDamage;

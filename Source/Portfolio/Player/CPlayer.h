@@ -57,6 +57,7 @@ private:
 	void OnEquipLastSlot();
 
 	void OnMainAction();
+	void OffMainAction();
 
 	void OnSubAction();
 	void OffSubAction();
@@ -70,6 +71,8 @@ public:
 	FORCEINLINE UCPlayerWidget* GetPlayerWidget() { return PlayerWidget; }
 	FORCEINLINE ACEquipment* GetEquipment() { return Equipment; }
 	FORCEINLINE USpringArmComponent* GetSpringArmComp() { return SpringArmComp; }
+
+	void SetUsePawnControlRotation(bool bUse);
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")

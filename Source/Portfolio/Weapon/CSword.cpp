@@ -3,6 +3,7 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayTagContainer.h"
 #include "GAS/GA/Sword.h"
+#include "DataAsset/CWeaponDataAsset.h"
 
 ACSword::ACSword()
 {
@@ -30,6 +31,19 @@ void ACSword::BeginPlay()
 		FGameplayAbilitySpec AbilitySpec(USword::StaticClass());
 		WeaponAbilitySpec = AbilitySpec;
 		ASC->GiveAbility(AbilitySpec);
+	}
+
+	for (const auto& data : DataAsset->Datas)
+	{
+		if (GetClass() == data.WeaponClass)
+		{
+			if(data.WeaponImage)
+				WeaponImage = data.WeaponImage;
+
+			if (data.WeaponName != NAME_None)
+				WeaponName = FText::FromString(data.WeaponName.ToString());
+			break;
+		}
 	}
 }
 

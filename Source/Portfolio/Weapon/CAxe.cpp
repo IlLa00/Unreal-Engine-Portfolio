@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "AbilitySystemComponent.h"
 #include "GAS/GA/Axe.h"
+#include "DataAsset/CWeaponDataAsset.h"
 
 ACAxe::ACAxe()
 {
@@ -31,6 +32,19 @@ void ACAxe::BeginPlay()
 		FGameplayAbilitySpec AbilitySpec(UAxe::StaticClass());
 		WeaponAbilitySpec = AbilitySpec;
 		ASC->GiveAbility(AbilitySpec);
+	}
+
+	for (const auto& data : DataAsset->Datas)
+	{
+		if (GetClass() == data.WeaponClass)
+		{
+			if (data.WeaponImage)
+				WeaponImage = data.WeaponImage;
+
+			if (data.WeaponName != NAME_None)
+				WeaponName = FText::FromString(data.WeaponName.ToString());
+			break;
+		}
 	}
 }
 

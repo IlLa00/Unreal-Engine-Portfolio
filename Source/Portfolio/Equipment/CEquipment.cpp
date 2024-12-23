@@ -75,8 +75,8 @@ void ACEquipment::Equip(int32 slot)
 	NewWeapon = EquipWeapon[slot - 1];
 
 	// 위젯 변화
-	// OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponImage(NewWeapon->GetDataAsset()->Datas); 
-	// OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponName(NewWeapon->GetDataAsset()->Datas);
+	OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponImage(NewWeapon->GetWeaponImage()); 
+	OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponName(NewWeapon->GetWeaponName());
 
 	// 우클릭 풀어야됨
 }
@@ -109,7 +109,7 @@ void ACEquipment::Begin_Equip()
 	CurrentEquipWeapon = NewWeapon;
 }
 
-void ACEquipment::MainAction()
+void ACEquipment::OnMainAction()
 {
 	CheckNull(CurrentEquipWeapon);
 
@@ -117,6 +117,16 @@ void ACEquipment::MainAction()
 
 	// 스테미너 감소
 }
+
+void ACEquipment::OffMainAction()
+{
+	CheckNull(CurrentEquipWeapon);
+
+	CurrentEquipWeapon->GetAbilitySystemComponent()->CancelAbilityHandle(CurrentEquipWeapon->GetWeaponAbilitySpec().Handle);
+
+	// 스테미너 감소
+}
+
 
 
 void ACEquipment::OnSubAction()

@@ -26,7 +26,7 @@ public:
 	void UpdateStaminaBar(float Stamina);
 
 	void UpdateEquipWeaponName(FText WeaponName);
-	void UpdateEquipWeaponImage(UImage* WeaponImage);
+	void UpdateEquipWeaponImage(UTexture* WeaponImage);
 
 public:
 	UPROPERTY(meta = (BindWidget))
@@ -43,4 +43,6 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 		UImage* EquipWeaponImage;
+
+
 };

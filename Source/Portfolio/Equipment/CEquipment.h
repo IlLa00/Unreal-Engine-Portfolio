@@ -26,7 +26,8 @@ public:
 	void Equip(int32 slot);
 	void Begin_Equip();
 
-	void MainAction();
+	void OnMainAction();
+	void OffMainAction();
 
 	void OnSubAction();
 	void OffSubAction();

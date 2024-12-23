@@ -49,9 +49,14 @@ void ACRifle::BeginPlay()
 	{
 		if (GetClass() == data.WeaponClass)
 		{
-			PrintLine();
 			Attribute->SetBaseDamage(data.BaseDamage);
 			Attribute->SetBaseProficiency(data.BaseProficiency);
+
+			if (data.WeaponImage)
+				WeaponImage = data.WeaponImage;
+
+			if (data.WeaponName != NAME_None)
+				WeaponName = FText::FromString(data.WeaponName.ToString());
 			break;
 		}
 	}

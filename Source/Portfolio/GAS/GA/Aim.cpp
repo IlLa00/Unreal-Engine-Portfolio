@@ -12,7 +12,10 @@ void UAim::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGamep
 	ACPlayer* Player = Cast<ACPlayer>(ActorInfo->AvatarActor->GetOwner());
 	CheckNull(Player);
 
+	Player->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Sub.Aim")));
+
 	Player->GetSpringArmComp()->TargetArmLength = 100.f;
+	Player->SetUsePawnControlRotation(false);
 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
@@ -22,7 +25,10 @@ void UAim::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGamepla
 	ACPlayer* Player = Cast<ACPlayer>(ActorInfo->AvatarActor->GetOwner());
 	CheckNull(Player);
 
+	Player->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Sub.Aim")));
+
 	Player->GetSpringArmComp()->TargetArmLength = 200.f;
+	Player->SetUsePawnControlRotation(true);
 
 	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
 }

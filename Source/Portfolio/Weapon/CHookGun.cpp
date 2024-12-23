@@ -3,6 +3,7 @@
 #include "AbilitySystemComponent.h"
 #include "GAS/GA/HookGun.h"
 #include "GAS/GA/Aim.h"
+#include "DataAsset/CWeaponDataAsset.h"
 
 ACHookGun::ACHookGun()
 {
@@ -38,6 +39,18 @@ void ACHookGun::BeginPlay()
 		ASC->GiveAbility(SubAbilitySpec);
 	}
 
+	for (const auto& data : DataAsset->Datas)
+	{
+		if (GetClass() == data.WeaponClass)
+		{
+			if (data.WeaponImage)
+				WeaponImage = data.WeaponImage;
+
+			if (data.WeaponName != NAME_None)
+				WeaponName = FText::FromString(data.WeaponName.ToString());
+			break;
+		}
+	}
 
 }
 

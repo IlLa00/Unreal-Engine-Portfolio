@@ -10,6 +10,7 @@
 class UAttributeSet;
 class UCWeaponAttributeSet;
 class UCWeaponDataAsset;
+class UTexture;
 
 UCLASS()
 class PORTFOLIO_API ACWeapon : public AActor, public IAbilitySystemInterface
@@ -33,6 +34,9 @@ public:
 	virtual FGameplayAbilitySpec GetWeaponAbilitySpec() { return WeaponAbilitySpec;}
 	virtual FGameplayAbilitySpec GetWeaponSubAbilitySpec() { return WeaponSubAbilitySpec; }
 	virtual UCWeaponDataAsset* GetDataAsset() { return DataAsset; }
+	virtual UTexture* GetWeaponImage() { return WeaponImage; }
+	virtual FText GetWeaponName() { return WeaponName; }
+	
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
@@ -57,4 +61,7 @@ protected:
 	UCWeaponDataAsset* DataAsset;
 	FGameplayAbilitySpec WeaponAbilitySpec;
 	FGameplayAbilitySpec WeaponSubAbilitySpec;
+
+	UTexture* WeaponImage;
+	FText WeaponName;
 };
