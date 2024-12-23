@@ -145,7 +145,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("EquipLastSlot", IE_Pressed, this, &ACPlayer::OnEquipLastSlot);
 
 	PlayerInputComponent->BindAction("MainAction", IE_Pressed, this, &ACPlayer::OnMainAction);
-	PlayerInputComponent->BindAction("MainAction", IE_Pressed, this, &ACPlayer::OffMainAction);
+	PlayerInputComponent->BindAction("MainAction", IE_Released, this, &ACPlayer::OffMainAction);
 
 	PlayerInputComponent->BindAction("SubAction", IE_Pressed, this, &ACPlayer::OnSubAction);
 	PlayerInputComponent->BindAction("SubAction", IE_Released, this, &ACPlayer::OffSubAction);

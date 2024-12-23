@@ -24,8 +24,6 @@ void ACSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
-	
 }
 
 void ACSpawner::Tick(float DeltaTime)
@@ -50,7 +48,7 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 
 		if (!bSpawnBoss)
 		{
-			if (FMath::FRand() < 0.1f)
+			if (FMath::FRand() < 0.8f)
 			{
 				// 80% È®·ü·Î ½ÇÇàÇÒ ÄÚµå·Î ÂÌ¸÷ ¼ÒÈ¯
 				ACMonster* Monster = GetWorld()->SpawnActorDeferred<ACMonster>(MonsterClass, SpawnTM);
@@ -90,8 +88,6 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 			Monster->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
 		}
 	}
-
-
 }
 
 FVector ACSpawner::SetSpawnRange(FVector PlayerLocation)

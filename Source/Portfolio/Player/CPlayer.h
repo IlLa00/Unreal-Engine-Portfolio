@@ -71,6 +71,7 @@ public:
 	FORCEINLINE UCPlayerWidget* GetPlayerWidget() { return PlayerWidget; }
 	FORCEINLINE ACEquipment* GetEquipment() { return Equipment; }
 	FORCEINLINE USpringArmComponent* GetSpringArmComp() { return SpringArmComp; }
+	FORCEINLINE UCameraComponent* GetCameraComp() { return CameraComp; }
 
 	void SetUsePawnControlRotation(bool bUse);
 

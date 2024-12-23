@@ -123,8 +123,6 @@ void ACEquipment::OffMainAction()
 	CheckNull(CurrentEquipWeapon);
 
 	CurrentEquipWeapon->GetAbilitySystemComponent()->CancelAbilityHandle(CurrentEquipWeapon->GetWeaponAbilitySpec().Handle);
-
-	// 스테미너 감소
 }
 
 
