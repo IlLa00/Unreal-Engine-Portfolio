@@ -4,6 +4,8 @@
 #include "GAS/GA/HookGun.h"
 #include "GAS/GA/Aim.h"
 #include "DataAsset/CWeaponDataAsset.h"
+#include "CableComponent.h"
+#include "Components/SplineComponent.h"
 
 ACHookGun::ACHookGun()
 {
@@ -14,6 +16,12 @@ ACHookGun::ACHookGun()
 
 	CHelpers::CreateSceneComponent(this, &MeshComp, "MeshComp", RootComp);
 	CheckNull(MeshComp);
+
+	CHelpers::CreateSceneComponent(this, &CableComp, "CableComp", RootComp);
+	CheckNull(CableComp);
+
+	CHelpers::CreateSceneComponent(this, &SplineComp, "SplineComp", RootComp);
+	CheckNull(SplineComp);
 
 	UStaticMesh* MeshAsset;
 	CHelpers::GetAsset(&MeshAsset, "/Game/Assets/Weapon/lowpolyGun");

@@ -13,9 +13,6 @@ void URifle::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ACPlayer* Player = Cast<ACPlayer>(ActorInfo->AvatarActor->GetOwner());
-	CheckNull(Player);
-
 	if (!GetWorld()->GetTimerManager().IsTimerActive(TimerHandle))
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &URifle::Shoot, 0.1f, true);
 }
@@ -37,14 +34,8 @@ void URifle::Shoot()
 	FVector Start = Player->GetCameraComp()->GetComponentLocation() + Player->GetCameraComp()->GetForwardVector() * 100.f;
 	FVector End = Start + Player->GetCameraComp()->GetForwardVector() * 2000.f;
 
-	CLog::Print(Start);
-	CLog::Print(End);
-
 	TArray<AActor*> IgnoreActors;
 
 	FHitResult OutHit;
 	UKismetSystemLibrary::LineTraceSingleByProfile(GetWorld(), Start, End, "Pawn", false, IgnoreActors, EDrawDebugTrace::ForOneFrame, OutHit, true);
-	
-	if (OutHit.GetActor())
-		CLog::Print(OutHit.GetActor()->GetName());
 }
