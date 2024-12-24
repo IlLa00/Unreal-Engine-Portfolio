@@ -77,6 +77,7 @@ void UCBTTaskNode_GetHit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 					if (!Pet->GetAbilitySystemComponent()->GetCurrentMontage())
 					{
 						Pet->GetAbilitySystemComponent()->CancelAbilityHandle(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
+						Pet->GetTagContainer().Reset();
 						FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 					}
 				}
@@ -97,6 +98,7 @@ void UCBTTaskNode_GetHit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 					if (!Enemy->GetAbilitySystemComponent()->GetCurrentMontage())
 					{
 						Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
+						Enemy->GetTagContainer().Reset();
 						FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 					}
 				}

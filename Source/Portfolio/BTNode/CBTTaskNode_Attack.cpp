@@ -5,6 +5,7 @@
 #include "Pet/CPet.h"
 #include "Enemy/CEnemyController.h"
 #include "Enemy/CEnemy.h"
+#include "Components/BoxComponent.h"
 #include "AbilitySystemComponent.h"
 #include "GAS/GA/AI_Attack.h"
 

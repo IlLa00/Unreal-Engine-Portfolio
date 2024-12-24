@@ -6,6 +6,7 @@
 #include "DataAsset/CWeaponDataAsset.h"
 #include "CableComponent.h"
 #include "Components/SplineComponent.h"
+#include "Components/CapsuleComponent.h"
 
 ACHookGun::ACHookGun()
 {
@@ -35,6 +36,8 @@ ACHookGun::ACHookGun()
 void ACHookGun::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AttackComp->SetActive(false);
 
 	if (ASC)
 	{

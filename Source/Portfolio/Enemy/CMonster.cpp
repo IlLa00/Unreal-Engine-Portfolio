@@ -26,9 +26,6 @@ void ACMonster::BeginPlay()
 
 			Attribute->SetCurrentHealth(Attribute->GetBaseHealth());
 			Attribute->SetCurrentDamage(Attribute->GetBaseDamage());
-
-			CLog::Print(Attribute->GetCurrentHealth());
-			CLog::Print(Attribute->GetCurrentDamage());
 		}
 	}
 	else if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[1].SkeletalMeshAssets)

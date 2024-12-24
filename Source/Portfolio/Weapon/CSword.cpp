@@ -20,6 +20,7 @@ ACSword::ACSword()
 	MeshComp->SetStaticMesh(MeshAsset);
 
 	AttachSocketName = "hand_r_Sword";
+
 }
 
 void ACSword::BeginPlay()

@@ -5,6 +5,7 @@
 #include "GAS/Attribute/CWeaponAttributeSet.h"
 #include "GAS/GA/Rifle.h"
 #include "GAS/GA/Aim.h"
+#include "Components/CapsuleComponent.h"
 
 ACRifle::ACRifle()
 {
@@ -24,6 +25,7 @@ ACRifle::ACRifle()
 	MeshComp->SetRelativeScale3D(FVector(0.2));
 
 	AttachSocketName = "hand_r_Rifle";
+
 }
 
 void ACRifle::BeginPlay()
@@ -32,6 +34,8 @@ void ACRifle::BeginPlay()
 
 	CheckNull(ASC);
 	CheckNull(Attribute);
+
+	AttackComp->SetActive(false);
 
 	if (ASC)
 	{

@@ -5,12 +5,15 @@
 #include "GameplayTagContainer.h"
 #include "GameplayTagsManager.h"
 #include "Components/TextRenderComponent.h"
+#include "Components/BoxComponent.h"
 #include "DataAsset/CMonsterMeshDataAsset.h"
 #include "GAS/Attribute/CMonsterAttributeSet.h"
 #include "CEnemyController.h"
 #include "GAS/GA/AI_Attack.h"
 #include "GAS/GA/AI_GetHit.h"
 #include "Widget/CEnemyHealthWidget.h"
+#include "Player/CPlayer.h"
+#include "GAS/Attribute/CCharacterAttributeSet.h"
 
 ACEnemy::ACEnemy()
 {
@@ -23,6 +26,9 @@ ACEnemy::ACEnemy()
 	TextComp->SetRelativeRotation(FRotator(0, 90, 0));
 	TextComp->SetHorizontalAlignment(EHTA_Center);
 
+	CHelpers::CreateSceneComponent(this, &AttackComp, "AttackComp", GetMesh());
+	CheckNull(AttackComp);
+	
 	CHelpers::CreateSceneComponent(this, &HealthWidgetComp, "HealthWidgetComp", GetMesh());
 
 	TSubclassOf<UCEnemyHealthWidget> HealthWidgetClass;
@@ -51,6 +57,10 @@ void ACEnemy::BeginPlay()
 	AIControllerClass = ACEnemyController::StaticClass();
 
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
+
+	AttackComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "AttackSocket");
+	AttackComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	AttackComp->OnComponentBeginOverlap.AddDynamic(this, &ACEnemy::BeginOverlap);
 
 	HealthWidgetComp->InitWidget();
 	HealthWidgetObject = Cast<UCEnemyHealthWidget>(HealthWidgetComp->GetUserWidgetObject());
@@ -87,3 +97,16 @@ UAbilitySystemComponent* ACEnemy::GetAbilitySystemComponent() const
 	return ASC;
 }
 
+void ACEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor->IsA<ACEnemy>())
+		return;
+
+	if (OtherActor->IsA<ACPlayer>())
+	{
+		ACPlayer* Player = Cast<ACPlayer>(OtherActor);
+		CheckNull(Player);
+
+		Player->GetAttributeSet()->SetCurrentHealth(Player->GetAttributeSet()->GetCurrentHealth() - GetAttributeSet()->GetCurrentDamage());
+	}
+}

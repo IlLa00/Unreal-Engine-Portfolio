@@ -1,6 +1,5 @@
 #include "AI_GetHit.h"
 #include "Global.h"
-#include "GAS/GE/Damage.h"
 #include "Enemy/CEnemy.h"
 #include "Pet/CPet.h"
 #include "DataAsset/CPetDataAsset.h"

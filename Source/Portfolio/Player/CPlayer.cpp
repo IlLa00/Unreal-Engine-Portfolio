@@ -124,7 +124,7 @@ void ACPlayer::Tick(float DeltaTime)
 		}
 	}
 
-	TakeDamage
+	 //TakeDamage
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

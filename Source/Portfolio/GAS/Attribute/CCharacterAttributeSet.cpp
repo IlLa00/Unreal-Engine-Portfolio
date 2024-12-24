@@ -1,6 +1,5 @@
-#include "GAS/Attribute/CCharacterAttributeSet.h"
+#include "CCharacterAttributeSet.h"
 #include "Global.h"
-#include "Player/CPlayer.h"
 #include "Widget/CPlayerWidget.h"
 
 UCCharacterAttributeSet::UCCharacterAttributeSet()
@@ -18,20 +17,27 @@ void UCCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& Attri
     // PreAttributeChange는 속성 변경이 실제로 발생하기 전에 자동으로 호출됩니다. 따라서 속성 값을 검증하거나 변경하기에 적합한 시점입니다.
     if (Attribute == GetCurrentStaminaAttribute())  
     {
-        NewValue = FMath::Clamp(NewValue, 0.0f, GetBaseStamina()+0.1f); // Todo.. 이상함 클램프는 걸리는거같긴한데..
+        NewValue = FMath::Clamp(NewValue, 0.0f, GetBaseStamina() + 0.1f);
     }
 }
 
 void UCCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
     // **PostAttributeChange**는 속성 값이 변경된 후 호출되는 함수로, 그 변경에 대한 후속 작업이나 상태 처리를 할 수 있는 중요한 위치입니다.
-    // 주로 UI 업데이트, 상태 변경 처리, 게임플레이 이벤트와 관련된 후속 작업을 처리할 때 사용됩니다.
 
     Super::PostAttributeChange(Attribute, OldValue, NewValue);
 
     if (Attribute == GetCurrentStaminaAttribute()) // 스테미나가 변경된거면
     {
         OnStaminaChanged.Broadcast(NewValue); // UI연동
+    }
+
+    if (Attribute == GetCurrentHealthAttribute())
+    {
+        if (OldValue > NewValue)
+        {
+           OnHealthChanged.Broadcast(NewValue); // UI연동
+        }
     }
 }
 

@@ -11,6 +11,7 @@ class UAttributeSet;
 class UCWeaponAttributeSet;
 class UCWeaponDataAsset;
 class UTexture;
+class UCapsuleComponent;
 
 UCLASS()
 class PORTFOLIO_API ACWeapon : public AActor, public IAbilitySystemInterface
@@ -25,6 +26,10 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+
+protected:
+	UFUNCTION()
+	virtual void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -44,6 +49,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UStaticMeshComponent* MeshComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Component")
+		UCapsuleComponent* AttackComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Socket")
 		FName AttachSocketName;

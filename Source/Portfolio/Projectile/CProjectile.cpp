@@ -6,11 +6,8 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "AbilitySystemComponent.h"
-#include "GameplayEffect.h"
-#include "GameplayEffectTypes.h"
 #include "Player/CPlayer.h"
 #include "Enemy/CEnemy.h"
-#include "GAS/GE/Damage.h"
 #include "GAS/Attribute/CMonsterAttributeSet.h"
 #include "Pet/CPet.h"
 #include "GAS/Attribute/CPetAttributeSet.h"
@@ -49,9 +46,21 @@ void ACProjectile::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 {
 	// 여기서 부딪힌 곳에 피격 파티클 추가 + 액터 삭제 + (사운드 추가)
 
-	if (OtherActor->IsA<ACPlayer>())
+	if (OtherActor->IsA<ACPlayer>()) // 널체크 조건 더 추가해야할거같음
 		return;
 
 	// TakeDamge 처리
+	if (GetOwner()->IsA<ACPet>())
+	{
+		ACPet* Pet = Cast<ACPet>(GetOwner());
+		CheckNull(Pet);	
+
+		ACEnemy* Enemy = Cast<ACEnemy>(OtherActor);
+		CheckNull(Enemy);
+
+		Enemy->GetAttributeSet()->SetCurrentHealth(Enemy->GetAttributeSet()->GetCurrentHealth() - Pet->GetAttributeSet()->GetCurrentDamage());
+	}
+
+	Destroy();
 }
 
