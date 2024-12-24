@@ -123,6 +123,8 @@ void ACPlayer::Tick(float DeltaTime)
 			TextComp->SetText(FText::FromString(Tag.ToString()));
 		}
 	}
+
+	TakeDamage
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

@@ -70,17 +70,19 @@ void UHookGun::FireHook()
     FHitResult HitResult;
     TArray<AActor*> IgnoreActors;
 
-    if (UKismetSystemLibrary::LineTraceSingleByProfile(GetWorld(), Start, End, "WorldDynamic", false, IgnoreActors, EDrawDebugTrace::ForOneFrame, HitResult, true))
-    {
-		//HookGun->GetCableComp()->bAttachEnd = true;
+	FCollisionObjectQueryParams P;
+	P.AddObjectTypesToQuery(ECC_WorldStatic);
+
+	if (GetWorld()->LineTraceSingleByObjectType(HitResult, Start, End, P))
+	{
 		HookGun->GetCableComp()->EndLocation = HitResult.Location;
-			
+
 		SplineLaunch(HitResult.Location);
 
 		GetWorld()->GetTimerManager().ClearTimer(TraceTimerHandle);
 
 		CancelAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true);
-    }
+	}
     else
 	{
 		HookGun->GetCableComp()->EndLocation = HookGun->GetTransform().InverseTransformPosition(End); // 로컬 스페이스로 변환
@@ -109,7 +111,7 @@ void UHookGun::SplineLaunch(FVector HitLocation)
 void UHookGun::FireEnd()
 {
 	GetWorld()->GetTimerManager().ClearTimer(TraceTimerHandle);
-
+	
 	CancelAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true);
 }
 
