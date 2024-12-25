@@ -19,8 +19,7 @@ UCBTTaskNode_GetHit::UCBTTaskNode_GetHit()
 EBTNodeResult::Type UCBTTaskNode_GetHit::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-
-	// 일단 여기서 GA를 발동시키는걸 우선적으로.
+	
 	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
 	{
 		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
@@ -40,7 +39,6 @@ EBTNodeResult::Type UCBTTaskNode_GetHit::ExecuteTask(UBehaviorTreeComponent& Own
 	}
 	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Enemy").ToString())
 	{
-
 		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
 		if (AIC)
 		{
@@ -49,8 +47,6 @@ EBTNodeResult::Type UCBTTaskNode_GetHit::ExecuteTask(UBehaviorTreeComponent& Own
 			{
 				if (Enemy->GetAbilitySystemComponent())
 				{
-					PrintLine();
-
 					Enemy->GetAbilitySystemComponent()->TryActivateAbility(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
 
 					return EBTNodeResult::InProgress;
@@ -65,8 +61,6 @@ EBTNodeResult::Type UCBTTaskNode_GetHit::ExecuteTask(UBehaviorTreeComponent& Own
 void UCBTTaskNode_GetHit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
-
-	PrintLine();
 
 	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
 	{
@@ -98,20 +92,14 @@ void UCBTTaskNode_GetHit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 			{
 				if (Enemy->GetAbilitySystemComponent())
 				{
-
 					if (!Enemy->GetAbilitySystemComponent()->GetCurrentMontage())
 					{
 						Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
-
-						// TagHelpers::AIChangeStateTag(Enemy->GetTagContainer(), "AI.State.Idle");
-						Enemy->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.State.GetHit")));
-
-
+						
 						FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 					}
 				}
 			}
 		}
 	}
-	
 }

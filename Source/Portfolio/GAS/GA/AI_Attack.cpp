@@ -26,7 +26,7 @@ void UAI_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
 		{
 			if (Enemy->GetDataAsset())
 			{	
-				MontageToPlay = Enemy->GetDataAsset()->Datas[Enemy->GetIndex()].MontageDatas.AttackMontage[0]; // 이거 공격추가되면 그거 되게 해야할지도?
+				MontageToPlay = Enemy->GetDataAsset()->Datas[Enemy->GetIndex()].MontageDatas.AttackMontage[0]; 
 			}
 		}
 	}

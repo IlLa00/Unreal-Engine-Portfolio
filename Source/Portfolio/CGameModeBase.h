@@ -29,4 +29,5 @@ private:
 	FTimerHandle SpawnTimer;
 	FName PlayerArea;
 	
+	TArray<AActor*> TargetPointActors;
 };

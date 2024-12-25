@@ -4,6 +4,7 @@
 #include "AbilitySystemGlobals.h"
 #include "Spawner/CSpawner.h"
 #include "Engine/TriggerVolume.h"
+#include "Engine/TargetPoint.h"
 
 ACGameModeBase::ACGameModeBase()
 {
@@ -32,6 +33,13 @@ void ACGameModeBase::BeginPlay()
 	CheckNull(Spawner);
 
 	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, this, &ACGameModeBase::Spawn, 5.f, true); // 5초마다 스폰함수 실행
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetPoint::StaticClass(), TargetPointActors);
+	
+	for (const auto& Actor : TargetPointActors)
+	{
+		CLog::Print(Actor->GetName());
+	}
 }
 
 void ACGameModeBase::Spawn()
@@ -44,7 +52,7 @@ void ACGameModeBase::Spawn()
 
 void ACGameModeBase::Teleport()
 {
-	// 나중에 구현
+	
 }
 
 void ACGameModeBase::SetPlayerArea(AActor* OtherActor) // 플레이어 지역 바꾸기

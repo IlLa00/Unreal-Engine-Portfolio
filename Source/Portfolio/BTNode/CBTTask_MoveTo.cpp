@@ -40,6 +40,7 @@ EBTNodeResult::Type UCBTTask_MoveTo::AbortTask(UBehaviorTreeComponent& OwnerComp
 			{
 				if (Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.GetHit"))))
 				{
+					PrintLine();
 					FinishLatentTask(OwnerComp, EBTNodeResult::Aborted);
 				}
 			}

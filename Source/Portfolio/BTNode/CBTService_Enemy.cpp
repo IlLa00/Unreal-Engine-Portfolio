@@ -33,10 +33,8 @@ void UCBTService_Enemy::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 	if (Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.GetHit"))))
 	{
-		TagHelpers::AIChangeStateTag(Enemy->GetTagContainer(), "AI.Action.GetHit");
+		Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.GetHit")));
 	}
-
-
 	else if (Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Idle"))))
 	{
 		if (AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")) // 플레이어가 감지가 되면

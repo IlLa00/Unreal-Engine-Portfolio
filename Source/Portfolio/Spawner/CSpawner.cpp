@@ -48,9 +48,8 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 
 		if (!bSpawnBoss)
 		{
-			if (FMath::FRand() < 0.8f)
+			if (FMath::FRand() < 0.1f)
 			{
-				// 80% 확률로 실행할 코드로 쫄몹 소환
 				ACMonster* Monster = GetWorld()->SpawnActorDeferred<ACMonster>(MonsterClass, SpawnTM);
 				CheckNull(Monster);
 
@@ -64,7 +63,6 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 			}
 			else
 			{
-				// 20% 확률로 실행할 코드 보스 소환
 				bSpawnBoss = true;
 				ACBoss* Boss = GetWorld()->SpawnActor<ACBoss>(BossClass, SpawnTM);
 				CheckNull(Boss);
