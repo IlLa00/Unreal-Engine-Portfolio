@@ -5,17 +5,10 @@
 #include "GAS/Attribute/CWeaponAttributeSet.h"
 #include "GAS/GA/Rifle.h"
 #include "GAS/GA/Aim.h"
-#include "Components/CapsuleComponent.h"
 
 ACRifle::ACRifle()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	CHelpers::CreateSceneComponent(this, &RootComp, "RootComp");
-	CheckNull(RootComp);
-	
-	CHelpers::CreateSceneComponent(this, &MeshComp, "MeshComp",RootComp);
-	CheckNull(MeshComp);
 
 	UStaticMesh* MeshAsset;
 	CHelpers::GetAsset(&MeshAsset, "/Game/Assets/Weapon/lowpolyRifle");
@@ -35,8 +28,6 @@ void ACRifle::BeginPlay()
 	CheckNull(ASC);
 	CheckNull(Attribute);
 
-	AttackComp->SetActive(false);
-
 	if (ASC)
 	{
 		FGameplayAbilitySpec AbilitySpec(URifle::StaticClass());
@@ -55,6 +46,9 @@ void ACRifle::BeginPlay()
 		{
 			Attribute->SetBaseDamage(data.BaseDamage);
 			Attribute->SetBaseProficiency(data.BaseProficiency);
+
+			Attribute->SetCurrentDamage(Attribute->GetBaseDamage());
+			Attribute->SetCurrentProficiency(Attribute->GetBaseProficiency());
 
 			if (data.WeaponImage)
 				WeaponImage = data.WeaponImage;

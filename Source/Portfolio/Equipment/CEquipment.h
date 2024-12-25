@@ -23,6 +23,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+	FORCEINLINE ACWeapon* GetCurrentCurrentEquipWeapon() { return CurrentEquipWeapon; }
+
+public:
 	void Equip(int32 slot);
 	void Begin_Equip();
 

@@ -31,15 +31,16 @@ EBTNodeResult::Type UCBTTaskNode_GetHit::ExecuteTask(UBehaviorTreeComponent& Own
 			{
 				if (Pet->GetAbilitySystemComponent())
 				{
-					
 					Pet->GetAbilitySystemComponent()->TryActivateAbility(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
+
 					return EBTNodeResult::InProgress;
 				}
 			}
 		}
 	}
-	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Monster").ToString())
+	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Enemy").ToString())
 	{
+
 		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
 		if (AIC)
 		{
@@ -48,8 +49,10 @@ EBTNodeResult::Type UCBTTaskNode_GetHit::ExecuteTask(UBehaviorTreeComponent& Own
 			{
 				if (Enemy->GetAbilitySystemComponent())
 				{
+					PrintLine();
 
 					Enemy->GetAbilitySystemComponent()->TryActivateAbility(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
+
 					return EBTNodeResult::InProgress;
 				}
 			}
@@ -63,6 +66,8 @@ void UCBTTaskNode_GetHit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
+	PrintLine();
+
 	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
 	{
 		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
@@ -73,18 +78,17 @@ void UCBTTaskNode_GetHit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 			{
 				if (Pet->GetAbilitySystemComponent())
 				{
-					
 					if (!Pet->GetAbilitySystemComponent()->GetCurrentMontage())
 					{
 						Pet->GetAbilitySystemComponent()->CancelAbilityHandle(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
-						Pet->GetTagContainer().Reset();
+
 						FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 					}
 				}
 			}
 		}
 	}
-	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Monster").ToString())
+	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Enemy").ToString())
 	{
 		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
 		if (AIC)
@@ -98,7 +102,11 @@ void UCBTTaskNode_GetHit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 					if (!Enemy->GetAbilitySystemComponent()->GetCurrentMontage())
 					{
 						Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
-						Enemy->GetTagContainer().Reset();
+
+						// TagHelpers::AIChangeStateTag(Enemy->GetTagContainer(), "AI.State.Idle");
+						Enemy->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.State.GetHit")));
+
+
 						FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 					}
 				}

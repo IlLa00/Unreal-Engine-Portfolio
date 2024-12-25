@@ -21,13 +21,10 @@ void UCMonsterAttributeSet::PostAttributeChange(const FGameplayAttribute& Attrib
 		ACEnemy* Enemy = Cast<ACEnemy>(GetOwningActor());
 		if (Enemy)
 		{
-			Enemy->GetHealthWidget()->Update(NewValue, GetBaseHealth()); // 델리게이트로 해보자.
+			TagHelpers::AIChangeStateTag(Enemy->GetTagContainer(), "AI.State.GetHit");
 
-			Enemy->GetTagContainer().Reset();
-			Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.State.GetHit")));
+			Enemy->GetHealthWidget()->Update(NewValue, GetBaseHealth()); // 델리게이트로 해보자.
 		}
-		// 맞는 몽타주 <- 이건 데이터에셋 안에 몽타주를 재생한다는 뜻인데 어틜뷰트에서 하는게 맞나?
-		// 머리위에 느낌표
 	}
 }
 

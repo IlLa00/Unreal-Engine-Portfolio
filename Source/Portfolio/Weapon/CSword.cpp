@@ -1,18 +1,13 @@
 #include "CSword.h"
 #include "Global.h"
 #include "AbilitySystemComponent.h"
+#include "GAS/Attribute/CWeaponAttributeSet.h"
 #include "GameplayTagContainer.h"
 #include "GAS/GA/Sword.h"
 #include "DataAsset/CWeaponDataAsset.h"
 
 ACSword::ACSword()
 {
-	CHelpers::CreateSceneComponent(this, &RootComp, "RootComp");
-	CheckNull(RootComp);
-
-	CHelpers::CreateSceneComponent(this, &MeshComp, "MeshComp", RootComp);
-	CheckNull(MeshComp);
-
 	UStaticMesh* MeshAsset;
 	CHelpers::GetAsset(&MeshAsset, "/Game/Assets/KlianLowPoliSwords/Mesh/SM_LargeSword");
 	CheckNull(MeshAsset);
@@ -38,6 +33,12 @@ void ACSword::BeginPlay()
 	{
 		if (GetClass() == data.WeaponClass)
 		{
+			Attribute->SetBaseDamage(data.BaseDamage);
+			Attribute->SetBaseProficiency(data.BaseProficiency);
+
+			Attribute->SetCurrentDamage(Attribute->GetBaseDamage());
+			Attribute->SetCurrentProficiency(Attribute->GetBaseProficiency());
+
 			if(data.WeaponImage)
 				WeaponImage = data.WeaponImage;
 

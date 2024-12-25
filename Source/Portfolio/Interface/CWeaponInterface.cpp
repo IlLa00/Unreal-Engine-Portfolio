@@ -1,2 +1,0 @@
-#include "Interface/CWeaponInterface.h"
-

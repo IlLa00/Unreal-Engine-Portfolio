@@ -6,9 +6,12 @@
 
 void UAI_GetHit::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
+	PrintLine();
+
 	ACEnemy* Enemy = Cast<ACEnemy>(OwnerInfo->AvatarActor);
 	if (Enemy)
 	{
+		PrintLine();
 		if (Enemy->GetDataAsset())
 		{
 			MontageToPlay = Enemy->GetDataAsset()->Datas->MontageDatas.HittedMontage;

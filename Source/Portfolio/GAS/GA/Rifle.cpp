@@ -2,6 +2,10 @@
 #include "Global.h"
 #include "Player/CPlayer.h"
 #include "Camera/CameraComponent.h"
+#include "Enemy/CEnemy.h"
+#include "GAS/Attribute/CMonsterAttributeSet.h"
+#include "Weapon/CRifle.h"
+#include "GAS/Attribute/CWeaponAttributeSet.h"
 
 URifle::URifle()
 {
@@ -36,6 +40,19 @@ void URifle::Shoot()
 
 	TArray<AActor*> IgnoreActors;
 
-	FHitResult OutHit;
-	UKismetSystemLibrary::LineTraceSingleByProfile(GetWorld(), Start, End, "Pawn", false, IgnoreActors, EDrawDebugTrace::ForOneFrame, OutHit, true);
+	FHitResult HitResult;
+
+	FCollisionObjectQueryParams Parms;
+	Parms.AddObjectTypesToQuery(ECC_Pawn);
+
+	if (GetWorld()->LineTraceSingleByObjectType(HitResult, Start, End, Parms))
+	{
+		ACEnemy* Enemy = Cast<ACEnemy>(HitResult.GetActor());
+		CheckNull(Enemy);
+
+		ACRifle* Rifle = Cast<ACRifle>(GetOwningActorFromActorInfo());
+		CheckNull(Rifle);
+
+		Enemy->GetAttributeSet()->SetCurrentHealth(Enemy->GetAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage());
+	}
 }

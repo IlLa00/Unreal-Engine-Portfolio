@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
+#include "Interface/CAttackCompInterface.h"
 #include "GameplayTagContainer.h"
 #include "CWeapon.generated.h"
 
@@ -11,10 +12,10 @@ class UAttributeSet;
 class UCWeaponAttributeSet;
 class UCWeaponDataAsset;
 class UTexture;
-class UCapsuleComponent;
+class UBoxComponent;
 
 UCLASS()
-class PORTFOLIO_API ACWeapon : public AActor, public IAbilitySystemInterface
+class PORTFOLIO_API ACWeapon : public AActor, public IAbilitySystemInterface, public ICAttackCompInterface
 {
 	GENERATED_BODY()
 	
@@ -41,7 +42,8 @@ public:
 	virtual UCWeaponDataAsset* GetDataAsset() { return DataAsset; }
 	virtual UTexture* GetWeaponImage() { return WeaponImage; }
 	virtual FText GetWeaponName() { return WeaponName; }
-	
+
+	virtual UBoxComponent* GetAttackComp() override { return AttackCollisionComp; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
@@ -51,7 +53,7 @@ protected:
 		UStaticMeshComponent* MeshComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
-		UCapsuleComponent* AttackComp;
+		UBoxComponent* AttackCollisionComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Socket")
 		FName AttachSocketName;

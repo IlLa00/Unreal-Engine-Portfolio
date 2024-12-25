@@ -4,19 +4,13 @@
 #include "GAS/GA/HookGun.h"
 #include "GAS/GA/Aim.h"
 #include "DataAsset/CWeaponDataAsset.h"
+#include "GAS/Attribute/CWeaponAttributeSet.h"
 #include "CableComponent.h"
 #include "Components/SplineComponent.h"
-#include "Components/CapsuleComponent.h"
 
 ACHookGun::ACHookGun()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	CHelpers::CreateSceneComponent(this, &RootComp, "RootComp");
-	CheckNull(RootComp);
-
-	CHelpers::CreateSceneComponent(this, &MeshComp, "MeshComp", RootComp);
-	CheckNull(MeshComp);
 
 	CHelpers::CreateSceneComponent(this, &CableComp, "CableComp", RootComp);
 	CheckNull(CableComp);
@@ -37,8 +31,6 @@ void ACHookGun::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AttackComp->SetActive(false);
-
 	if (ASC)
 	{
 		FGameplayAbilitySpec AbilitySpec(UHookGun::StaticClass());
@@ -54,6 +46,9 @@ void ACHookGun::BeginPlay()
 	{
 		if (GetClass() == data.WeaponClass)
 		{
+			Attribute->SetBaseDamage(data.BaseDamage);
+			Attribute->SetBaseProficiency(data.BaseProficiency);
+
 			if (data.WeaponImage)
 				WeaponImage = data.WeaponImage;
 

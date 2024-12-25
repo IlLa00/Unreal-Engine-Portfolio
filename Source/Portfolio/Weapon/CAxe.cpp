@@ -1,18 +1,13 @@
 #include "CAxe.h"
 #include "Global.h"
 #include "AbilitySystemComponent.h"
+#include "GAS/Attribute/CWeaponAttributeSet.h"
 #include "GAS/GA/Axe.h"
 #include "DataAsset/CWeaponDataAsset.h"
 
 ACAxe::ACAxe()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	CHelpers::CreateSceneComponent(this, &RootComp, "RootComp");
-	CheckNull(RootComp);
-
-	CHelpers::CreateSceneComponent(this, &MeshComp, "MeshComp",RootComp);
-	CheckNull(MeshComp);
 
 	UStaticMesh* MeshAsset;
 	CHelpers::GetAsset(&MeshAsset, "/Game/Assets/Axe/fire_axe");
@@ -38,6 +33,12 @@ void ACAxe::BeginPlay()
 	{
 		if (GetClass() == data.WeaponClass)
 		{
+			Attribute->SetBaseDamage(data.BaseDamage);
+			Attribute->SetBaseProficiency(data.BaseProficiency);
+
+			Attribute->SetCurrentDamage(Attribute->GetBaseDamage());
+			Attribute->SetCurrentProficiency(Attribute->GetBaseProficiency());
+
 			if (data.WeaponImage)
 				WeaponImage = data.WeaponImage;
 

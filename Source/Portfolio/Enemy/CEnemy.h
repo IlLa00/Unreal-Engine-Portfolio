@@ -4,6 +4,7 @@
 #include "AbilitySystemInterface.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/Character.h"
+#include "Interface/CAttackCompInterface.h"
 #include "CEnemy.generated.h"
 
 class UTextRenderComponent;
@@ -16,7 +17,7 @@ class UCEnemyHealthWidget;
 class UBoxComponent;
 
 UCLASS()
-class PORTFOLIO_API ACEnemy : public ACharacter, public IAbilitySystemInterface
+class PORTFOLIO_API ACEnemy : public ACharacter, public IAbilitySystemInterface, public ICAttackCompInterface
 {
 	GENERATED_BODY()
 
@@ -41,8 +42,9 @@ public:
 	FORCEINLINE virtual FGameplayTagContainer& GetTagContainer() { return TagContainer; }
 	FORCEINLINE virtual UCMonsterAttributeSet* GetAttributeSet() { return Attribute; }
 	FORCEINLINE virtual UCMonsterMeshDataAsset* GetDataAsset() { return DataAsset; }
-	FORCEINLINE virtual UBoxComponent* GetAttackComp() { return AttackComp; }
 	FORCEINLINE virtual int32 GetIndex() { return Index; }
+
+	virtual UBoxComponent* GetAttackComp() override { return AttackComp; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Text")

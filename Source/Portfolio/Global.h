@@ -6,3 +6,4 @@
 
 #include "Utilities/CHelpers.h"
 #include "Utilities/CLog.h"
+#include "Utilities/TagHelpers.h"

@@ -2,11 +2,22 @@
 #include "Global.h"
 #include "DataAsset/CWeaponDataAsset.h"
 #include "GAS/Attribute/CWeaponAttributeSet.h"
-#include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
+#include "Enemy/CEnemy.h"
+#include "GAS/Attribute/CMonsterAttributeSet.h"
 
 ACWeapon::ACWeapon()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	CHelpers::CreateSceneComponent(this, &RootComp, "RootComp");
+	CheckNull(RootComp);
+
+	CHelpers::CreateSceneComponent(this, &MeshComp, "MeshComp", RootComp);
+	CheckNull(MeshComp);
+
+	CHelpers::CreateSceneComponent(this, &AttackCollisionComp, "AttackCollisionComp", MeshComp);
+	CheckNull(AttackCollisionComp);
 
 	Attribute = CreateDefaultSubobject<UCWeaponAttributeSet>("Attribute");
 	CheckNull(Attribute);
@@ -17,8 +28,6 @@ ACWeapon::ACWeapon()
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
 	CheckNull(ASC);
 
-	CHelpers::CreateSceneComponent(this, &AttackComp, "AttackComp");
-	CheckNull(AttackComp);
 }
 
 void ACWeapon::BeginPlay()
@@ -28,8 +37,10 @@ void ACWeapon::BeginPlay()
 	if(ASC)
 		ASC->InitAbilityActorInfo(this, this);
 
-	if (AttackComp->IsActive())
-		AttackComp->OnComponentBeginOverlap.AddDynamic(this, &ACWeapon::BeginOverlap);
+	if (AttackCollisionComp)
+	{
+		AttackCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ACWeapon::BeginOverlap);
+	}
 }
 
 void ACWeapon::Tick(float DeltaTime)
@@ -45,7 +56,15 @@ UAbilitySystemComponent* ACWeapon::GetAbilitySystemComponent() const
 
 void ACWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	PrintLine();
+	if (OtherActor == GetOwner()) return;
+
+	if (OtherActor->IsA<ACEnemy>())
+	{
+		ACEnemy* Enemy = Cast<ACEnemy>(OtherActor);
+		CheckNull(Enemy);
+
+		Enemy->GetAttributeSet()->SetCurrentHealth(Enemy->GetAttributeSet()->GetCurrentHealth() - Attribute->GetCurrentDamage());
+	}
 }
 
 

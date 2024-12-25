@@ -63,6 +63,8 @@ void ACPet::BeginPlay()
 
 	Attribute->SetBaseHealth(DataAsset->BaseHealth);
 	Attribute->SetBaseDamage(DataAsset->BaseDamage);
+	Attribute->SetCurrentHealth(Attribute->GetBaseHealth());
+	Attribute->SetCurrentDamage(Attribute->GetBaseDamage());
 }
 
 void ACPet::Tick(float DeltaTime)

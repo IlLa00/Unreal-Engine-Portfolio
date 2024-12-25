@@ -70,10 +70,10 @@ void UHookGun::FireHook()
     FHitResult HitResult;
     TArray<AActor*> IgnoreActors;
 
-	FCollisionObjectQueryParams P;
-	P.AddObjectTypesToQuery(ECC_WorldStatic);
+	FCollisionObjectQueryParams Parms;
+	Parms.AddObjectTypesToQuery(ECC_WorldStatic);
 
-	if (GetWorld()->LineTraceSingleByObjectType(HitResult, Start, End, P))
+	if (GetWorld()->LineTraceSingleByObjectType(HitResult, Start, End, Parms))
 	{
 		HookGun->GetCableComp()->EndLocation = HitResult.Location;
 

@@ -102,3 +102,52 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	}
 	
 }
+
+EBTNodeResult::Type UCBTTaskNode_Attack::AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+{
+	Super::AbortTask(OwnerComp, NodeMemory);
+
+	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
+	{
+		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
+		if (AIC)
+		{
+			ACPet* Pet = Cast<ACPet>(AIC->GetPawn());
+			if (Pet)
+			{
+				if (Pet->GetAbilitySystemComponent())
+				{
+
+					if (!Pet->GetAbilitySystemComponent()->GetCurrentMontage())
+					{
+						Pet->GetAbilitySystemComponent()->CancelAbilityHandle(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
+						FinishLatentTask(OwnerComp, EBTNodeResult::Aborted);
+					}
+				}
+			}
+		}
+	}
+	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Enemy").ToString())
+	{
+		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
+		if (AIC)
+		{
+			ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetPawn());
+			if (Enemy)
+			{
+				if (Enemy->GetAbilitySystemComponent())
+				{
+					if (Enemy->GetAbilitySystemComponent()->GetCurrentMontage())
+					{
+						Enemy->StopAnimMontage();
+
+						Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
+						FinishLatentTask(OwnerComp, EBTNodeResult::Aborted);
+					}
+				}
+			}
+		}
+	}
+
+	return EBTNodeResult::Aborted;
+}

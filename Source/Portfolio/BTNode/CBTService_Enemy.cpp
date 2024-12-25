@@ -31,27 +31,32 @@ void UCBTService_Enemy::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 	SetTarget(AIC, Enemy, Player, Pet);
 
-	if (AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")) // 플레이어가 감지가 되면
+	if (Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.GetHit"))))
 	{
-		float DistanceToTarget = Enemy->GetDistanceTo(Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")));
+		TagHelpers::AIChangeStateTag(Enemy->GetTagContainer(), "AI.Action.GetHit");
+	}
 
-		if (DistanceToTarget < 150.f)
+
+	else if (Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Idle"))))
+	{
+		if (AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")) // 플레이어가 감지가 되면
 		{
-			Enemy->GetTagContainer().Reset();
-			Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Attack")));
+			float DistanceToTarget = Enemy->GetDistanceTo(Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")));
+
+			if (DistanceToTarget < 150.f)
+			{
+				TagHelpers::AIChangeActionTag(Enemy->GetTagContainer(), "AI.Action.Attack");
+			}
+			else
+			{
+				TagHelpers::AIChangeActionTag(Enemy->GetTagContainer(), "AI.Action.Approach");
+			}
 		}
 		else
 		{
-			Enemy->GetTagContainer().Reset();
-			Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach")));
+			TagHelpers::AIChangeActionTag(Enemy->GetTagContainer(), "AI.Action.Patrol");
 		}
 	}
-	else
-	{
-		Enemy->GetTagContainer().Reset();
-		Enemy->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
-	}
-	
 
 }
 

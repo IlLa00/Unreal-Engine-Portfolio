@@ -58,9 +58,12 @@ void ACEnemy::BeginPlay()
 
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
 
-	AttackComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "AttackSocket");
-	AttackComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	AttackComp->OnComponentBeginOverlap.AddDynamic(this, &ACEnemy::BeginOverlap);
+	if (AttackComp)
+	{
+		AttackComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "AttackSocket");
+		AttackComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		AttackComp->OnComponentBeginOverlap.AddDynamic(this, &ACEnemy::BeginOverlap);
+	}
 
 	HealthWidgetComp->InitWidget();
 	HealthWidgetObject = Cast<UCEnemyHealthWidget>(HealthWidgetComp->GetUserWidgetObject());
