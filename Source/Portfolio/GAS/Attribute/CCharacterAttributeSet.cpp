@@ -34,10 +34,7 @@ void UCCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute& Attr
 
     if (Attribute == GetCurrentHealthAttribute())
     {
-        if (OldValue > NewValue)
-        {
-           OnHealthChanged.Broadcast(NewValue); // UI연동
-        }
+       OnHealthChanged.Broadcast(NewValue); // UI연동
     }
 }
 

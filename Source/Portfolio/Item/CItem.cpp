@@ -3,6 +3,7 @@
 #include "Components/BoxComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "DataAsset/CItemDataAsset.h"
 
 ACItem::ACItem()
 {
@@ -14,9 +15,8 @@ ACItem::ACItem()
 	CHelpers::CreateSceneComponent(this, &BoxComp, "BoxComp", RootComp);
 	CheckNull(BoxComp);
 
-	CHelpers::CreateSceneComponent(this, &ParticleComp, "ParticleComp", RootComp);
-	CheckNull(ParticleComp);
-
+	CHelpers::GetAsset(&DataAsset, "/Game/DataAsset/DA_Item");
+	CheckNull(DataAsset);
 }
 
 void ACItem::BeginPlay()

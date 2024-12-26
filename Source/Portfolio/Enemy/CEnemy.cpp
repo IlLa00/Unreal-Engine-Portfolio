@@ -68,6 +68,7 @@ void ACEnemy::BeginPlay()
 
 	HealthWidgetComp->InitWidget();
 	HealthWidgetObject = Cast<UCEnemyHealthWidget>(HealthWidgetComp->GetUserWidgetObject());
+
 	if (HealthWidgetObject)
 		HealthWidgetObject->Update(Attribute->GetCurrentHealth(), Attribute->GetBaseHealth());
 

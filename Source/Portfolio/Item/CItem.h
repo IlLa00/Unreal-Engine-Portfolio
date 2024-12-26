@@ -6,6 +6,7 @@
 
 class UBoxComponent;
 class UNiagaraComponent;
+class UCItemDataAsset;
 
 UCLASS()
 class PORTFOLIO_API ACItem : public AActor
@@ -21,6 +22,8 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	virtual float GetValue() { return Value; }
+
 protected:
 	UFUNCTION()
 	virtual void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -32,7 +35,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UBoxComponent* BoxComp;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Component")
-		UNiagaraComponent* ParticleComp;
-
+protected:
+	UCItemDataAsset* DataAsset;
+	float Value;
 };

@@ -6,6 +6,7 @@
 #include "DataAsset/CMonsterMeshDataAsset.h"
 #include "Item/CItem_HealBuff.h"
 #include "Components/ShapeComponent.h"
+#include "DataAsset/CMonsterMeshDataAsset.h"
 
 void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -42,17 +43,25 @@ void UAI_Dead::Dead(ACharacter* Character)
 	// 이렇게 분류하는게 맞을까싶음 인터페이스 쓸생각하자
 	if (Character->IsA<ACEnemy>())
 	{
-		Character->GetController()->UnPossess(); // 이걸로 감지컴포넌트 안꺼지면 캐스트하자. 컨트롤러 삭제도해야하지않나?
+		ACEnemy* Enemy = Cast<ACEnemy>(Character);
+		CheckNull(Enemy);
+
+		Enemy->GetController()->UnPossess(); // 이걸로 감지컴포넌트 안꺼지면 캐스트하자. 컨트롤러 삭제도해야하지않나?
 
 		TArray<UShapeComponent*> OutComps;
-		Character->GetComponents<UShapeComponent>(OutComps);
+		Enemy->GetComponents<UShapeComponent>(OutComps);
 
 		for (const auto& Comp : OutComps)
 		{
 			Comp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
 
-		GetWorld()->SpawnActor<ACItem_HealBuff>(Character->GetActorLocation(), FRotator()); // 스폰되자마 비긴오버랩 호출되어버림 그래서 이거 앞으로 콜리전꺼야됨
+		FTransform FT;
+		FT.SetLocation(Enemy->GetActorLocation());
+		FT.SetRotation(FQuat());
+
+		GetWorld()->SpawnActor<ACItem>(Enemy->GetDataAsset()->Datas[Enemy->GetIndex()].DropItem, FT);
+		// GetWorld()->SpawnActor<ACItem>(Enemy->GetActorLocation(), FRotator()); // 스폰되자마 비긴오버랩 호출되어버림 그래서 이거 앞으로 콜리전꺼야됨
 
 	}
 	
