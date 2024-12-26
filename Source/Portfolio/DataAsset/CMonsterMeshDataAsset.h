@@ -5,6 +5,7 @@
 #include "CMonsterMeshDataAsset.generated.h"
 
 class UCAnimInstance;
+class ACItem;
 
 USTRUCT(BlueprintType)
 struct FMontageData
@@ -44,7 +45,8 @@ public:
 		float BaseDamage;
 
 	UPROPERTY(EditAnywhere)
-		AActor* DropEmitter;
+		TSubclassOf<ACItem> DropItem;
+		
 };
 
 

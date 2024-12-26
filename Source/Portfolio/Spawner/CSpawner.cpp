@@ -34,8 +34,6 @@ void ACSpawner::Tick(float DeltaTime)
 
 void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 {
-	
-	// 지형에 따라서,
 	bool bSpawnBoss = false;
 
 	for (int32 i = 0; i < Number; i++) // 소환할 마릿수 만큼 반복
@@ -48,7 +46,7 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 
 		if (!bSpawnBoss)
 		{
-			if (FMath::FRand() < 0.1f)
+			if (FMath::FRand() < 0.9f)
 			{
 				ACMonster* Monster = GetWorld()->SpawnActorDeferred<ACMonster>(MonsterClass, SpawnTM);
 				CheckNull(Monster);

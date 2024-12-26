@@ -25,7 +25,7 @@ EBTNodeResult::Type UCBTTask_MoveTo::AbortTask(UBehaviorTreeComponent& OwnerComp
 			{
 				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.GetHit"))))
 				{
-					FinishLatentTask(OwnerComp, EBTNodeResult::Aborted);
+					FinishLatentAbort(OwnerComp);
 				}
 			}
 		}
@@ -40,12 +40,11 @@ EBTNodeResult::Type UCBTTask_MoveTo::AbortTask(UBehaviorTreeComponent& OwnerComp
 			{
 				if (Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.GetHit"))))
 				{
-					PrintLine();
-					FinishLatentTask(OwnerComp, EBTNodeResult::Aborted);
+					FinishLatentAbort(OwnerComp);
 				}
 			}
 		}
 	}
 
-	return EBTNodeResult::Aborted;
+	return EBTNodeResult::Failed;
 }

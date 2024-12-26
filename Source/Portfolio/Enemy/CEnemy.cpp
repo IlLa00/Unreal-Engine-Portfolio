@@ -11,6 +11,7 @@
 #include "CEnemyController.h"
 #include "GAS/GA/AI_Attack.h"
 #include "GAS/GA/AI_GetHit.h"
+#include "GAS/GA/AI_Dead.h"
 #include "Widget/CEnemyHealthWidget.h"
 #include "Player/CPlayer.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
@@ -77,6 +78,9 @@ void ACEnemy::BeginPlay()
 
 	FGameplayAbilitySpec HitSpec(UAI_GetHit::StaticClass());
 	ASC->GiveAbility(HitSpec);
+
+	FGameplayAbilitySpec DeadSpec(UAI_Dead::StaticClass());
+	ASC->GiveAbility(DeadSpec);
 
 	TagContainer.AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
 

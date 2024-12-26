@@ -19,7 +19,7 @@ private:
 
 public:
 	void Spawn();
-	void Teleport();
+	void Teleport(FName Area);
 	void SetPlayerArea(AActor* OtherActor);
 
 private:
@@ -30,4 +30,6 @@ private:
 	FName PlayerArea;
 	
 	TArray<AActor*> TargetPointActors;
+
+	FString TargetPointName[5];
 };

@@ -38,7 +38,10 @@ void ACGameModeBase::BeginPlay()
 	
 	for (const auto& Actor : TargetPointActors)
 	{
-		CLog::Print(Actor->GetName());
+		for (const auto& Tag : Actor->Tags)
+		{
+			TargetPointName->Append(Tag.ToString());
+		}
 	}
 }
 
@@ -50,9 +53,21 @@ void ACGameModeBase::Spawn()
 	Spawner->Spawn(Player->GetActorLocation(), PlayerArea);
 }
 
-void ACGameModeBase::Teleport()
+void ACGameModeBase::Teleport(FName Area)
 {
-	
+	for (const auto& Actor : TargetPointActors)
+	{
+		if (Area == Actor->Tags[0])
+		{
+			ACPlayer* Player = Cast<ACPlayer>(GetWorld()->GetFirstPlayerController()->GetPawn());
+			CheckNull(Player);
+
+			Player->SetActorLocation(Actor->GetActorLocation());
+			PlayerArea = Actor->Tags[0];
+
+			break;
+		}
+	}
 }
 
 void ACGameModeBase::SetPlayerArea(AActor* OtherActor) // 플레이어 지역 바꾸기

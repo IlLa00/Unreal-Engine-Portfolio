@@ -69,10 +69,10 @@ void ACPortal::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	ACharacter* Character = Cast<ACharacter>(OtherActor);
 	CheckNull(Character);
 
-	Character->GetCharacterMovement()->StopActiveMovement();
+	Character->GetCharacterMovement()->SetActive(false);
 
 	PortalWidget->SetVisibility(ESlateVisibility::Visible);
 	
-	// 이거 컨트롤러에 있음 이거 지금 위젯부터 갈아치워야 할거같음.. Setmouse
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
 
