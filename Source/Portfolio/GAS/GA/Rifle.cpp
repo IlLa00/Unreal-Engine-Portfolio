@@ -55,4 +55,10 @@ void URifle::Shoot()
 
 		Enemy->GetAttributeSet()->SetCurrentHealth(Enemy->GetAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage());
 	}
+
+	ACRifle* Rifle = Cast<ACRifle>(GetOwningActorFromActorInfo());
+	CheckNull(Rifle);
+
+	Rifle->Shooting(); // 위젯과도 연동해야할거같은디
+
 }

@@ -21,6 +21,7 @@ void UHookGun::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 	ACPlayer* Player = Cast<ACPlayer>(GetOwningActorFromActorInfo()->GetOwner());
 	CheckNull(Player);
 
+
 	Player->PlayAnimMontage(AttackMontage); // 발사 몽타주
 
 	if (!GetWorld()->GetTimerManager().IsTimerActive(TraceTimerHandle)) // 0.1초마다 실행.

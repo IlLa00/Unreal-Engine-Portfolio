@@ -151,6 +151,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("SubAction", IE_Pressed, this, &ACPlayer::OnSubAction);
 	PlayerInputComponent->BindAction("SubAction", IE_Released, this, &ACPlayer::OffSubAction);
+
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ACPlayer::OnReload);
 }
 
 UAbilitySystemComponent* ACPlayer::GetAbilitySystemComponent() const
@@ -276,6 +278,11 @@ void ACPlayer::OnSubAction()
 void ACPlayer::OffSubAction()
 {
 	Equipment->OffSubAction();
+}
+
+void ACPlayer::OnReload()
+{
+	Equipment->Reload();
 }
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)

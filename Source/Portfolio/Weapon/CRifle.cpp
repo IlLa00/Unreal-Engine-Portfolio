@@ -5,6 +5,7 @@
 #include "GAS/Attribute/CWeaponAttributeSet.h"
 #include "GAS/GA/Rifle.h"
 #include "GAS/GA/Aim.h"
+#include "GAS/GA/ReloadRifle.h"
 
 ACRifle::ACRifle()
 {
@@ -18,6 +19,8 @@ ACRifle::ACRifle()
 	MeshComp->SetRelativeScale3D(FVector(0.2));
 
 	AttachSocketName = "hand_r_Rifle";
+
+	bullet = 30;
 
 }
 
@@ -37,8 +40,11 @@ void ACRifle::BeginPlay()
 		FGameplayAbilitySpec SubAbilitySpec(UAim::StaticClass());
 		WeaponSubAbilitySpec = SubAbilitySpec;
 		ASC->GiveAbility(SubAbilitySpec);
-	}
 
+		FGameplayAbilitySpec ReloadAbilitySpec(UReloadRifle::StaticClass());
+		ASC->GiveAbility(ReloadAbilitySpec);
+
+	}
 
 	for (const auto& data : DataAsset->Datas)
 	{
@@ -64,5 +70,23 @@ void ACRifle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ACRifle::Shooting_Implementation()
+{
+	bullet -= 1;
+
+	bullet = FMath::Clamp(bullet, 0, 30);
+	// 여기서 조건걸어야할지도
+	CLog::Print(bullet);
+
+	if (bullet <= 0)
+		Reloading();
+}
+
+void ACRifle::Reloading_Implementation()
+{
+	ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle);
+	bullet = 30; // 맥스값으로 설정해야할지도
 }
 

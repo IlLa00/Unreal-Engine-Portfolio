@@ -20,4 +20,6 @@ public:
 private:
 	UAnimMontage* AttackMontageClasses[4];
 	int32 ComboCount;
+
+	TSubclassOf<UGameplayEffect> BPDecreaseStaminaEffect;
 };

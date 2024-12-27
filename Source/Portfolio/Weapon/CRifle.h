@@ -17,4 +17,15 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+
+public:
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+		void Shooting();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void Reloading();
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+		int32 bullet;
 };

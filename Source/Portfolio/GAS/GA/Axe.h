@@ -19,4 +19,6 @@ public:
 
 private:
 	UAnimMontage* AttackMontage;
+
+	TSubclassOf<UGameplayEffect> BPDecreaseStaminaEffect;
 };

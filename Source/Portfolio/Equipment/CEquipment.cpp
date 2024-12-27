@@ -6,6 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "Widget/CPlayerWidget.h"
 #include "DataAsset/CWeaponDataAsset.h"
+#include "GAS/GA/ReloadRifle.h"
 
 ACEquipment::ACEquipment()
 {
@@ -141,4 +142,15 @@ void ACEquipment::OffSubAction()
 	
 	// 여기 서브능력 진행중인지 아닌지 검사하는 조건 추가해야할듯
 	CurrentEquipWeapon->GetAbilitySystemComponent()->CancelAbilityHandle(CurrentEquipWeapon->GetWeaponSubAbilitySpec().Handle);
+}
+
+void ACEquipment::Reload()
+{
+	CheckNull(CurrentEquipWeapon);
+
+	// 여기 조건 걸어야됨
+	if (CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle)
+		return;
+
+	CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle);
 }

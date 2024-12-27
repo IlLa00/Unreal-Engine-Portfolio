@@ -35,6 +35,8 @@ public:
 	void OnSubAction();
 	void OffSubAction();
 
+	void Reload();
+
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "DataAsset")
 		UCWeaponDataAsset* DataAsset; // 이게 여기있어야함?

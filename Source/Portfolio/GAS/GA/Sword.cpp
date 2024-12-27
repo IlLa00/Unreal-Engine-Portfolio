@@ -1,6 +1,7 @@
 #include "Sword.h"
 #include "Global.h"
 #include "Player/CPlayer.h"
+#include "AbilitySystemComponent.h"
 
 USword::USword()
 {
@@ -8,6 +9,9 @@ USword::USword()
 	CHelpers::GetAsset(&AttackMontageClasses[1], "/Game/Assets/Montage/Frank_RPG_Warrior_Combo01_2_Montage");
 	CHelpers::GetAsset(&AttackMontageClasses[2], "/Game/Assets/Montage/Frank_RPG_Warrior_Combo01_3_Montage");
 	CHelpers::GetAsset(&AttackMontageClasses[3], "/Game/Assets/Montage/Frank_RPG_Warrior_Combo01_4_Montage");
+
+	CHelpers::GetClass(&BPDecreaseStaminaEffect, "/Game/GAS/BP_GE_DecreaseStamina");
+	CheckNull(BPDecreaseStaminaEffect);
 }
 
 void USword::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -34,7 +38,17 @@ void USword::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 	}
 	else
 		Player->PlayAnimMontage(AttackMontageClasses[0]);
-	
+
+	if (Player->GetAbilitySystemComponent())
+	{
+		FGameplayEffectSpecHandle DecreaseStaminaHandle;
+		FGameplayEffectContextHandle EffectContext = Player->GetAbilitySystemComponent()->MakeEffectContext();
+
+		DecreaseStaminaHandle = Player->GetAbilitySystemComponent()->MakeOutgoingSpec(BPDecreaseStaminaEffect, 1.0f, EffectContext);
+
+		Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*DecreaseStaminaHandle.Data.Get());
+	}
+
 }
 
 void USword::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
