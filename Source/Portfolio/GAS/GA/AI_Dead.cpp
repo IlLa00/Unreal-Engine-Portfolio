@@ -61,8 +61,6 @@ void UAI_Dead::Dead(ACharacter* Character)
 		FT.SetRotation(FQuat());
 
 		GetWorld()->SpawnActor<ACItem>(Enemy->GetDataAsset()->Datas[Enemy->GetIndex()].DropItem, FT);
-		// GetWorld()->SpawnActor<ACItem>(Enemy->GetActorLocation(), FRotator()); // 스폰되자마 비긴오버랩 호출되어버림 그래서 이거 앞으로 콜리전꺼야됨
-
 	}
 	
 	// 숙련도 증가 <- 숙련도 증가하는걸 위젯에 보이게 하기

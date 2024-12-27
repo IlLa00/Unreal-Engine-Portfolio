@@ -6,6 +6,7 @@ UReloadRifle::UReloadRifle()
 {
 	CHelpers::GetAsset(&ReloadMontage, "/Game/Assets/Montage/Reload_Rifle_Hip_Montage");
 	CheckNull(ReloadMontage);
+
 }
 
 void UReloadRifle::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)

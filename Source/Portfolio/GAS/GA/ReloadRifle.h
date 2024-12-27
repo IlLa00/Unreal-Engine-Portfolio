@@ -10,7 +10,7 @@ UCLASS()
 class PORTFOLIO_API UReloadRifle : public UGameplayAbility_Montage
 {
 	GENERATED_BODY()
-	
+
 public:
 	UReloadRifle();
 
@@ -21,4 +21,5 @@ public:
 
 private:
 	UAnimMontage* ReloadMontage;
+
 };

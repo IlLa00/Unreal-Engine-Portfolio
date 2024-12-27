@@ -149,8 +149,8 @@ void ACEquipment::Reload()
 	CheckNull(CurrentEquipWeapon);
 
 	// 여기 조건 걸어야됨
-	if (CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle)
-		return;
+	/*if (CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle)
+		return;*/
 
 	CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle);
 }

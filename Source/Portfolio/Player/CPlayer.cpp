@@ -262,11 +262,13 @@ void ACPlayer::OnEquipLastSlot()
 
 void ACPlayer::OnMainAction()
 {
+	SetUsePawnControlRotation(false); //  todo.. 아무것도 안들때도 되어버림
 	Equipment->OnMainAction();
 }
 
 void ACPlayer::OffMainAction()
 {
+	SetUsePawnControlRotation(true);
 	Equipment->OffMainAction();
 }
 
@@ -303,12 +305,12 @@ void ACPlayer::SetUsePawnControlRotation(bool bUse)
 {
 	if (bUse)
 	{
-		SpringArmComp->bUsePawnControlRotation = true;
+		//SpringArmComp->bUsePawnControlRotation = true;
 		bUseControllerRotationYaw = false;
 	}
 	else
 	{
-		// SpringArmComp->bUsePawnControlRotation = false; 왜 이렇게하니 됨..?
+		//SpringArmComp->bUsePawnControlRotation = false; 
 		bUseControllerRotationYaw = true;
 	}
 }
