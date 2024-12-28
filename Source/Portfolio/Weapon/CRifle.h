@@ -25,6 +25,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void Reloading();
 
+public:
+	void Reload();
+
 protected:
 	UPROPERTY(EditDefaultsOnly)
 		int32 bullet;

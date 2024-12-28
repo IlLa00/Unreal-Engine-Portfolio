@@ -4,6 +4,7 @@
 #include "GAS/Attribute/CWeaponAttributeSet.h"
 #include "GAS/GA/Axe.h"
 #include "DataAsset/CWeaponDataAsset.h"
+#include "Components/BoxComponent.h"
 
 ACAxe::ACAxe()
 {
@@ -46,7 +47,7 @@ void ACAxe::BeginPlay()
 				WeaponName = FText::FromString(data.WeaponName.ToString());
 			break;
 		}
-	}
+	}		
 }
 
 void ACAxe::Tick(float DeltaTime)
@@ -54,4 +55,5 @@ void ACAxe::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
 

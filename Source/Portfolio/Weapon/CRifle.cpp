@@ -72,6 +72,11 @@ void ACRifle::Tick(float DeltaTime)
 
 }
 
+void ACRifle::Reload()
+{
+	bullet = 30;
+}
+
 void ACRifle::Shooting_Implementation()
 {
 	bullet -= 1;
@@ -87,6 +92,6 @@ void ACRifle::Shooting_Implementation()
 void ACRifle::Reloading_Implementation()
 {
 	ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle);
-	bullet = 30; // 맥스값으로 설정해야할지도
+	
 }
 
