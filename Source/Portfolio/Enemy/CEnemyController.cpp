@@ -39,7 +39,7 @@ ACEnemyController::ACEnemyController()
 	Hear->DetectionByAffiliation.bDetectEnemies = true;
 	Hear->DetectionByAffiliation.bDetectFriendlies = true;
 	Hear->DetectionByAffiliation.bDetectNeutrals = true;
-	Hear->SetMaxAge(2.f);
+	Hear->SetMaxAge(10.f);
 
 	PerceptionComp->ConfigureSense(*Sight);
 	PerceptionComp->ConfigureSense(*Hear);

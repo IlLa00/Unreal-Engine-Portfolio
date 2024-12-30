@@ -33,8 +33,4 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Enemy")
 		TSubclassOf<ACMonster> MonsterClass;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Enemy")
-		TSubclassOf<ACBoss> BossClass;
-	
 };

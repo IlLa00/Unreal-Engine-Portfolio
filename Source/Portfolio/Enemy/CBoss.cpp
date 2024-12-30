@@ -3,6 +3,7 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DataAsset/CBossDataAsset.h"
+#include "Enemy/CEnemyController.h"
 
 ACBoss::ACBoss()
 {
@@ -29,8 +30,6 @@ void ACBoss::BeginPlay()
 	Super::BeginPlay();
 
 	GetMesh()->SetAnimClass(AnimClass);
-
-	
 }
 
 void ACBoss::Tick(float DeltaTime)

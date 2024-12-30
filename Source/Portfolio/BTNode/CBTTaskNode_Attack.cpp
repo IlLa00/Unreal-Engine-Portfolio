@@ -109,9 +109,7 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 					if (!Enemy->GetAbilitySystemComponent()->GetCurrentMontage())
 					{
 						Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
-						PrintLine();
 						FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-						PrintLine();
 					}
 				}
 			}
@@ -130,11 +128,8 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 					if (!Boss->GetAbilitySystemComponent()->GetCurrentMontage())
 					{
 						Boss->GetAbilitySystemComponent()->CancelAbilityHandle(Boss->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
-						PrintLine();
 						FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-						PrintLine();
 					}
-					
 				}
 			}
 		}
