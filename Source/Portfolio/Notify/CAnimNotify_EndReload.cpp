@@ -24,6 +24,8 @@ void UCAnimNotify_EndReload::Notify(USkeletalMeshComponent* MeshComp, UAnimSeque
 	ACRifle* Rifle = Cast<ACRifle>(Player->GetEquipment()->GetCurrentCurrentEquipWeapon());
 	CheckNull(Rifle);
 
+	Rifle->SetReloadMode(false);
+
 	Rifle->GetAbilitySystemComponent()->CancelAbilityHandle(Rifle->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle);
 
 }

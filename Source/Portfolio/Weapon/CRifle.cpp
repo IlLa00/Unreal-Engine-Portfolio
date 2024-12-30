@@ -79,19 +79,25 @@ void ACRifle::Reload()
 
 void ACRifle::Shooting_Implementation()
 {
+	if (IsReload())
+		return;
+
+	if (bullet <= 0)
+	{
+		bReload = true;
+		Reloading();
+		return;
+	}
+
 	bullet -= 1;
 
 	bullet = FMath::Clamp(bullet, 0, 30);
-	// 여기서 조건걸어야할지도
 	CLog::Print(bullet);
 
-	if (bullet <= 0)
-		Reloading();
 }
 
 void ACRifle::Reloading_Implementation()
 {
 	ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle);
-	
 }
 

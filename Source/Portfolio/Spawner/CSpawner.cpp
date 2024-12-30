@@ -46,7 +46,7 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 
 		if (!bSpawnBoss)
 		{
-			if (FMath::FRand() < 0.9f)
+			if (FMath::FRand() < 0.1f)
 			{
 				ACMonster* Monster = GetWorld()->SpawnActorDeferred<ACMonster>(MonsterClass, SpawnTM);
 				CheckNull(Monster);

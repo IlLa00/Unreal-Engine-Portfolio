@@ -17,6 +17,17 @@ void URifle::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
+	ACRifle* Rifle = Cast<ACRifle>(GetOwningActorFromActorInfo());
+	CheckNull(Rifle);
+
+	if (Rifle->IsReload())
+	{
+		if(GetWorld()->GetTimerManager().IsTimerActive(TimerHandle))
+			GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+	}
+
+
 	if (!GetWorld()->GetTimerManager().IsTimerActive(TimerHandle))
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &URifle::Shoot, 0.1f, true);
 }
@@ -30,6 +41,14 @@ void URifle::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGamep
 
 void URifle::Shoot()
 {
+	ACRifle* Rifle = Cast<ACRifle>(GetOwningActorFromActorInfo());
+	CheckNull(Rifle);
+
+	if (Rifle->IsReload())
+		return;
+
+	Rifle->Shooting(); // 위젯과도 연동해야할거같은디
+
 	ACPlayer* Player = Cast<ACPlayer>(GetOwningActorFromActorInfo()->GetOwner());
 	CheckNull(Player);
 
@@ -50,15 +69,6 @@ void URifle::Shoot()
 		ACEnemy* Enemy = Cast<ACEnemy>(HitResult.GetActor());
 		CheckNull(Enemy);
 
-		ACRifle* Rifle = Cast<ACRifle>(GetOwningActorFromActorInfo());
-		CheckNull(Rifle);
-
 		Enemy->GetAttributeSet()->SetCurrentHealth(Enemy->GetAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage());
 	}
-
-	ACRifle* Rifle = Cast<ACRifle>(GetOwningActorFromActorInfo());
-	CheckNull(Rifle);
-
-	Rifle->Shooting(); // 위젯과도 연동해야할거같은디
-
 }

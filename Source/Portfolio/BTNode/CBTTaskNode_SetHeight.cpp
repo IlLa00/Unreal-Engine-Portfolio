@@ -51,25 +51,33 @@ void UCBTTaskNode_SetHeight::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* 
 	CheckNull(Boss);
 
 	if (IsFly)
-		Boss->GetFloatingComp()->AddInputVector(FVector(0, 0, 1)); // 위로 올라가긴 함.
-	else
-		Boss->GetFloatingComp()->AddInputVector(FVector(0, 0, -1));
-
-	if (!Boss->GetCurrentMontage()) 
 	{
-		UCAnimInstance* Anim = Cast<UCAnimInstance>(Boss->GetMesh()->GetAnimInstance());
-		if (Anim)
+		if (!Boss->GetCurrentMontage())
 		{
-			if (IsFly)
+			UCAnimInstance* Anim = Cast<UCAnimInstance>(Boss->GetMesh()->GetAnimInstance());
+			if (Anim)
 			{
-				Anim->IsFly = true;
+				Anim->IsFly = true; // ABP와 연동.
+				FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 			}
-			else
-			{
-				Anim->IsFly = false;
-			}
-			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		}
+		else
+			Boss->GetFloatingComp()->AddInputVector(FVector(0, 0, 1));
 	}
-	
+	else
+	{
+		if (!Boss->GetCurrentMontage() || !Boss->GetFloatingComp()->IsFalling())
+		{
+			UCAnimInstance* Anim = Cast<UCAnimInstance>(Boss->GetMesh()->GetAnimInstance());
+			if (Anim)
+			{
+				Anim->IsFly = true; // ABP와 연동.
+				Boss->StopAnimMontage();
+				Boss->GetCharacterMovement()->Activate();
+				FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+			}
+		}
+		else
+			Boss->GetFloatingComp()->AddInputVector(FVector(0, 0, -1));
+	}
 }

@@ -29,24 +29,21 @@ void UCBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	ACPlayer* Player = Cast<ACPlayer>(AIC->GetBlackboardComponent()->GetValueAsObject("PlayerKey"));
 	ACPet* Pet = Cast<ACPet>(AIC->GetBlackboardComponent()->GetValueAsObject("PetKey"));
 
-	if (AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")) // 플레이어가 감지가 되면
+	SetTarget(AIC, Boss, Player, Pet);
+
+	if (AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")) // 타깃이 감지되면
 	{
 		float DistanceToTarget = Boss->GetDistanceTo(Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")));
-
-		if (DistanceToTarget < 150.f)
+		if (DistanceToTarget < 800.f)
 		{
-			Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Attack")));
+			Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
 		}
 		else
 		{
-			Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.State.Approach")));
+			Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
 		}
+		
 	}
-	else
-	{
-		Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
-	}
-	Boss->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
 }
 
 void UCBTService_Boss::SetTarget(ACEnemyController* AIC, ACBoss* Boss, ACPlayer* Player, ACPet* Pet)

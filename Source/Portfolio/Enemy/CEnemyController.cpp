@@ -6,6 +6,7 @@
 #include "GameplayTagsManager.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISenseConfig_Hearing.h"
 #include "Player/CPlayer.h"
 #include "Enemy/CEnemy.h"
 #include "Enemy/CMonster.h"
@@ -20,6 +21,9 @@ ACEnemyController::ACEnemyController()
 	Sight = CreateDefaultSubobject<UAISenseConfig_Sight>("Sight");
 	CheckNull(Sight);
 
+	Hear = CreateDefaultSubobject<UAISenseConfig_Hearing>("Hear");
+	CheckNull(Hear);
+
 	Sight->SightRadius = 600.f;
 	Sight->LoseSightRadius = 800.f;
 	Sight->PeripheralVisionAngleDegrees = 90.f;
@@ -29,7 +33,16 @@ ACEnemyController::ACEnemyController()
 	Sight->DetectionByAffiliation.bDetectFriendlies = true;
 	Sight->SetMaxAge(2.f);
 
+	Hear->HearingRange = 800.f;
+	Hear->bUseLoSHearing = true;
+	Hear->LoSHearingRange = 1000.f;
+	Hear->DetectionByAffiliation.bDetectEnemies = true;
+	Hear->DetectionByAffiliation.bDetectFriendlies = true;
+	Hear->DetectionByAffiliation.bDetectNeutrals = true;
+	Hear->SetMaxAge(2.f);
+
 	PerceptionComp->ConfigureSense(*Sight);
+	PerceptionComp->ConfigureSense(*Hear);
 
 	TeamId = 1;
 }
@@ -51,6 +64,7 @@ void ACEnemyController::OnPossess(APawn* InPawn)
 
 		if (PossesMonster->GetBehaviorTree())
 			RunBehaviorTree(PossesMonster->GetBehaviorTree());
+
 	}
 	else if (InPawn->IsA<ACBoss>())
 	{
@@ -63,6 +77,9 @@ void ACEnemyController::OnPossess(APawn* InPawn)
 		Sight->SightRadius = 2000.f;
 		Sight->LoseSightRadius = 2500.f;
 		Sight->PeripheralVisionAngleDegrees = 180.f; // z축이 너무 차이가 나서 시야감지가 안됨..
+
+		Hear->HearingRange = 8000.f;
+		Hear->LoSHearingRange = 10000.f; // 얘는 z축이 괜찮네?
 	}
 
 	PerceptionComp->OnPerceptionUpdated.AddDynamic(this, &ACEnemyController::OnPerceptionUpdated);
@@ -80,7 +97,6 @@ void ACEnemyController::OnUnPossess()
 void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
 	TArray<AActor*> PerceivedActors;
-
 	PerceptionComp->GetCurrentlyPerceivedActors(nullptr, PerceivedActors);
 
 	ACEnemy* Enemy = Cast<ACEnemy>(GetPawn());

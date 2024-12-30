@@ -24,7 +24,7 @@ EBTNodeResult::Type UCBTTaskNode_FlyingPatrol::ExecuteTask(UBehaviorTreeComponen
 	CheckNullResult(Boss, EBTNodeResult::Failed);
 
 	Boss->GetFloatingComp()->MaxSpeed = 800.f;
-	Boss->SetActorRotation(FRotator(0, FMath::RandRange(0, 360), 0));
+	Boss->SetActorRotation(FRotator(0, FMath::RandRange(0, 360), 0)); 
 
 	return EBTNodeResult::InProgress;
 }
@@ -39,5 +39,5 @@ void UCBTTaskNode_FlyingPatrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint
 	ACBoss* Boss = Cast<ACBoss>(AIC->GetPawn());
 	CheckNull(Boss);
 
-	Boss->GetFloatingComp()->AddInputVector(FVector(Boss->GetActorForwardVector()));
+	Boss->GetFloatingComp()->AddInputVector(FVector(Boss->GetActorForwardVector())); 
 }

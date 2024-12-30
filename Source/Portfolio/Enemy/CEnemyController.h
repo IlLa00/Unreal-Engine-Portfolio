@@ -8,6 +8,7 @@ class UBlackboardData;
 class UBehaviorTree;
 class UAIPerceptionComponent;
 class UAISenseConfig_Sight;
+class UAISenseConfig_Hearing;
 
 UCLASS()
 class PORTFOLIO_API ACEnemyController : public AAIController
@@ -35,5 +36,5 @@ public:
 
 private:
 	UAISenseConfig_Sight* Sight;
-
+	UAISenseConfig_Hearing* Hear;
 };
