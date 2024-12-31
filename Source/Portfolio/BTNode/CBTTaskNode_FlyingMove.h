@@ -8,6 +8,9 @@ UCLASS()
 class PORTFOLIO_API UCBTTaskNode_FlyingMove : public UBTTaskNode
 {
 	GENERATED_BODY()
+
+public:
+	UCBTTaskNode_FlyingMove();
 	
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;

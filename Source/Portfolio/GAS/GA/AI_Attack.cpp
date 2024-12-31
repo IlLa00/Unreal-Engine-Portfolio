@@ -6,6 +6,7 @@
 #include "Enemy/CBoss.h"
 #include "DataAsset/CMonsterMeshDataAsset.h"
 #include "DataAsset/CBossDataAsset.h"
+#include "CAnimInstance.h"
 
 void UAI_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -25,13 +26,17 @@ void UAI_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
 		if (OwnerInfo->AvatarActor->IsA<ACBoss>())
 		{
 			ACBoss* Boss = Cast<ACBoss>(OwnerInfo->AvatarActor);
-			if (Boss)
-			{
-				if (Boss->GetDataAsset())
-				{
-					MontageToPlay = Boss->GetDataAsset()->Datas->MontageDatas.AttackMontage[0]; // todo.. 배열처리 해야할지도
-				}
-			}
+			CheckNull(Boss);
+
+			UCAnimInstance* Anim = Cast<UCAnimInstance>(Boss->GetMesh()->GetAnimInstance());
+			CheckNull(Anim);
+
+			CheckNull(Boss->GetBossDataAsset());
+			
+			if(Anim->IsFly)
+				MontageToPlay = Boss->GetBossDataAsset()->MontageDatas.AttackMontage[0];
+			else
+				MontageToPlay = Boss->GetBossDataAsset()->MontageDatas.AttackMontage[1]; // todo.. 나중에 수정해야할수도
 		}
 		else
 		{

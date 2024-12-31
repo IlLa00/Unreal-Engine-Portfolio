@@ -9,6 +9,7 @@
 #include "Components/BoxComponent.h"
 #include "AbilitySystemComponent.h"
 #include "GAS/GA/AI_Attack.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 UCBTTaskNode_Attack::UCBTTaskNode_Attack()
 {
@@ -21,7 +22,6 @@ EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& Own
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
-	// 일단 여기서 GA를 발동시키는걸 우선적으로.
 	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
 	{
 		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
@@ -64,12 +64,16 @@ EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& Own
 			{
 				if (Boss->GetAbilitySystemComponent())
 				{
+					AIC->SetFocus(Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")));
+
 					Boss->GetAbilitySystemComponent()->TryActivateAbility(Boss->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
+
 					return EBTNodeResult::InProgress;
 				}
 			}
 		}
 	}
+
 	return EBTNodeResult::Failed;
 }
 
@@ -125,9 +129,10 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 			{
 				if (Boss->GetAbilitySystemComponent())
 				{
-					if (!Boss->GetAbilitySystemComponent()->GetCurrentMontage())
+					if (!Boss->GetCurrentMontage())
 					{
 						Boss->GetAbilitySystemComponent()->CancelAbilityHandle(Boss->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
+
 						FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 					}
 				}
@@ -151,10 +156,11 @@ EBTNodeResult::Type UCBTTaskNode_Attack::AbortTask(UBehaviorTreeComponent& Owner
 				if (Pet->GetAbilitySystemComponent())
 				{
 
-					if (!Pet->GetAbilitySystemComponent()->GetCurrentMontage())
+					if (Pet->GetAbilitySystemComponent()->GetCurrentMontage())
 					{
 						Pet->GetAbilitySystemComponent()->CancelAbilityHandle(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
-						FinishLatentTask(OwnerComp, EBTNodeResult::Aborted);
+
+						return EBTNodeResult::Aborted;
 					}
 				}
 			}
@@ -170,18 +176,41 @@ EBTNodeResult::Type UCBTTaskNode_Attack::AbortTask(UBehaviorTreeComponent& Owner
 			{
 				if (Enemy->GetAbilitySystemComponent())
 				{
-					if (Enemy->GetAbilitySystemComponent()->GetCurrentMontage())
+					if (Enemy->GetCurrentMontage())
 					{
 						Enemy->StopAnimMontage();
 
 						Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
-						FinishLatentTask(OwnerComp, EBTNodeResult::Aborted);
+
+						return EBTNodeResult::Aborted;
+					}
+				}
+			}
+		}
+	}
+	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Boss").ToString())
+	{
+		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
+		if (AIC)
+		{
+			ACBoss* Boss = Cast<ACBoss>(AIC->GetPawn());
+			if (Boss)
+			{
+				if (Boss->GetAbilitySystemComponent())
+				{
+					if (Boss->GetCurrentMontage())
+					{
+						Boss->StopAnimMontage();
+
+						Boss->GetAbilitySystemComponent()->CancelAbilityHandle(Boss->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
+
+						return EBTNodeResult::Aborted;
 					}
 				}
 			}
 		}
 	}
 
-	return EBTNodeResult::Aborted;
+	return EBTNodeResult::Failed;
 }
 

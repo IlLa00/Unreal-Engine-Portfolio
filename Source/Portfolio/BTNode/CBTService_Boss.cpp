@@ -33,8 +33,9 @@ void UCBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 
 	if (AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")) // 타깃이 감지되면
 	{
-		float DistanceToTarget = Boss->GetDistanceTo(Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")));
-		if (DistanceToTarget < 800.f)
+		FHitResult HitResult;
+
+		if (GetWorld()->SweepSingleByChannel(HitResult,Boss->GetActorLocation(), Boss->GetActorLocation()+FVector(1), FQuat::Identity,ECollisionChannel::ECC_Pawn,FCollisionShape::MakeSphere(1500.f)))
 		{
 			Boss->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol")));
 			Boss->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));

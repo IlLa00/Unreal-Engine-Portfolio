@@ -49,7 +49,6 @@ void ACProjectile::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 	if (OtherActor->IsA<ACPlayer>()) // 널체크 조건 더 추가해야할거같음
 		return;
 
-	// TakeDamge 처리
 	if (GetOwner()->IsA<ACPet>())
 	{
 		ACPet* Pet = Cast<ACPet>(GetOwner());
