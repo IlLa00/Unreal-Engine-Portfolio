@@ -64,6 +64,8 @@ private:
 
 	void OnReload();
 
+	void OnJump();
+
 public:
 	UFUNCTION()
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);

@@ -12,37 +12,47 @@ UCLASS()
 class PORTFOLIO_API UCPlayerWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 public:
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()
-		void OnHealthChange(float NewHealth);
+	void OnHealthChange(float NewHealth);
 
 	UFUNCTION()
-		void OnStaminaChange(float NewStamina);
-	
+	void OnStaminaChange(float NewStamina);
+
 	void UpdateHealthBar(float Health);
 	void UpdateStaminaBar(float Stamina);
 
 	void UpdateEquipWeaponName(FText WeaponName);
 	void UpdateEquipWeaponImage(UTexture* WeaponImage);
 
+	void UpdateCurrentBullet(float Value);
+	void UpdateBaseBullet(float Value);
+
+	void ShowCurrentBullet(bool state);
+
 public:
 	UPROPERTY(meta = (BindWidget))
-		UProgressBar* PlayerHealthBar;
+	UProgressBar* PlayerHealthBar;
 
 	UPROPERTY(meta = (BindWidget))
-		UProgressBar* PlayerStaminaBar;
+	UProgressBar* PlayerStaminaBar;
 
 	UPROPERTY(meta = (BindWidget))
-		UProgressBar* PetHealthBar;
+	UProgressBar* PetHealthBar;
 
 	UPROPERTY(meta = (BindWidget))
-		UEditableTextBox* EquipWeaponName;
+	UEditableTextBox* EquipWeaponName;
 
 	UPROPERTY(meta = (BindWidget))
-		UImage* EquipWeaponImage;
+	UImage* EquipWeaponImage;
 
+	UPROPERTY(meta = (BindWidget))
+	UEditableTextBox* CurrentBullet;
+
+	UPROPERTY(meta = (BindWidget))
+	UEditableTextBox* BaseBullet;
 
 };

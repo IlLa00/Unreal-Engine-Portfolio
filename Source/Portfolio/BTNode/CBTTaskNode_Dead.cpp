@@ -6,6 +6,7 @@
 #include "Pet/CPet.h"
 #include "Enemy/CEnemyController.h"
 #include "Enemy/CEnemy.h"
+#include "Enemy/CBoss.h"
 #include "GAS/GA/AI_Dead.h"
 
 UCBTTaskNode_Dead::UCBTTaskNode_Dead()
@@ -28,6 +29,23 @@ EBTNodeResult::Type UCBTTaskNode_Dead::ExecuteTask(UBehaviorTreeComponent& Owner
 				if (Enemy->GetAbilitySystemComponent())
 				{
 					Enemy->GetAbilitySystemComponent()->TryActivateAbility(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Dead::StaticClass())->Handle);
+
+					return EBTNodeResult::Succeeded;
+				}
+			}
+		}
+	}
+	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Boss").ToString())
+	{
+		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
+		if (AIC)
+		{
+			ACBoss* Boss = Cast<ACBoss>(AIC->GetPawn());
+			if (Boss)
+			{
+				if (Boss->GetAbilitySystemComponent())
+				{
+					Boss->GetAbilitySystemComponent()->TryActivateAbility(Boss->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Dead::StaticClass())->Handle);
 
 					return EBTNodeResult::Succeeded;
 				}

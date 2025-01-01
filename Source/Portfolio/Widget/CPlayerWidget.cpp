@@ -88,6 +88,31 @@ void UCPlayerWidget::UpdateEquipWeaponImage(UTexture* WeaponImage)
     EquipWeaponImage->Brush.SetResourceObject(WeaponImage);
 }
 
+void UCPlayerWidget::UpdateCurrentBullet(float Value)
+{
+    CurrentBullet->SetText(FText::AsNumber(Value));
+}
+
+void UCPlayerWidget::UpdateBaseBullet(float Value)
+{
+    BaseBullet->SetText(FText::AsNumber(Value));
+}
+
+void UCPlayerWidget::ShowCurrentBullet(bool state)
+{
+    if (state)
+    {
+        CurrentBullet->SetVisibility(ESlateVisibility::Visible);
+        BaseBullet->SetVisibility(ESlateVisibility::Visible);
+    }
+    else
+    {
+        CurrentBullet->SetVisibility(ESlateVisibility::Hidden);
+        BaseBullet->SetVisibility(ESlateVisibility::Hidden);
+    }
+   
+}
+
 void UCPlayerWidget::OnHealthChange(float NewHealth)
 {
     UpdateHealthBar(NewHealth);

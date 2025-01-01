@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Player/CPlayer.h"
 #include "Weapon/CWeapon.h"
+#include "Weapon/CRifle.h"
 #include "AbilitySystemComponent.h"
 #include "GameplayTagContainer.h"
 #include "Widget/CPlayerWidget.h"
@@ -79,6 +80,18 @@ void ACEquipment::Equip(int32 slot)
 	OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponImage(NewWeapon->GetWeaponImage()); 
 	OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponName(NewWeapon->GetWeaponName());
 
+	if (NewWeapon->IsA<ACRifle>())
+	{
+		ACRifle* Rifle = Cast<ACRifle>(NewWeapon);
+		CheckNull(Rifle);
+
+		OwnerCharacter->GetPlayerWidget()->ShowCurrentBullet(true);
+		OwnerCharacter->GetPlayerWidget()->UpdateBaseBullet(Rifle->GetBaseBullet());
+		OwnerCharacter->GetPlayerWidget()->UpdateCurrentBullet(Rifle->GetCurrentBullet());
+	}
+	else
+		OwnerCharacter->GetPlayerWidget()->ShowCurrentBullet(false);
+
 	// 우클릭 풀어야됨
 }
 
@@ -102,7 +115,7 @@ void ACEquipment::Begin_Equip()
 
 	}
 
-	NewWeapon->SetActorHiddenInGame(false); 
+	NewWeapon->SetActorHiddenInGame(false);
 	NewWeapon->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, NewWeapon->GetSocketName());
 
 	OwnerCharacter->GetTagContainer().AddTag(*(NewWeapon->GetTag()));
@@ -121,7 +134,7 @@ void ACEquipment::OnMainAction()
 
 void ACEquipment::OffMainAction()
 {
-	CheckNull(CurrentEquipWeapon);
+	CheckNull(CurrentEquipWeapon); 
 
 	CurrentEquipWeapon->GetAbilitySystemComponent()->CancelAbilityHandle(CurrentEquipWeapon->GetWeaponAbilitySpec().Handle);
 }

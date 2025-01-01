@@ -1,17 +1,17 @@
 #include "AI_GetHit.h"
 #include "Global.h"
-#include "Enemy/CEnemy.h"
+#include "Enemy/CMonster.h"
 #include "Pet/CPet.h"
 #include "DataAsset/CPetDataAsset.h"
 
 void UAI_GetHit::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-	ACEnemy* Enemy = Cast<ACEnemy>(OwnerInfo->AvatarActor);
-	if (Enemy)
+	ACMonster* Monster = Cast<ACMonster>(OwnerInfo->AvatarActor);
+	if (Monster)
 	{
-		if (Enemy->GetDataAsset())
+		if (Monster->GetDataAsset())
 		{
-			MontageToPlay = Enemy->GetDataAsset()->Datas->MontageDatas.HittedMontage;
+			MontageToPlay = Monster->GetDataAsset()->Datas->MontageDatas.HittedMontage;
 		}
 	}
 

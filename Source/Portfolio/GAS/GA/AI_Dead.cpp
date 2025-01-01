@@ -2,11 +2,15 @@
 #include "Global.h"
 #include "Pet/CPet.h"
 #include "DataAsset/CPetDataAsset.h"
-#include "Enemy/CEnemy.h"
+#include "Enemy/CMonster.h"
+#include "Enemy/CBoss.h"
 #include "DataAsset/CMonsterMeshDataAsset.h"
 #include "Item/CItem_HealBuff.h"
 #include "Components/ShapeComponent.h"
 #include "DataAsset/CMonsterMeshDataAsset.h"
+#include "DataAsset/CBossDataAsset.h"
+#include "GameFramework/FloatingPawnMovement.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -21,16 +25,29 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 			}
 		}
 	}
-	else if (OwnerInfo->AvatarActor->IsA<ACEnemy>())
+	else if (OwnerInfo->AvatarActor->IsA<ACMonster>())
 	{
-		ACEnemy* Enemy = Cast<ACEnemy>(OwnerInfo->AvatarActor);
-		if (Enemy)
+		ACMonster* Monster = Cast<ACMonster>(OwnerInfo->AvatarActor);
+		if (Monster)
 		{
-			if (Enemy->GetDataAsset())
+			if (Monster->GetDataAsset())
 			{
 				PrintLine();
-				MontageToPlay = Enemy->GetDataAsset()->Datas[Enemy->GetIndex()].MontageDatas.DeadMontage;
-				Dead(Enemy); // 아무리봐도 인터페이스가 있어야할지도?
+				MontageToPlay = Monster->GetDataAsset()->Datas[Monster->GetIndex()].MontageDatas.DeadMontage;
+				Dead(Monster); 
+			}
+		}
+	}
+	else if (OwnerInfo->AvatarActor->IsA<ACBoss>())
+	{
+		ACBoss* Boss = Cast<ACBoss>(OwnerInfo->AvatarActor);
+		if (Boss)
+		{
+			if (Boss->GetBossDataAsset())
+			{
+				PrintLine();
+				MontageToPlay = Boss->GetBossDataAsset()->MontageDatas.DeadMontage;
+				Dead(Boss);
 			}
 		}
 	}
@@ -41,15 +58,15 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 void UAI_Dead::Dead(ACharacter* Character)
 {
 	// 이렇게 분류하는게 맞을까싶음 인터페이스 쓸생각하자
-	if (Character->IsA<ACEnemy>())
+	if (Character->IsA<ACMonster>())
 	{
-		ACEnemy* Enemy = Cast<ACEnemy>(Character);
-		CheckNull(Enemy);
+		ACMonster* Monster = Cast<ACMonster>(Character);
+		CheckNull(Monster);
 
-		Enemy->GetController()->UnPossess(); // 이걸로 감지컴포넌트 안꺼지면 캐스트하자. 컨트롤러 삭제도해야하지않나?
+		Monster->GetController()->UnPossess(); // 이걸로 감지컴포넌트 안꺼지면 캐스트하자. 컨트롤러 삭제도해야하지않나?
 
 		TArray<UShapeComponent*> OutComps;
-		Enemy->GetComponents<UShapeComponent>(OutComps);
+		Monster->GetComponents<UShapeComponent>(OutComps);
 
 		for (const auto& Comp : OutComps)
 		{
@@ -57,10 +74,28 @@ void UAI_Dead::Dead(ACharacter* Character)
 		}
 
 		FTransform FT;
-		FT.SetLocation(Enemy->GetActorLocation());
+		FT.SetLocation(Monster->GetActorLocation());
 		FT.SetRotation(FQuat());
 
-		GetWorld()->SpawnActor<ACItem>(Enemy->GetDataAsset()->Datas[Enemy->GetIndex()].DropItem, FT);
+		GetWorld()->SpawnActor<ACItem>(Monster->GetDataAsset()->Datas[Monster->GetIndex()].DropItem, FT);
+	}
+	else if (Character->IsA<ACBoss>())
+	{
+		ACBoss* Boss = Cast<ACBoss>(Character);
+		CheckNull(Boss);
+
+		Boss->GetController()->UnPossess(); // 이걸로 감지컴포넌트 안꺼지면 캐스트하자. 컨트롤러 삭제도해야하지않나?
+		
+		Boss->GetComponentByClass<UFloatingPawnMovement>()->SetActive(false);
+		// Boss->GetComponentByClass<UCharacterMovementComponent>()->SetActive(false);
+
+		Boss->GetMesh()->SetSimulatePhysics(true);
+
+		//FTransform FT;
+		//FT.SetLocation(Boss->GetActorLocation());
+		//FT.SetRotation(FQuat());
+
+		//GetWorld()->SpawnActor<ACItem>(Monster->GetDataAsset()->Datas[Monster->GetIndex()].DropItem, FT);
 	}
 	
 	// 숙련도 증가 <- 숙련도 증가하는걸 위젯에 보이게 하기

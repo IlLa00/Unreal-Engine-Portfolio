@@ -16,6 +16,7 @@
 #include "GAS/Attribute/CCharacterAttributeSet.h"
 #include "GAS/GA/Summon.h"
 #include "GAS/GA/Sprint.h"
+#include "GAS/GA/Jump.h"
 #include "Equipment/CEquipment.h"
 
 ACPlayer::ACPlayer()
@@ -91,6 +92,7 @@ void ACPlayer::BeginPlay()
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
+
 	Equipment = GetWorld()->SpawnActor<ACEquipment>(EquipmentClass, SpawnParams);
 	CheckNull(Equipment);
 
@@ -153,6 +155,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("SubAction", IE_Released, this, &ACPlayer::OffSubAction);
 
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ACPlayer::OnReload);
+
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACPlayer::OnJump);
 }
 
 UAbilitySystemComponent* ACPlayer::GetAbilitySystemComponent() const
@@ -175,6 +179,9 @@ void ACPlayer::SetGameplayAbility()
 
 	FGameplayAbilitySpec SprintAbilitySpec(USprint::StaticClass());
 	ASC->GiveAbility(SprintAbilitySpec);
+
+	FGameplayAbilitySpec JumpAbilitySpec(UJump::StaticClass());
+	ASC->GiveAbility(JumpAbilitySpec);
 }
 
 void ACPlayer::SetGameplayEffect()
@@ -285,6 +292,15 @@ void ACPlayer::OffSubAction()
 void ACPlayer::OnReload()
 {
 	Equipment->Reload();
+}
+
+void ACPlayer::OnJump()
+{
+	if (!GetCharacterMovement()->IsFalling())
+	{
+		ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(UJump::StaticClass())->Handle);
+	}
+		
 }
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)

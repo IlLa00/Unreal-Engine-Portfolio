@@ -6,6 +6,8 @@
 #include "GAS/GA/Rifle.h"
 #include "GAS/GA/Aim.h"
 #include "GAS/GA/ReloadRifle.h"
+#include "Player/CPlayer.h"
+#include "Widget/CPlayerWidget.h"
 
 ACRifle::ACRifle()
 {
@@ -20,7 +22,7 @@ ACRifle::ACRifle()
 
 	AttachSocketName = "hand_r_Rifle";
 
-	bullet = 30;
+	BaseBullet = 30;
 
 }
 
@@ -64,6 +66,8 @@ void ACRifle::BeginPlay()
 			break;
 		}
 	}
+
+	CurrentBullet = BaseBullet;
 }
 
 void ACRifle::Tick(float DeltaTime)
@@ -74,7 +78,12 @@ void ACRifle::Tick(float DeltaTime)
 
 void ACRifle::Reload()
 {
-	bullet = 30;
+	CurrentBullet = BaseBullet;
+
+	ACPlayer* Player = Cast<ACPlayer>(GetOwner());
+	CheckNull(Player);
+
+	Player->GetPlayerWidget()->UpdateCurrentBullet(CurrentBullet);
 }
 
 void ACRifle::Shooting_Implementation()
@@ -82,18 +91,21 @@ void ACRifle::Shooting_Implementation()
 	if (IsReload())
 		return;
 
-	if (bullet <= 0)
+	if (CurrentBullet <= 0)
 	{
 		bReload = true;
 		Reloading();
 		return;
 	}
 
-	bullet -= 1;
+	CurrentBullet -= 1;
 
-	bullet = FMath::Clamp(bullet, 0, 30);
-	CLog::Print(bullet);
+	ACPlayer* Player = Cast<ACPlayer>(GetOwner());
+	CheckNull(Player);
 
+	Player->GetPlayerWidget()->UpdateCurrentBullet(CurrentBullet);
+
+	// CurrentBullet = FMath::Clamp(CurrentBullet, 0, 30);
 }
 
 void ACRifle::Reloading_Implementation()

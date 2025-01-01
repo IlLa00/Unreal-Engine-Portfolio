@@ -4,8 +4,6 @@
 #include "Abilities/GameplayAbility.h"
 #include "Rifle.generated.h"
 
-class ACPlayer;
-
 UCLASS()
 class PORTFOLIO_API URifle : public UGameplayAbility
 {

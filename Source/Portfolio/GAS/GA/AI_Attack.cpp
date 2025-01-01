@@ -2,7 +2,7 @@
 #include "Global.h"
 #include "Pet/CPet.h"
 #include "DataAsset/CPetDataAsset.h"
-#include "Enemy/CEnemy.h"
+#include "Enemy/CMonster.h"
 #include "Enemy/CBoss.h"
 #include "DataAsset/CMonsterMeshDataAsset.h"
 #include "DataAsset/CBossDataAsset.h"
@@ -40,12 +40,12 @@ void UAI_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
 		}
 		else
 		{
-			ACEnemy* Enemy = Cast<ACEnemy>(OwnerInfo->AvatarActor);
-			if (Enemy)
+			ACMonster* Monster = Cast<ACMonster>(OwnerInfo->AvatarActor);
+			if (Monster)
 			{
-				if (Enemy->GetDataAsset())
+				if (Monster->GetDataAsset())
 				{
-					MontageToPlay = Enemy->GetDataAsset()->Datas[Enemy->GetIndex()].MontageDatas.AttackMontage[0];
+					MontageToPlay = Monster->GetDataAsset()->Datas[Monster->GetIndex()].MontageDatas.AttackMontage[0];
 				}
 			}
 		}

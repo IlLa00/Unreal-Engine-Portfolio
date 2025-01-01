@@ -7,9 +7,12 @@
 #include "AbilitySystemComponent.h"
 #include "Player/CPlayer.h"
 #include "Enemy/CEnemy.h"
+#include "Enemy/CBoss.h"
 #include "GAS/Attribute/CMonsterAttributeSet.h"
 #include "Pet/CPet.h"
 #include "GAS/Attribute/CPetAttributeSet.h"
+#include "GAS/Attribute/CCharacterAttributeSet.h"
+#include "GAS/Attribute/CAIAttributeSet.h"
 
 ACStorm::ACStorm()
 {
@@ -46,13 +49,14 @@ void ACStorm::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 {
 	if (OtherActor == GetOwner()) return;
 
-	CLog::Print(OtherActor->GetName());
+	ACBoss* Boss = Cast<ACBoss>(GetOwner());
+	CheckNull(Boss);
 
-	ACharacter* Character = Cast<ACharacter>(OtherActor);
-	CheckNull(Character);
+	ACPlayer* Player = Cast<ACPlayer>(OtherActor);
+	CheckNull(Player);
 
-	Character->LaunchCharacter(FVector(0, 0, 1000), false, false);
-
+	Player->LaunchCharacter(FVector(0, 0, 1000), false, false);
+	Player->GetAttributeSet()->SetCurrentHealth(Player->GetAttributeSet()->GetCurrentHealth() - Boss->GetAIAttributeSet()->GetCurrentDamage());
 	// 데미지 처리도 하자.
 }
 

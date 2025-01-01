@@ -3,9 +3,10 @@
 #include "Player/CPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Enemy/CEnemy.h"
-#include "GAS/Attribute/CMonsterAttributeSet.h"
 #include "Weapon/CRifle.h"
 #include "GAS/Attribute/CWeaponAttributeSet.h"
+#include "Interface/CAIInterface.h"
+#include "GAS/Attribute/CAIAttributeSet.h"
 
 URifle::URifle()
 {
@@ -47,7 +48,7 @@ void URifle::Shoot()
 	if (Rifle->IsReload())
 		return;
 
-	Rifle->Shooting(); // 위젯과도 연동해야할거같은디
+	Rifle->Shooting(); 
 
 	ACPlayer* Player = Cast<ACPlayer>(GetOwningActorFromActorInfo()->GetOwner());
 	CheckNull(Player);
@@ -66,9 +67,9 @@ void URifle::Shoot()
 
 	if (GetWorld()->LineTraceSingleByObjectType(HitResult, Start, End, Parms))
 	{
-		ACEnemy* Enemy = Cast<ACEnemy>(HitResult.GetActor());
-		CheckNull(Enemy);
+		ICAIInterface* AI = Cast<ICAIInterface>(HitResult.GetActor());
+		CheckNull(AI);
 
-		Enemy->GetAttributeSet()->SetCurrentHealth(Enemy->GetAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage());
+		AI->GetAIAttributeSet()->SetCurrentHealth(AI->GetAIAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage());
 	}
 }

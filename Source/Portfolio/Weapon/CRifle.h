@@ -29,12 +29,18 @@ public:
 	bool IsReload() { return bReload; }
 	void SetReloadMode(bool state) { bReload = state; }
 
+	FORCEINLINE int32 GetCurrentBullet() { return CurrentBullet; }
+	FORCEINLINE int32 GetBaseBullet() { return BaseBullet; }
+
 public:
 	void Reload();
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-		int32 bullet;
+		int32 CurrentBullet;
+
+	UPROPERTY(EditDefaultsOnly)
+		int32 BaseBullet;
 
 private:
 	bool bReload;

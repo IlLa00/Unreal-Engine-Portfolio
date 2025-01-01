@@ -1,6 +1,6 @@
 #include "CMonsterAttributeSet.h"
 #include "Global.h"
-#include "Enemy/CEnemy.h"
+#include "Enemy/CMonster.h"
 #include "GameplayTagContainer.h"
 #include "GameplayTagsManager.h"
 #include "Widget/CEnemyHealthWidget.h"
@@ -17,20 +17,20 @@ void UCMonsterAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribu
 
 void UCMonsterAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
-	ACEnemy* Enemy = Cast<ACEnemy>(GetOwningActor());
-	CheckNull(Enemy);
+	//ACMonster* Monster = Cast<ACMonster>(GetOwningActor());
+	//CheckNull(Monster);
 
-	if (NewValue <= 0.f) // 죽었으면
-	{
-		TagHelpers::AIChangeStateTag(Enemy->GetTagContainer(), "AI.Action.Dead");
-	}
+	//if (NewValue <= 0.f) // 죽었으면
+	//{
+	//	TagHelpers::AIChangeStateTag(Monster->GetTagContainer(), "AI.Action.Dead");
+	//}
 
-	if (OldValue > NewValue) // 체력이 감소했으면
-	{
-		TagHelpers::AIChangeStateTag(Enemy->GetTagContainer(), "AI.Action.GetHit");
+	//if (OldValue > NewValue) // 체력이 감소했으면
+	//{
+	//	TagHelpers::AIChangeStateTag(Monster->GetTagContainer(), "AI.Action.GetHit");
 
-		Enemy->GetHealthWidget()->Update(NewValue, GetBaseHealth()); // 델리게이트로 해보자.
-	}
+	//	Monster->GetHealthWidget()->Update(NewValue, GetBaseHealth()); // 델리게이트로 해보자.
+	//}
 }
 
 void UCMonsterAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

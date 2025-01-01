@@ -11,6 +11,8 @@
 #include "GAS/Attribute/CMonsterAttributeSet.h"
 #include "Pet/CPet.h"
 #include "GAS/Attribute/CPetAttributeSet.h"
+#include "Interface/CAIInterface.h"
+#include "GAS/Attribute/CAIAttributeSet.h"
 
 ACProjectile::ACProjectile()
 {
@@ -54,10 +56,11 @@ void ACProjectile::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 		ACPet* Pet = Cast<ACPet>(GetOwner());
 		CheckNull(Pet);	
 
-		ACEnemy* Enemy = Cast<ACEnemy>(OtherActor);
-		CheckNull(Enemy);
+		ICAIInterface* AI = Cast<ICAIInterface>(OtherActor);
+		CheckNull(AI);
 
-		Enemy->GetAttributeSet()->SetCurrentHealth(Enemy->GetAttributeSet()->GetCurrentHealth() - Pet->GetAttributeSet()->GetCurrentDamage());
+		AI->GetAIAttributeSet()->SetCurrentHealth(AI->GetAIAttributeSet()->GetCurrentHealth() - Pet->GetAttributeSet()->GetCurrentDamage());
+		// 여기도 더 생각해서 손봐야할듯
 	}
 
 	Destroy();

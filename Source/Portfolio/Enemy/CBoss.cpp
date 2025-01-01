@@ -3,7 +3,9 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DataAsset/CBossDataAsset.h"
+#include "GAS/Attribute/CAIAttributeSet.h"
 #include "Enemy/CEnemyController.h"
+#include "Widget/CBossWidget.h"
 
 ACBoss::ACBoss()
 {
@@ -23,6 +25,9 @@ ACBoss::ACBoss()
 	
 	CHelpers::GetAsset(&BossDataAsset, "/Game/DataAsset/DA_Boss");
 	CheckNull(BossDataAsset);
+
+	CHelpers::GetClass(&BossWidgetClass, "/Game/Widget/BP_CBossWidget");
+	CheckNull(BossWidgetClass);
 }
 
 void ACBoss::BeginPlay()
@@ -30,6 +35,17 @@ void ACBoss::BeginPlay()
 	Super::BeginPlay();
 
 	GetMesh()->SetAnimClass(AnimClass);
+
+	if (AIAttribute)
+	{
+		AIAttribute->SetBaseHealth(BossDataAsset->BaseHealth);
+		AIAttribute->SetBaseDamage(BossDataAsset->BaseDamage);
+		AIAttribute->SetCurrentHealth(AIAttribute->GetBaseHealth());
+		AIAttribute->SetCurrentDamage(AIAttribute->GetBaseDamage());
+	}
+
+	CLog::Print(AIAttribute->GetCurrentHealth());
+	CLog::Print(AIAttribute->GetCurrentDamage());
 }
 
 void ACBoss::Tick(float DeltaTime)
@@ -37,4 +53,24 @@ void ACBoss::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 
+}
+
+void ACBoss::SetWidget(bool state)
+{
+	if (state)
+	{
+		if (!BossWidget)
+		{
+			BossWidget = CreateWidget<UCBossWidget>(GetWorld(), BossWidgetClass);
+			CheckNull(BossWidget);
+
+			BossWidget->AddToViewport();
+			BossWidget->Update(AIAttribute->GetCurrentHealth(), AIAttribute->GetBaseHealth());
+		}
+	}
+	else
+	{
+		if (BossWidget)
+			BossWidget->RemoveFromParent();
+	}
 }

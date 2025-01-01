@@ -5,6 +5,8 @@
 #include "Components/BoxComponent.h"
 #include "Enemy/CEnemy.h"
 #include "GAS/Attribute/CMonsterAttributeSet.h"
+#include "Interface/CAIInterface.h"
+#include "GAS/Attribute/CAIAttributeSet.h"
 
 ACWeapon::ACWeapon()
 {
@@ -60,10 +62,10 @@ void ACWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 
 	if (OtherActor->IsA<ACEnemy>())
 	{
-		ACEnemy* Enemy = Cast<ACEnemy>(OtherActor);
-		CheckNull(Enemy);
+		ICAIInterface* AI = Cast<ICAIInterface>(OtherActor);
+		CheckNull(AI);
 
-		Enemy->GetAttributeSet()->SetCurrentHealth(Enemy->GetAttributeSet()->GetCurrentHealth() - Attribute->GetCurrentDamage());
+		AI->GetAIAttributeSet()->SetCurrentHealth(AI->GetAIAttributeSet()->GetCurrentHealth() - Attribute->GetCurrentDamage());
 	}
 }
 

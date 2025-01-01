@@ -10,10 +10,10 @@ UCLASS()
 class PORTFOLIO_API UCEnemyHealthWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 public:
-	UFUNCTION(BlueprintCallable)
-	void Update(float InCurrentHealth, float InMaxHealth);
+	UFUNCTION()
+		void Update(float NewHealth, float BaseHealth);
 
 private:
 	UPROPERTY(meta = (BindWidget))
