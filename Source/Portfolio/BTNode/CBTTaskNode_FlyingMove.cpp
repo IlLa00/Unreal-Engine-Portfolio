@@ -41,6 +41,9 @@ void UCBTTaskNode_FlyingMove::TickTask(UBehaviorTreeComponent& OwnerComp, uint8*
 
 	Boss->GetFloatingComp()->AddInputVector(Boss->GetActorForwardVector());
 
+	if (Boss->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack"))))
+		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+
 }
 
 EBTNodeResult::Type UCBTTaskNode_FlyingMove::AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -53,7 +56,7 @@ EBTNodeResult::Type UCBTTaskNode_FlyingMove::AbortTask(UBehaviorTreeComponent& O
 	ACBoss* Boss = Cast<ACBoss>(AIC->GetPawn());
 	CheckNullResult(Boss, EBTNodeResult::Failed);
 
-	Boss->GetFloatingComp()->StopMovementImmediately();
-	PrintLine();
+	Boss->GetFloatingComp()->AddInputVector(FVector(0));
+
 	return EBTNodeResult::Aborted;
 }

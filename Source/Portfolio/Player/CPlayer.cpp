@@ -157,6 +157,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ACPlayer::OnReload);
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACPlayer::OnJump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACPlayer::OffJump);
 }
 
 UAbilitySystemComponent* ACPlayer::GetAbilitySystemComponent() const
@@ -301,6 +302,11 @@ void ACPlayer::OnJump()
 		ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(UJump::StaticClass())->Handle);
 	}
 		
+}
+
+void ACPlayer::OffJump()
+{
+	ASC->CancelAbilityHandle(ASC->FindAbilitySpecFromClass(USummon::StaticClass())->Handle);
 }
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)

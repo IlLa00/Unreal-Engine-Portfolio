@@ -41,3 +41,18 @@ void UCBTTaskNode_FlyingPatrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint
 
 	Boss->GetFloatingComp()->AddInputVector(FVector(Boss->GetActorForwardVector())); 
 }
+
+EBTNodeResult::Type UCBTTaskNode_FlyingPatrol::AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+{
+	Super::AbortTask(OwnerComp, NodeMemory);
+
+	ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
+	CheckNullResult(AIC, EBTNodeResult::Failed);
+
+	ACBoss* Boss = Cast<ACBoss>(AIC->GetPawn());
+	CheckNullResult(Boss, EBTNodeResult::Failed);
+	
+	Boss->GetFloatingComp()->StopMovementImmediately();
+
+	return EBTNodeResult::Aborted;
+}

@@ -28,6 +28,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
 		bool IsFly;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
+		bool IsFall;
+
 	UPROPERTY(BlueprintReadOnly, Category = "GameplayTag")
 		FGameplayTagContainer TagContainer;
 };

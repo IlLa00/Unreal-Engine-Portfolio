@@ -65,6 +65,7 @@ private:
 	void OnReload();
 
 	void OnJump();
+	void OffJump();
 
 public:
 	UFUNCTION()

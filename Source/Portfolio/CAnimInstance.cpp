@@ -37,6 +37,8 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 		TagContainer = Enemy->GetTagContainer();
 	}
+
+	IsFall = OwnerCharacter->GetCharacterMovement()->IsFalling();
 }
 
 void UCAnimInstance::NativeBeginPlay()
