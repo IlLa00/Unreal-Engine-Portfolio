@@ -58,7 +58,7 @@ void UCBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	}
 	else
 	{
-		Boss->SetWidget(false);
+		Boss->SetWidget(false); // 여기 자꾸 왜 이러지
 
 		if(Boss->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach"))))
 			Boss->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
