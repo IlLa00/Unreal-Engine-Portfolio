@@ -19,7 +19,7 @@ UCBTTaskNode_GetHit::UCBTTaskNode_GetHit()
 EBTNodeResult::Type UCBTTaskNode_GetHit::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-	
+
 	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
 	{
 		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
@@ -95,11 +95,61 @@ void UCBTTaskNode_GetHit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 					if (!Enemy->GetAbilitySystemComponent()->GetCurrentMontage())
 					{
 						Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
-						
+
 						FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 					}
 				}
 			}
 		}
 	}
+}
+
+EBTNodeResult::Type UCBTTaskNode_GetHit::AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+{
+	Super::AbortTask(OwnerComp, NodeMemory);
+
+	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
+	{
+		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
+		if (AIC)
+		{
+			ACPet* Pet = Cast<ACPet>(AIC->GetPawn());
+			if (Pet)
+			{
+				if (Pet->GetAbilitySystemComponent())
+				{
+					if (Pet->GetCurrentMontage())
+						Pet->StopAnimMontage();
+
+					Pet->GetAbilitySystemComponent()->CancelAbilityHandle(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
+
+					return EBTNodeResult::Aborted;
+
+				}
+			}
+		}
+	}
+	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Enemy").ToString())
+	{
+		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
+		if (AIC)
+		{
+			ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetPawn());
+			if (Enemy)
+			{
+				if (Enemy->GetAbilitySystemComponent())
+				{
+					if (Enemy->GetCurrentMontage())
+						Enemy->StopAnimMontage();
+
+					Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
+
+					return EBTNodeResult::Aborted;
+
+				}
+			}
+		}
+	}
+
+	return EBTNodeResult::Failed;
 }
