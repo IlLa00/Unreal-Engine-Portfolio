@@ -22,6 +22,8 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 			if (Pet->GetDataAsset())
 			{
 				MontageToPlay = Pet->GetDataAsset()->MontageDatas.DeadMontage;
+
+				Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
 				Dead(Pet);
 			}
 		}
@@ -35,7 +37,9 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 			{
 				PrintLine();
 				MontageToPlay = Monster->GetDataAsset()->Datas[Monster->GetIndex()].MontageDatas.DeadMontage;
-				//Dead(Monster); 
+
+				Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
+				Dead(Monster); 
 			}
 		}
 	}
@@ -48,12 +52,14 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 			{
 				PrintLine();
 				MontageToPlay = Boss->GetBossDataAsset()->MontageDatas.DeadMontage;
+
+				Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
 				Dead(Boss);
 			}
 		}
 	}
 
-	Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
+	
 
 	// 어빌리티 종료를 언제해야할까? 일단 죽는 몽타주는 제대로 나오는것 같음.
 }
@@ -82,7 +88,7 @@ void UAI_Dead::Dead(ACharacter* Character)
 
 		GetWorld()->SpawnActor<ACItem>(Monster->GetDataAsset()->Datas[Monster->GetIndex()].DropItem, FT);
 		
-		// EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
+		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
 	}
 	else if (Character->IsA<ACBoss>())
 	{
@@ -101,7 +107,7 @@ void UAI_Dead::Dead(ACharacter* Character)
 
 		GetWorld()->SpawnActor<ACItem>(Boss->GetBossDataAsset()->DropItem, FT);
 
-		// EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
+		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
 	}
 	else if (Character->IsA<ACPet>())
 	{
@@ -110,7 +116,7 @@ void UAI_Dead::Dead(ACharacter* Character)
 
 		Pet->GetController()->UnPossess();
 
-		// EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
+		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
 	}
 	
 	// 숙련도 증가 <- 숙련도 증가하는걸 위젯에 보이게 하기

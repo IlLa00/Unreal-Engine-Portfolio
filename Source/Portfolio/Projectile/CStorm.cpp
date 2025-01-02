@@ -58,7 +58,9 @@ void ACStorm::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		CheckNull(Player);
 
 		Player->LaunchCharacter(FVector(0, 0, 1000), false, false);
-		Player->GetAttributeSet()->SetCurrentHealth(Player->GetAttributeSet()->GetCurrentHealth() - Boss->GetAIAttributeSet()->GetCurrentDamage());
+
+		if(Player->GetAttributeSet())
+			Player->GetAttributeSet()->SetCurrentHealth(Player->GetAttributeSet()->GetCurrentHealth() - Boss->GetAIAttributeSet()->GetCurrentDamage());
 	}
 	else if (OtherActor->IsA<ACPet>())
 	{
@@ -66,7 +68,9 @@ void ACStorm::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		CheckNull(Pet);
 
 		Pet->LaunchCharacter(FVector(0, 0, 1000), false, false);
-		Pet->GetAIAttributeSet()->SetCurrentHealth(Pet->GetAIAttributeSet()->GetCurrentHealth() - Boss->GetAIAttributeSet()->GetCurrentDamage());
+
+		if (Pet->GetAIAttributeSet())
+			Pet->GetAIAttributeSet()->SetCurrentHealth(Pet->GetAIAttributeSet()->GetCurrentHealth() - Boss->GetAIAttributeSet()->GetCurrentDamage());
 	}
 	
 }

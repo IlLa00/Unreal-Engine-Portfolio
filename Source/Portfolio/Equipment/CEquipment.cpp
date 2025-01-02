@@ -162,10 +162,8 @@ void ACEquipment::Reload()
 {
 	CheckNull(CurrentEquipWeapon);
 
-	// todo.. 여기 조건 걸어야됨 아마 총을들때만 작동하게?
-
-	/*if (CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle)
-		return;*/
-
-	CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle);
+	if (CurrentEquipWeapon->GetWeaponName().ToString() == "Rifle")
+	{
+		CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle);
+	}
 }

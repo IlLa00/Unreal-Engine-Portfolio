@@ -8,7 +8,7 @@
 #include "AbilitySystemComponent.h"
 #include "GAS/GA/AI_Attack.h"
 #include "GAS/GA/AI_GetHit.h"
-
+#include "GameFramework/CharacterMovementComponent.h"
 UCBTTaskNode_GetHit::UCBTTaskNode_GetHit()
 {
 	NodeName = "Attack";
@@ -47,6 +47,8 @@ EBTNodeResult::Type UCBTTaskNode_GetHit::ExecuteTask(UBehaviorTreeComponent& Own
 			{
 				if (Enemy->GetAbilitySystemComponent())
 				{
+					Enemy->GetCharacterMovement()->StopMovementImmediately();
+
 					Enemy->GetAbilitySystemComponent()->TryActivateAbility(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
 
 					return EBTNodeResult::InProgress;
@@ -72,7 +74,7 @@ void UCBTTaskNode_GetHit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 			{
 				if (Pet->GetAbilitySystemComponent())
 				{
-					if (!Pet->GetAbilitySystemComponent()->GetCurrentMontage())
+					if (!Pet->GetCurrentMontage())
 					{
 						Pet->GetAbilitySystemComponent()->CancelAbilityHandle(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
 
@@ -92,9 +94,11 @@ void UCBTTaskNode_GetHit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 			{
 				if (Enemy->GetAbilitySystemComponent())
 				{
-					if (!Enemy->GetAbilitySystemComponent()->GetCurrentMontage())
+					if (!Enemy->GetCurrentMontage())
 					{
 						Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
+
+						Enemy->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.GetHit")));
 
 						FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 					}

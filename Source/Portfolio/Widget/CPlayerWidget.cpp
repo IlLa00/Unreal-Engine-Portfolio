@@ -27,6 +27,9 @@ void UCPlayerWidget::NativeConstruct()
 		Player->GetAttributeSet()->OnHealthChanged.AddDynamic(this, &UCPlayerWidget::OnHealthChange);
 		Player->GetAttributeSet()->OnStaminaChanged.AddDynamic(this, &UCPlayerWidget::OnStaminaChange);
 	}
+
+	if(AimImage)
+		SetAimWidget(false);
 }
 
 void UCPlayerWidget::UpdateHealthBar(float Health)
@@ -78,6 +81,18 @@ void UCPlayerWidget::ShowCurrentBullet(bool state)
 		BaseBullet->SetVisibility(ESlateVisibility::Hidden);
 	}
 
+}
+
+void UCPlayerWidget::SetAimWidget(bool state)
+{
+	if (state)
+	{
+		AimImage->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		AimImage->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void UCPlayerWidget::OnHealthChange(float NewHealth)

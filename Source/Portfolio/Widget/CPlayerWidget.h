@@ -33,6 +33,8 @@ public:
 
 	void ShowCurrentBullet(bool state);
 
+	void SetAimWidget(bool state);
+
 public:
 	UPROPERTY(meta = (BindWidget))
 	UProgressBar* PlayerHealthBar;
@@ -51,5 +53,8 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UEditableTextBox* BaseBullet;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* AimImage;
 
 };

@@ -46,6 +46,21 @@ void USword::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 
 		DecreaseStaminaHandle = Player->GetAbilitySystemComponent()->MakeOutgoingSpec(BPDecreaseStaminaEffect, 1.0f, EffectContext);
 
+		FGameplayEffectSpec* EffectSpec = DecreaseStaminaHandle.Data.Get();
+
+		// Magnitude 값 확인
+		for (const FModifierSpec& Modifier : EffectSpec->Modifiers)
+		{
+			CLog::Print(Modifier.GetEvaluatedMagnitude());
+
+			//if (Modifier.GetEvaluatedMagnitude() == UMyAttributeSet::GetStaminaAttribute())
+			//{
+			//	// Magnitude 값 가져오기 (예: 소모되는 스테미너 값)
+			//	float StaminaCost = Modifier.Magnitude.GetValueAtLevel(1.0f);
+
+			//}
+		}
+
 		Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*DecreaseStaminaHandle.Data.Get());
 	}
 

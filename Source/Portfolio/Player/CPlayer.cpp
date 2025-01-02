@@ -96,6 +96,8 @@ void ACPlayer::BeginPlay()
 	Equipment = GetWorld()->SpawnActor<ACEquipment>(EquipmentClass, SpawnParams);
 	CheckNull(Equipment);
 
+	ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 
+
 	if(ASC)
 		SetGAS();
 }
@@ -168,8 +170,6 @@ UAbilitySystemComponent* ACPlayer::GetAbilitySystemComponent() const
 
 void ACPlayer::SetGAS()
 {
-	ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 
-
 	SetGameplayAbility();
 	SetGameplayEffect();
 }
