@@ -52,11 +52,22 @@ void ACStorm::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 	ACBoss* Boss = Cast<ACBoss>(GetOwner());
 	CheckNull(Boss);
 
-	ACPlayer* Player = Cast<ACPlayer>(OtherActor);
-	CheckNull(Player);
+	if (OtherActor->IsA<ACPlayer>())
+	{
+		ACPlayer* Player = Cast<ACPlayer>(OtherActor);
+		CheckNull(Player);
 
-	Player->LaunchCharacter(FVector(0, 0, 1000), false, false);
-	Player->GetAttributeSet()->SetCurrentHealth(Player->GetAttributeSet()->GetCurrentHealth() - Boss->GetAIAttributeSet()->GetCurrentDamage());
-	// 데미지 처리도 하자.
+		Player->LaunchCharacter(FVector(0, 0, 1000), false, false);
+		Player->GetAttributeSet()->SetCurrentHealth(Player->GetAttributeSet()->GetCurrentHealth() - Boss->GetAIAttributeSet()->GetCurrentDamage());
+	}
+	else if (OtherActor->IsA<ACPet>())
+	{
+		ACPet* Pet = Cast<ACPet>(OtherActor);
+		CheckNull(Pet);
+
+		Pet->LaunchCharacter(FVector(0, 0, 1000), false, false);
+		Pet->GetAIAttributeSet()->SetCurrentHealth(Pet->GetAIAttributeSet()->GetCurrentHealth() - Boss->GetAIAttributeSet()->GetCurrentDamage());
+	}
+	
 }
 

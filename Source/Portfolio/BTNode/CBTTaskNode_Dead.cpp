@@ -52,6 +52,23 @@ EBTNodeResult::Type UCBTTaskNode_Dead::ExecuteTask(UBehaviorTreeComponent& Owner
 			}
 		}
 	}
+	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
+	{
+		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
+		if (AIC)
+		{
+			ACPet* Pet = Cast<ACPet>(AIC->GetPawn());
+			if (Pet)
+			{
+				if (Pet->GetAbilitySystemComponent())
+				{
+					Pet->GetAbilitySystemComponent()->TryActivateAbility(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Dead::StaticClass())->Handle);
+
+					return EBTNodeResult::Succeeded;
+				}
+			}
+		}
+	}
 
 	return EBTNodeResult::Failed;
 }

@@ -32,6 +32,8 @@ EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& Own
 			{
 				if (Pet->GetAbilitySystemComponent())
 				{
+					AIC->SetFocus(Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("EnemyKey")));
+
 					Pet->GetAbilitySystemComponent()->TryActivateAbility(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
 					return EBTNodeResult::InProgress;
 				}
@@ -48,6 +50,8 @@ EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& Own
 			{
 				if (Enemy->GetAbilitySystemComponent())
 				{
+					AIC->SetFocus(Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")));
+
 					Enemy->GetAbilitySystemComponent()->TryActivateAbility(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
 					return EBTNodeResult::InProgress;
 				}

@@ -8,6 +8,7 @@
 #include "GAS/Attribute/CAIAttributeSet.h"
 #include "Widget/CEnemyHealthWidget.h"
 #include "Player/CPlayer.h"
+#include "Pet/CPet.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
 
 ACMonster::ACMonster()
@@ -165,8 +166,13 @@ void ACMonster::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 
 		Player->GetAttributeSet()->SetCurrentHealth(Player->GetAttributeSet()->GetCurrentHealth() - AIAttribute->GetCurrentDamage());
 	}
+	else if (OtherActor->IsA<ACPet>())
+	{
+		ACPet* Pet = Cast<ACPet>(OtherActor);
+		CheckNull(Pet);
 
-	
+		Pet->GetAIAttributeSet()->SetCurrentHealth(Pet->GetAIAttributeSet()->GetCurrentHealth() - AIAttribute->GetCurrentDamage());
+	}
 }
 
 void ACMonster::SetMesh(FName PlayerArea) 

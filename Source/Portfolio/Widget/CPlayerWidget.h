@@ -41,9 +41,6 @@ public:
 	UProgressBar* PlayerStaminaBar;
 
 	UPROPERTY(meta = (BindWidget))
-	UProgressBar* PetHealthBar;
-
-	UPROPERTY(meta = (BindWidget))
 	UEditableTextBox* EquipWeaponName;
 
 	UPROPERTY(meta = (BindWidget))

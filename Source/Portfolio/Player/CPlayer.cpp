@@ -96,7 +96,8 @@ void ACPlayer::BeginPlay()
 	Equipment = GetWorld()->SpawnActor<ACEquipment>(EquipmentClass, SpawnParams);
 	CheckNull(Equipment);
 
-	SetGAS();
+	if(ASC)
+		SetGAS();
 }
 
 FGenericTeamId ACPlayer::GetGenericTeamId() const
@@ -135,10 +136,10 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACPlayer::OnMoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACPlayer::OnMoveRight);
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput); // 수정할 예정, 옵션에서 설정가능하게
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput); // todo.. 수정할 예정, 옵션에서 설정가능하게
 	PlayerInputComponent->BindAxis("Lookup", this, &APawn::AddControllerPitchInput);
 
-	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ACPlayer::OnSprint); // 이것도 나중에 GAS로 관리할 수도 있음
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ACPlayer::OnSprint); 
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ACPlayer::OffSprint);
 
 	PlayerInputComponent->BindAction("Summon", IE_Pressed, this, &ACPlayer::OnSummon);
@@ -167,7 +168,7 @@ UAbilitySystemComponent* ACPlayer::GetAbilitySystemComponent() const
 
 void ACPlayer::SetGAS()
 {
-	ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 - 데이터 처리하는 오너와 아바타가 같음 
+	ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 
 
 	SetGameplayAbility();
 	SetGameplayEffect();
@@ -218,7 +219,7 @@ void ACPlayer::OnSprint()
 		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
 	}
 	
-	ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(USprint::StaticClass())->Handle);
+	ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(USprint::StaticClass())->Handle); // todo.. 스테미너 조건 검사
 }
 
 void ACPlayer::OffSprint()
@@ -301,7 +302,6 @@ void ACPlayer::OnJump()
 	{
 		ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(UJump::StaticClass())->Handle);
 	}
-		
 }
 
 void ACPlayer::OffJump()
@@ -311,10 +311,10 @@ void ACPlayer::OffJump()
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	if (OtherActor == Cast<ACPortal>(OtherActor)) // 포탈과 부딪히면
-		GetCharacterMovement()->StopMovementImmediately(); // 이거 bCanMove 만들어서 제어하자.
+	if (OtherActor == Cast<ACPortal>(OtherActor)) 
+		GetCharacterMovement()->StopMovementImmediately(); // todo.. 이거 의미있는지?
 
-	if (OtherActor->IsA(ATriggerVolume::StaticClass())) // 트리거 볼륨에 부딪히면 !만약에 액터태그 관리해야 하면 여기서 for문걸기
+	if (OtherActor->IsA(ATriggerVolume::StaticClass())) 
 	{
 		ACGameModeBase* MyGameMode = Cast<ACGameModeBase>(GetWorld()->GetAuthGameMode());
 		CheckNull(MyGameMode);
@@ -326,14 +326,8 @@ void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 void ACPlayer::SetUsePawnControlRotation(bool bUse)
 {
 	if (bUse)
-	{
-		//SpringArmComp->bUsePawnControlRotation = true;
 		bUseControllerRotationYaw = false;
-	}
 	else
-	{
-		//SpringArmComp->bUsePawnControlRotation = false; 
 		bUseControllerRotationYaw = true;
-	}
 }
 

@@ -4,6 +4,8 @@
 #include "Engine/DataAsset.h"
 #include "CBossDataAsset.generated.h"
 
+class ACItem;
+
 USTRUCT(BlueprintType)
 struct FBossMontageDatas
 {
@@ -40,5 +42,8 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Attribute")
 	float BaseDamage;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ACItem> DropItem;
 	
 };

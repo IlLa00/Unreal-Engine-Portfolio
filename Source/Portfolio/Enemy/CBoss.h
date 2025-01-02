@@ -13,7 +13,6 @@ class PORTFOLIO_API ACBoss : public ACEnemy
 {
 	GENERATED_BODY()
 	
-
 public:
 	ACBoss();
 

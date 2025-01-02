@@ -41,24 +41,24 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 			if (DistanceToEnemy < 500.f)
 			{
 				Pet->GetTagContainer().Reset();
-				Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("Pet.State.Attack")));
+				Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
 			}
 			else
 			{
 				Pet->GetTagContainer().Reset();
-				Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("Pet.State.Approach")));
+				Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
 			}
 		}
 		else
 		{
 			Pet->GetTagContainer().Reset();
-			Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("Pet.State.Patrol"));
+			Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.Action.Patrol"));
 		}
 	}
 	else
 	{
 		Pet->GetTagContainer().Reset();
-		Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("Pet.State.ChasingPlayer"));
+		Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.Action.ChasingPlayer"));
 	}
 
 }

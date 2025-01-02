@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "Interface/CAIInterface.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/Character.h"
 #include "CPet.generated.h"
@@ -10,11 +11,12 @@ class UCapsuleComponent;
 class UTextRenderComponent;
 class UAbilitySystemComponent;
 class UBehaviorTree;
-class UCPetAttributeSet;
+class UCAIAttributeSet;
 class UCPetDataAsset;
+class UCPetWidget;
 
 UCLASS()
-class PORTFOLIO_API ACPet : public ACharacter, public IAbilitySystemInterface
+class PORTFOLIO_API ACPet : public ACharacter, public IAbilitySystemInterface, public ICAIInterface
 {
 	GENERATED_BODY()
 
@@ -29,12 +31,12 @@ public:
 
 public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-
+	virtual FGameplayTagContainer& GetTagContainer() override { return TagContainer; }
+	virtual UCAIAttributeSet* GetAIAttributeSet() override { return AIAttribute; }
 	UBehaviorTree* GetBehaviorTree() { return BT; }
 
-	FORCEINLINE virtual FGameplayTagContainer& GetTagContainer() { return TagContainer; }
 	FORCEINLINE virtual UCPetDataAsset* GetDataAsset() { return DataAsset; }
-	FORCEINLINE virtual UCPetAttributeSet* GetAttributeSet() { return Attribute; }
+	FORCEINLINE UCPetWidget* GetHealthWidget() { return PetWidget; }
 
 public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
@@ -53,8 +55,10 @@ public:
 		FGameplayTagContainer TagContainer;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
-		TObjectPtr<UCPetAttributeSet> Attribute;
+		TObjectPtr<UCAIAttributeSet> AIAttribute;
 
 protected:
 	UCPetDataAsset* DataAsset;
+	TSubclassOf<UCPetWidget> PetWidgetClass;
+	UCPetWidget* PetWidget;
 };

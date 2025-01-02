@@ -1,10 +1,13 @@
 #include "CBTTask_MoveTo.h"
 #include "Global.h"
-#include "BehaviorTree/BehaviorTree.h"
-#include "Pet/CPetController.h"
-#include "Pet/CPet.h"
-#include "Enemy/CEnemyController.h"
-#include "Enemy/CEnemy.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "AIController.h"
+//#include "BehaviorTree/BehaviorTree.h"
+//#include "Pet/CPetController.h"
+//#include "Pet/CPet.h"
+//#include "Enemy/CEnemyController.h"
+//#include "Enemy/CEnemy.h"
 
 UCBTTask_MoveTo::UCBTTask_MoveTo()
 {
@@ -15,7 +18,17 @@ EBTNodeResult::Type UCBTTask_MoveTo::AbortTask(UBehaviorTreeComponent& OwnerComp
 {
 	Super::AbortTask(OwnerComp, NodeMemory);
 
-	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
+	AAIController* AIC = Cast<AAIController>(OwnerComp.GetAIOwner());
+	CheckNullResult(AIC, EBTNodeResult::Failed);
+
+	ACharacter* AI = Cast<ACharacter>(AIC->GetPawn());
+	CheckNullResult(AI, EBTNodeResult::Failed);
+
+	AI->GetCharacterMovement()->StopMovementImmediately();
+
+	return EBTNodeResult::Aborted;
+
+	/*if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
 	{
 		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
 		if (AIC)
@@ -25,6 +38,8 @@ EBTNodeResult::Type UCBTTask_MoveTo::AbortTask(UBehaviorTreeComponent& OwnerComp
 			{
 				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.State.GetHit"))))
 				{
+					Pet->GetCharacterMovement()->StopMovementImmediately();
+
 					return EBTNodeResult::Aborted;
 				}
 			}
@@ -44,10 +59,5 @@ EBTNodeResult::Type UCBTTask_MoveTo::AbortTask(UBehaviorTreeComponent& OwnerComp
 				}
 			}
 		}
-	}
-
-	// 이거 내가하는게 맞음?
-
-
-	return EBTNodeResult::Failed;
+	}*/
 }

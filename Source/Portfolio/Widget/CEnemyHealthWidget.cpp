@@ -2,7 +2,6 @@
 #include "Global.h"
 #include "Components/ProgressBar.h"
 
-
 void UCEnemyHealthWidget::Update(float NewHealth, float BaseHealth)
 {
 	if (HealthBar)

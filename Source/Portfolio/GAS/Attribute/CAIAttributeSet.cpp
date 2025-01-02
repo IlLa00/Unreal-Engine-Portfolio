@@ -7,6 +7,8 @@
 #include "Widget/CBossWidget.h"
 #include "Enemy/CMonster.h"
 #include "Enemy/CBoss.h"
+#include "Pet/CPet.h"
+#include "Widget/CPetWidget.h"
 
 void UCAIAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
@@ -41,6 +43,14 @@ void UCAIAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, 
 			CheckNull(Boss->GetHealthWidget());
 
 			Boss->GetHealthWidget()->Update(NewValue, GetBaseHealth());
+		}
+		else if (GetOwningActor()->IsA<ACPet>())
+		{
+			ACPet* Pet = Cast<ACPet>(GetOwningActor());
+			CheckNull(Pet);
+			CheckNull(Pet->GetHealthWidget());
+
+			Pet->GetHealthWidget()->Update(NewValue, GetBaseHealth());
 		}
 	}
 }

@@ -53,11 +53,11 @@ void ACSpawner::Spawn(FVector PlayerLocation, FName PlayerArea)
 
 FVector ACSpawner::SetSpawnRange(FVector PlayerLocation)
 {
-	float Radius = 500.0f; // 예: 반지름 500 유닛 ////////// 나중에 공개변수로 열 것들
+	float Radius = 500.0f; // 예: 반지름 500 유닛 ////////// todo.. 나중에 공개변수로 열 것들
 	float ZRange = 200.0f; // Z 축 범위: -200부터 +200 유닛
 
 	// 랜덤 각도 계산 (0에서 360도 사이)
-	float Angle = FMath::RandRange(0.0f, 2 * PI);
+	float Angle = FMath::RandRange(0.f, 2 * PI);
 
 	// 원의 반지름 안에서 랜덤한 위치를 계산 (2D 평면에서)
 	float XOffset = Radius * FMath::Cos(Angle);

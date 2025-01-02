@@ -24,6 +24,7 @@ public:
 
 public:
 	FORCEINLINE ACWeapon* GetCurrentCurrentEquipWeapon() { return CurrentEquipWeapon; }
+	FORCEINLINE ACWeapon** GetEquipWeapons() { return EquipWeapon; }
 
 public:
 	void Equip(int32 slot);

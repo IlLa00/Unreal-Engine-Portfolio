@@ -14,6 +14,8 @@
 
 void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
+	Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
+
 	if (OwnerInfo->AvatarActor->IsA<ACPet>())
 	{
 		ACPet* Pet = Cast<ACPet>(OwnerInfo->AvatarActor);
@@ -22,6 +24,7 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 			if (Pet->GetDataAsset())
 			{
 				MontageToPlay = Pet->GetDataAsset()->MontageDatas.DeadMontage;
+				Dead(Pet);
 			}
 		}
 	}
@@ -52,7 +55,6 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 		}
 	}
 
-	Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
 }
 
 void UAI_Dead::Dead(ACharacter* Character)
@@ -78,6 +80,8 @@ void UAI_Dead::Dead(ACharacter* Character)
 		FT.SetRotation(FQuat());
 
 		GetWorld()->SpawnActor<ACItem>(Monster->GetDataAsset()->Datas[Monster->GetIndex()].DropItem, FT);
+		
+		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
 	}
 	else if (Character->IsA<ACBoss>())
 	{
@@ -87,15 +91,25 @@ void UAI_Dead::Dead(ACharacter* Character)
 		Boss->GetController()->UnPossess(); // 이걸로 감지컴포넌트 안꺼지면 캐스트하자. 컨트롤러 삭제도해야하지않나?
 		
 		Boss->GetComponentByClass<UFloatingPawnMovement>()->SetActive(false);
-		// Boss->GetComponentByClass<UCharacterMovementComponent>()->SetActive(false);
 
 		Boss->GetMesh()->SetSimulatePhysics(true);
 
-		//FTransform FT;
-		//FT.SetLocation(Boss->GetActorLocation());
-		//FT.SetRotation(FQuat());
+		FTransform FT;
+		FT.SetLocation(Boss->GetActorLocation());
+		FT.SetRotation(FQuat());
 
-		//GetWorld()->SpawnActor<ACItem>(Monster->GetDataAsset()->Datas[Monster->GetIndex()].DropItem, FT);
+		GetWorld()->SpawnActor<ACItem>(Boss->GetBossDataAsset()->DropItem, FT);
+
+		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
+	}
+	else if (Character->IsA<ACPet>())
+	{
+		ACPet* Pet = Cast<ACPet>(Character);
+		CheckNull(Pet);
+
+		Pet->GetController()->UnPossess();
+
+		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
 	}
 	
 	// 숙련도 증가 <- 숙련도 증가하는걸 위젯에 보이게 하기

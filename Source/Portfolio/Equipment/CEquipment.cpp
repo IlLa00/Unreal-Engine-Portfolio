@@ -93,6 +93,7 @@ void ACEquipment::Equip(int32 slot)
 		OwnerCharacter->GetPlayerWidget()->ShowCurrentBullet(false);
 
 	// 우클릭 풀어야됨
+	// todo.. 현재 장비해제하면 위젯도 아무것도 없게 만들어야함
 }
 
 void ACEquipment::Begin_Equip()
@@ -129,7 +130,7 @@ void ACEquipment::OnMainAction()
 
 	CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetWeaponAbilitySpec().Handle);
 
-	// 스테미너 감소
+	// todo.. 총제외 스테미너 감소
 }
 
 void ACEquipment::OffMainAction()
@@ -153,7 +154,7 @@ void ACEquipment::OffSubAction()
 {
 	CheckNull(CurrentEquipWeapon);
 	
-	// 여기 서브능력 진행중인지 아닌지 검사하는 조건 추가해야할듯
+	// todo.. 여기 서브능력 진행중인지 아닌지 검사하는 조건 추가해야할듯
 	CurrentEquipWeapon->GetAbilitySystemComponent()->CancelAbilityHandle(CurrentEquipWeapon->GetWeaponSubAbilitySpec().Handle);
 }
 
@@ -161,7 +162,8 @@ void ACEquipment::Reload()
 {
 	CheckNull(CurrentEquipWeapon);
 
-	// 여기 조건 걸어야됨
+	// todo.. 여기 조건 걸어야됨 아마 총을들때만 작동하게?
+
 	/*if (CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle)
 		return;*/
 

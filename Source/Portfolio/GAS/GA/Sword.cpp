@@ -54,6 +54,4 @@ void USword::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 void USword::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
 {
 	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
-
-	// ComboCount = 0; // 여기서 하는게 맞나?
 }

@@ -7,8 +7,10 @@
 #include "CPetController.h"
 #include "GAS/GA/AI_Attack.h"
 #include "GAS/GA/AI_GetHit.h"
-#include "GAS/Attribute/CPetAttributeSet.h"
+#include "GAS/GA/AI_Dead.h"
+#include "GAS/Attribute/CAIAttributeSet.h"
 #include "DataAsset/CPetDataAsset.h"
+#include "Widget/CPetWidget.h"
 
 ACPet::ACPet()
 {
@@ -35,11 +37,14 @@ ACPet::ACPet()
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
 	CheckNull(ASC);
 
-	Attribute = CreateDefaultSubobject<UCPetAttributeSet>("Attribute");
-	CheckNull(Attribute);
+	AIAttribute = CreateDefaultSubobject<UCAIAttributeSet>("Attribute");
+	CheckNull(AIAttribute);
 
 	CHelpers::GetAsset(&DataAsset, "/Game/DataAsset/DA_Pet");
 	CheckNull(DataAsset);
+
+	CHelpers::GetClass(&PetWidgetClass, "/Game/Widget/BP_CPetWidget");
+	CheckNull(PetWidgetClass);
 }
 
 void ACPet::BeginPlay()
@@ -61,10 +66,21 @@ void ACPet::BeginPlay()
 	FGameplayAbilitySpec HitSpec(UAI_GetHit::StaticClass());
 	ASC->GiveAbility(HitSpec);
 
-	Attribute->SetBaseHealth(DataAsset->BaseHealth);
-	Attribute->SetBaseDamage(DataAsset->BaseDamage);
-	Attribute->SetCurrentHealth(Attribute->GetBaseHealth());
-	Attribute->SetCurrentDamage(Attribute->GetBaseDamage());
+	FGameplayAbilitySpec DeadSpec(UAI_Dead::StaticClass());
+	ASC->GiveAbility(DeadSpec);
+
+	if (AIAttribute)
+	{
+		AIAttribute->SetBaseHealth(DataAsset->BaseHealth);
+		AIAttribute->SetBaseDamage(DataAsset->BaseDamage);
+		AIAttribute->SetCurrentHealth(AIAttribute->GetBaseHealth());
+		AIAttribute->SetCurrentDamage(AIAttribute->GetBaseDamage());
+	}
+
+	PetWidget = CreateWidget<UCPetWidget>(GetWorld(), PetWidgetClass);
+	CheckNull(PetWidget);
+	PetWidget->AddToViewport();
+
 }
 
 void ACPet::Tick(float DeltaTime)
