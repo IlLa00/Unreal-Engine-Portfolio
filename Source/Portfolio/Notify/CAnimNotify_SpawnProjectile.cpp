@@ -24,7 +24,7 @@ void UCAnimNotify_SpawnProjectile::Notify(USkeletalMeshComponent* MeshComp, UAni
 	if (OwnerCharacter)
 	{
 		FTransform SpawnTM;
-		SpawnTM.SetLocation(OwnerCharacter->GetMesh()->GetSocketLocation("WeaponSocket"));
+		SpawnTM.SetLocation(OwnerCharacter->GetMesh()->GetSocketLocation("WeaponSocket") + (OwnerCharacter->GetActorForwardVector() * 20.f));
 		SpawnTM.SetRotation(FQuat(OwnerCharacter->GetActorForwardVector().Rotation()));
 
 		FActorSpawnParameters SpawnParam;

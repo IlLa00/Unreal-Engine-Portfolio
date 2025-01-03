@@ -35,7 +35,6 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 		{
 			if (Monster->GetDataAsset())
 			{
-				PrintLine();
 				MontageToPlay = Monster->GetDataAsset()->Datas[Monster->GetIndex()].MontageDatas.DeadMontage;
 
 				Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
@@ -50,7 +49,6 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 		{
 			if (Boss->GetBossDataAsset())
 			{
-				PrintLine();
 				MontageToPlay = Boss->GetBossDataAsset()->MontageDatas.DeadMontage;
 
 				Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
@@ -58,10 +56,6 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 			}
 		}
 	}
-
-	
-
-	// 어빌리티 종료를 언제해야할까? 일단 죽는 몽타주는 제대로 나오는것 같음.
 }
 
 void UAI_Dead::Dead(ACharacter* Character)
@@ -118,7 +112,4 @@ void UAI_Dead::Dead(ACharacter* Character)
 
 		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
 	}
-	
-	// 숙련도 증가 <- 숙련도 증가하는걸 위젯에 보이게 하기
-	// 피직스는 그대로 두고 데스트로이 함수는 안하는걸로?
 }

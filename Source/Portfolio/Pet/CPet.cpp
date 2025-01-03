@@ -69,7 +69,7 @@ void ACPet::BeginPlay()
 	FGameplayAbilitySpec DeadSpec(UAI_Dead::StaticClass());
 	ASC->GiveAbility(DeadSpec);
 
-	if (AIAttribute)
+	if (AIAttribute && DataAsset)
 	{
 		AIAttribute->SetBaseHealth(DataAsset->BaseHealth);
 		AIAttribute->SetBaseDamage(DataAsset->BaseDamage);
@@ -79,6 +79,7 @@ void ACPet::BeginPlay()
 
 	PetWidget = CreateWidget<UCPetWidget>(GetWorld(), PetWidgetClass);
 	CheckNull(PetWidget);
+
 	PetWidget->AddToViewport();
 
 }

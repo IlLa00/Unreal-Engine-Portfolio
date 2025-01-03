@@ -46,7 +46,7 @@ void ACProjectile::Tick(float DeltaTime)
 
 void ACProjectile::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->IsA<ACPlayer>() || OtherActor->GetOwner())
+	if (OtherActor->IsA<ACPlayer>())
 		return;
 
 	ACPet* Pet = Cast<ACPet>(GetOwner());
@@ -56,7 +56,6 @@ void ACProjectile::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 	CheckNull(AI);
 
 	AI->GetAIAttributeSet()->SetCurrentHealth(AI->GetAIAttributeSet()->GetCurrentHealth() - Pet->GetAIAttributeSet()->GetCurrentDamage());
-	// 여기도 더 생각해서 손봐야할듯
 
 	Destroy();
 }
