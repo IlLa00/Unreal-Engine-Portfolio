@@ -31,7 +31,7 @@ public:
 	FORCEINLINE virtual int32 GetIndex() { return Index; } // ÇÊ¿ä?
 
 	virtual UBoxComponent* GetAttackComp() override { return AttackComp; }
-
+	
 public:
 	void SetMesh(FName PlayerArea);
 	

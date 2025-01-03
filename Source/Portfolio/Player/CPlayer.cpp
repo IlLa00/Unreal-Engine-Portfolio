@@ -96,10 +96,11 @@ void ACPlayer::BeginPlay()
 	Equipment = GetWorld()->SpawnActor<ACEquipment>(EquipmentClass, SpawnParams);
 	CheckNull(Equipment);
 
-	ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 
-
-	if(ASC)
+	if (ASC)
+	{
+		ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 
 		SetGAS();
+	}
 }
 
 FGenericTeamId ACPlayer::GetGenericTeamId() const

@@ -8,6 +8,7 @@
 #include "Enemy/CBoss.h"
 #include "Player/CPlayer.h"
 #include "Pet/CPet.h"
+#include "CAnimInstance.h"
 
 UCBTService_Boss::UCBTService_Boss()
 {
@@ -35,9 +36,16 @@ void UCBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	{
 		Boss->SetWidget(true);
 
-		FHitResult HitResult;
+		UCAnimInstance* Anim = Cast<UCAnimInstance>(Boss->GetMesh()->GetAnimInstance());
+		CheckNull(Anim);
 
-		if (GetWorld()->SweepSingleByChannel(HitResult,Boss->GetActorLocation(), Boss->GetActorLocation()+FVector(1), FQuat::Identity,ECollisionChannel::ECC_Pawn,FCollisionShape::MakeSphere(1500.f)))
+		AActor* Target = Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey"));
+		CheckNull(Target);
+
+		float DistanceToTarget = Boss->GetDistanceTo(Target);
+		float AttackRange = Anim->IsFly ? 2800.f : 1300.f;
+
+		if(DistanceToTarget < AttackRange)
 		{
 			if (Boss->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol"))))
 				Boss->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol")));

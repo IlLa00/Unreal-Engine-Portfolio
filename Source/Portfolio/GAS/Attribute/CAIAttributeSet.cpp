@@ -9,6 +9,8 @@
 #include "Enemy/CBoss.h"
 #include "Pet/CPet.h"
 #include "Widget/CPetWidget.h"
+#include "Weapon/CWeapon.h"
+#include "GAS/Attribute/CWeaponAttributeSet.h"
 
 void UCAIAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
@@ -20,9 +22,15 @@ void UCAIAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, 
 	ICAIInterface* AI = Cast<ICAIInterface>(GetOwningActor()); 
 	CheckNull(AI);
 
-	if (NewValue <= 0.f) // 죽었으면
+	if (NewValue <= 0.f) // 죽었으면 총뜸 이제 숙련도 처리는 됐으나 여러번 호출됨 아마 계속 때리는게 되서 그럴듯
 	{
 		TagHelpers::AIChangeStateTag(AI->GetTagContainer(), "AI.Action.Dead");
+
+		ACWeapon* Weapon = Cast<ACWeapon>(LastDamageCauser);
+		CheckNull(Weapon);
+		CheckNull(Weapon->GetAttiribute());
+
+		Weapon->GetAttiribute()->SetCurrentProficiency(Weapon->GetAttiribute()->GetCurrentProficiency() + 50.f);
 	}
 
 	if (OldValue > NewValue) // 체력이 감소했으면
@@ -46,6 +54,8 @@ void UCAIAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, 
 		}
 		else if (GetOwningActor()->IsA<ACPet>())
 		{
+			TagHelpers::AIChangeStateTag(AI->GetTagContainer(), "AI.Action.GetHit");
+
 			ACPet* Pet = Cast<ACPet>(GetOwningActor());
 			CheckNull(Pet);
 			CheckNull(Pet->GetHealthWidget());
@@ -53,4 +63,11 @@ void UCAIAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, 
 			Pet->GetHealthWidget()->Update(NewValue, GetBaseHealth());
 		}
 	}
+}
+
+void UCAIAttributeSet::Attack(float Value, AActor* DamageCauser)
+{
+	SetCurrentHealth(Value);
+
+	LastDamageCauser = DamageCauser;
 }

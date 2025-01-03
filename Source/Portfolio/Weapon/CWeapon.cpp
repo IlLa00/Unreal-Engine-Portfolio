@@ -65,7 +65,7 @@ void ACWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 		ICAIInterface* AI = Cast<ICAIInterface>(OtherActor);
 		CheckNull(AI);
 
-		AI->GetAIAttributeSet()->SetCurrentHealth(AI->GetAIAttributeSet()->GetCurrentHealth() - Attribute->GetCurrentDamage());
+		AI->GetAIAttributeSet()->Attack(AI->GetAIAttributeSet()->GetCurrentHealth() - GetAttiribute()->GetCurrentDamage(), this);
 	}
 }
 

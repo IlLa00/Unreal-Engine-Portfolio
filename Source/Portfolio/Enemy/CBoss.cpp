@@ -65,12 +65,14 @@ void ACBoss::SetWidget(bool state)
 			CheckNull(BossWidget);
 
 			BossWidget->AddToViewport();
+
+			BossWidget->SetVisibility(ESlateVisibility::Visible);
 			BossWidget->Update(AIAttribute->GetCurrentHealth(), AIAttribute->GetBaseHealth());
 		}
 	}
 	else
 	{
 		if (BossWidget)
-			BossWidget->RemoveFromParent();
+			BossWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 }

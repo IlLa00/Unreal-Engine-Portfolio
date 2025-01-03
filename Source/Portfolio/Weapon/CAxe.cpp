@@ -38,7 +38,7 @@ void ACAxe::BeginPlay()
 			Attribute->SetBaseProficiency(data.BaseProficiency);
 
 			Attribute->SetCurrentDamage(Attribute->GetBaseDamage());
-			Attribute->SetCurrentProficiency(Attribute->GetBaseProficiency());
+			Attribute->SetCurrentProficiency(0.f);
 
 			if (data.WeaponImage)
 				WeaponImage = data.WeaponImage;

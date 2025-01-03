@@ -6,14 +6,22 @@
 
 void UAI_GetHit::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-	ACMonster* Monster = Cast<ACMonster>(OwnerInfo->AvatarActor);
-	if (Monster)
+	if (OwnerInfo->AvatarActor->IsA<ACMonster>())
 	{
-		if (Monster->GetDataAsset())
-		{
-			MontageToPlay = Monster->GetDataAsset()->Datas->MontageDatas.HittedMontage;
-		}
+		ACMonster* Monster = Cast<ACMonster>(OwnerInfo->AvatarActor);
+		CheckNull(Monster);
+		CheckNull(Monster->GetDataAsset());
+
+		MontageToPlay = Monster->GetDataAsset()->Datas->MontageDatas.HittedMontage;
+	}
+	else if (OwnerInfo->AvatarActor->IsA<ACPet>())
+	{
+		ACPet* Pet = Cast<ACPet>(OwnerInfo->AvatarActor);
+		CheckNull(Pet);
+		CheckNull(Pet->GetDataAsset());
+
+		MontageToPlay = Pet->GetDataAsset()->MontageDatas.HittedMontage;
 	}
 
-	Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData); 
+	Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
 }

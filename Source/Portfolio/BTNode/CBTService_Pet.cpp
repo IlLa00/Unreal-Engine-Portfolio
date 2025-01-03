@@ -32,6 +32,11 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 	AIC->GetBlackboardComponent()->SetValueAsVector("PlayerLocation", Pet->GetOwner()->GetActorLocation()); 
 
+	if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.GetHit"))))
+	{
+		return;
+	}
+
 	if (Player)
 	{
 		if (Enemy)
@@ -40,25 +45,49 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 			if (DistanceToEnemy < 500.f)
 			{
-				Pet->GetTagContainer().Reset();
-				Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
+				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer")));
+				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol")));
+				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
+				if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack"))))
+					Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
 			}
 			else
 			{
-				Pet->GetTagContainer().Reset();
-				Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
+				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer")));
+				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol")));
+				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
+				if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach"))))
+					Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
 			}
 		}
 		else
 		{
-			Pet->GetTagContainer().Reset();
-			Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.Action.Patrol"));
+			if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer"))))
+				Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer")));
+			if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach"))))
+				Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
+			if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack"))))
+				Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
+			if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol"))))
+				Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol")));
 		}
 	}
 	else
 	{
-		Pet->GetTagContainer().Reset();
-		Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.Action.ChasingPlayer"));
+		if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol"))))
+			Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol")));
+		if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach"))))
+			Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
+		if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack"))))
+			Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
+		if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer"))))
+			Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.Action.ChasingPlayer"));
 	}
 
 }

@@ -70,6 +70,6 @@ void URifle::Shoot()
 		ICAIInterface* AI = Cast<ICAIInterface>(HitResult.GetActor());
 		CheckNull(AI);
 
-		AI->GetAIAttributeSet()->SetCurrentHealth(AI->GetAIAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage());
+		AI->GetAIAttributeSet()->Attack(AI->GetAIAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage(), GetOwningActorFromActorInfo());
 	}
 }

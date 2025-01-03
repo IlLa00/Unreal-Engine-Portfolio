@@ -3,11 +3,6 @@
 
 UCWeaponAttributeSet::UCWeaponAttributeSet()
 {
-	//if (IsBaseDamageSet && IsBaseProficiencySet)
-	//{
-	//	InitCurrentDamage(GetBaseDamage()); // current와 base값을 같게함
-	//	InitCurrentProficiency(GetBaseProficiency());
-	//}
 	
 }
 
@@ -18,7 +13,18 @@ void UCWeaponAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribut
 
 void UCWeaponAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
+	if (Attribute == GetCurrentProficiencyAttribute())
+	{
+		if (GetCurrentProficiency() >= GetBaseProficiency())
+		{
+			SetBaseDamage(GetBaseDamage() + 5.f);
+			SetCurrentDamage(GetBaseDamage());
 
+			SetCurrentProficiency(0.f);
+
+			CLog::Print(GetCurrentDamage());
+		}
+	}
 }
 
 void UCWeaponAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

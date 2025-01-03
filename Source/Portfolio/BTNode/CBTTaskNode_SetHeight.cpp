@@ -96,7 +96,5 @@ EBTNodeResult::Type UCBTTaskNode_SetHeight::AbortTask(UBehaviorTreeComponent& Ow
 	Boss->StopAnimMontage();
 	Anim->IsFly = true;
 
-	PrintLine();
-
 	return EBTNodeResult::Aborted;
 }

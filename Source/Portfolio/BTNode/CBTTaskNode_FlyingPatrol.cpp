@@ -23,6 +23,8 @@ EBTNodeResult::Type UCBTTaskNode_FlyingPatrol::ExecuteTask(UBehaviorTreeComponen
 	ACBoss* Boss = Cast<ACBoss>(AIC->GetPawn());
 	CheckNullResult(Boss, EBTNodeResult::Failed);
 
+	AIC->ClearFocus(EAIFocusPriority::Gameplay);
+
 	Boss->GetFloatingComp()->MaxSpeed = 800.f;
 	Boss->SetActorRotation(FRotator(0, FMath::RandRange(0, 360), 0)); 
 

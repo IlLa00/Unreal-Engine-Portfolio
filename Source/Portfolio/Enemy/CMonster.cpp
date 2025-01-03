@@ -36,10 +36,12 @@ ACMonster::ACMonster()
 
 void ACMonster::BeginPlay()
 {
+	Super::BeginPlay();
+
 	if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[0].SkeletalMeshAssets)
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[Index].AnimClass);
-		if (AIAttribute)
+		if (ASC && AIAttribute)
 		{
 			AIAttribute->SetBaseHealth(DataAsset->Datas[Index].BaseHealth);
 			AIAttribute->SetBaseDamage(DataAsset->Datas[Index].BaseDamage);
@@ -51,7 +53,7 @@ void ACMonster::BeginPlay()
 	else if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[1].SkeletalMeshAssets)
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[Index].AnimClass);
-		if (AIAttribute)
+		if (ASC && AIAttribute)
 		{
 			AIAttribute->SetBaseHealth(DataAsset->Datas[Index].BaseHealth);
 			AIAttribute->SetBaseDamage(DataAsset->Datas[Index].BaseDamage);
@@ -63,7 +65,7 @@ void ACMonster::BeginPlay()
 	else if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[2].SkeletalMeshAssets)
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[Index].AnimClass);
-		if (AIAttribute)
+		if (ASC && AIAttribute)
 		{
 			AIAttribute->SetBaseHealth(DataAsset->Datas[Index].BaseHealth);
 			AIAttribute->SetBaseDamage(DataAsset->Datas[Index].BaseDamage);
@@ -75,7 +77,7 @@ void ACMonster::BeginPlay()
 	else if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[3].SkeletalMeshAssets)
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[Index].AnimClass);
-		if (AIAttribute)
+		if (ASC && AIAttribute)
 		{
 			AIAttribute->SetBaseHealth(DataAsset->Datas[Index].BaseHealth);
 			AIAttribute->SetBaseDamage(DataAsset->Datas[Index].BaseDamage);
@@ -87,7 +89,7 @@ void ACMonster::BeginPlay()
 	else if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[4].SkeletalMeshAssets)
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[Index].AnimClass);
-		if (AIAttribute)
+		if (ASC && AIAttribute)
 		{
 			AIAttribute->SetBaseHealth(DataAsset->Datas[Index].BaseHealth);
 			AIAttribute->SetBaseDamage(DataAsset->Datas[Index].BaseDamage);
@@ -99,7 +101,7 @@ void ACMonster::BeginPlay()
 	else if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[5].SkeletalMeshAssets)
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[Index].AnimClass);
-		if (AIAttribute)
+		if (ASC && AIAttribute)
 		{
 			AIAttribute->SetBaseHealth(DataAsset->Datas[Index].BaseHealth);
 			AIAttribute->SetBaseDamage(DataAsset->Datas[Index].BaseDamage);
@@ -111,7 +113,7 @@ void ACMonster::BeginPlay()
 	else if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[6].SkeletalMeshAssets)
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[Index].AnimClass);
-		if (AIAttribute)
+		if (ASC && AIAttribute)
 		{
 			AIAttribute->SetBaseHealth(DataAsset->Datas[Index].BaseHealth);
 			AIAttribute->SetBaseDamage(DataAsset->Datas[Index].BaseDamage);
@@ -123,7 +125,7 @@ void ACMonster::BeginPlay()
 	else if (this->GetMesh()->GetSkeletalMeshAsset() == DataAsset->Datas[7].SkeletalMeshAssets)
 	{
 		GetMesh()->SetAnimClass(DataAsset->Datas[Index].AnimClass);
-		if (AIAttribute)
+		if (ASC && AIAttribute)
 		{
 			AIAttribute->SetBaseHealth(DataAsset->Datas[Index].BaseHealth);
 			AIAttribute->SetBaseDamage(DataAsset->Datas[Index].BaseDamage);
@@ -146,7 +148,6 @@ void ACMonster::BeginPlay()
 		AttackComp->OnComponentBeginOverlap.AddDynamic(this, &ACEnemy::BeginOverlap);
 	}
 
-	Super::BeginPlay();
 }
 
 void ACMonster::Tick(float DeltaTime)

@@ -41,6 +41,11 @@ public:
 	ATTRIBUTE_ACCESSORS(UCAIAttributeSet, CurrentDamage);
 
 public:
+	void Attack(float Value, AActor* DamageCauser);
+
+public:
 	FAIHealthChanged OnHealthChange;
 	FAIDamageChanged OnDamageChange;
+
+	AActor* LastDamageCauser;
 };
