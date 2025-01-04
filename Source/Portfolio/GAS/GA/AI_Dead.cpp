@@ -7,6 +7,8 @@
 #include "DataAsset/CMonsterMeshDataAsset.h"
 #include "Item/CItem_HealBuff.h"
 #include "Components/ShapeComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "DataAsset/CMonsterMeshDataAsset.h"
 #include "DataAsset/CBossDataAsset.h"
 #include "GameFramework/FloatingPawnMovement.h"
@@ -89,11 +91,24 @@ void UAI_Dead::Dead(ACharacter* Character)
 		ACBoss* Boss = Cast<ACBoss>(Character);
 		CheckNull(Boss);
 
-		Boss->GetController()->UnPossess(); // 이걸로 감지컴포넌트 안꺼지면 캐스트하자. 컨트롤러 삭제도해야하지않나?
-		
-		Boss->GetComponentByClass<UFloatingPawnMovement>()->SetActive(false);
+		Boss->GetController()->UnPossess(); 
 
 		Boss->GetMesh()->SetSimulatePhysics(true);
+		Boss->GetComponentByClass<UTextRenderComponent>()->SetActive(false);
+
+		TArray<UActorComponent*> Comps;
+		Boss->GetComponents(Comps);
+
+		for (auto& Comp : Comps)
+		{
+			if (Comp->IsA<UCapsuleComponent>())
+			{
+				UCapsuleComponent* CapComp = Cast<UCapsuleComponent>(Comp);
+				CheckNull(CapComp);
+
+				CapComp->SetCollisionObjectType(ECC_PhysicsBody);
+			}
+		}
 
 		FTransform FT;
 		FT.SetLocation(Boss->GetActorLocation());

@@ -71,5 +71,8 @@ void URifle::Shoot()
 		CheckNull(AI);
 
 		AI->GetAIAttributeSet()->Attack(AI->GetAIAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage(), GetOwningActorFromActorInfo());
+
+		CLog::Print(HitResult.GetActor()->GetName());
+		CLog::Print(HitResult.GetComponent()->GetName());
 	}
 }

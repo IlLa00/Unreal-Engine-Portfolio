@@ -1,5 +1,6 @@
 #include "CItem.h"
 #include "Global.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
@@ -9,10 +10,10 @@ ACItem::ACItem()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	CHelpers::CreateSceneComponent(this, &RootComp, "RootComp");
-	CheckNull(RootComp);
+	CHelpers::CreateSceneComponent(this, &RootGravityComp, "RootGravityComp");
+	CheckNull(RootGravityComp);
 
-	CHelpers::CreateSceneComponent(this, &BoxComp, "BoxComp", RootComp);
+	CHelpers::CreateSceneComponent(this, &BoxComp, "BoxComp", RootGravityComp);
 	CheckNull(BoxComp);
 
 	CHelpers::GetAsset(&DataAsset, "/Game/DataAsset/DA_Item");

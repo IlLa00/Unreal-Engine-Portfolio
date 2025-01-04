@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "CItem.generated.h"
 
+class USkeletalMeshComponent;
 class UBoxComponent;
 class UNiagaraComponent;
 class UCItemDataAsset;
@@ -30,7 +31,7 @@ protected:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
-		USceneComponent* RootComp;
+		USkeletalMeshComponent* RootGravityComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UBoxComponent* BoxComp;

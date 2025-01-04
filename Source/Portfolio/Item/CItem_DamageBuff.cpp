@@ -10,7 +10,7 @@
 
 ACItem_DamageBuff::ACItem_DamageBuff()
 {
-	CHelpers::CreateSceneComponent(this, &NiagaraComp, "NiagaraComp", RootComp);
+	CHelpers::CreateSceneComponent(this, &NiagaraComp, "NiagaraComp", RootGravityComp);
 	CheckNull(NiagaraComp);
 }
 
