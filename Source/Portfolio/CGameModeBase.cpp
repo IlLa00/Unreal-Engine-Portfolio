@@ -60,9 +60,12 @@ void ACGameModeBase::Teleport(FName Area)
 		if (Area == Actor->Tags[0])
 		{
 			ACPlayer* Player = Cast<ACPlayer>(GetWorld()->GetFirstPlayerController()->GetPawn());
-			CheckNull(Player);
+			CheckNull(Player); // ¿©±â°¡ ¾ÈµÊ
 
-			Player->SetActorLocation(Actor->GetActorLocation());
+			if (Player->GetMesh()->IsSimulatingPhysics())
+				Player->GetMesh()->SetSimulatePhysics(false);
+
+			Player->SetActorLocation(Actor->GetActorLocation(), false, false, ETeleportType::TeleportPhysics);
 			PlayerArea = Actor->Tags[0];
 
 			break;

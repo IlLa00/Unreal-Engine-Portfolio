@@ -64,15 +64,20 @@ void ACPortal::Tick(float DeltaTime)
 
 void ACPortal::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
-
 	ACharacter* Character = Cast<ACharacter>(OtherActor);
 	CheckNull(Character);
 
 	Character->GetCharacterMovement()->SetActive(false);
 
+	ShowPortalWidget();
+}
+
+void ACPortal::ShowPortalWidget()
+{
+	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
+
 	PortalWidget->SetVisibility(ESlateVisibility::Visible);
-	
+
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
 

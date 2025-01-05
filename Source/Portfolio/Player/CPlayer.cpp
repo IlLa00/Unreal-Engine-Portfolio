@@ -11,6 +11,7 @@
 #include "CGameModeBase.h"
 #include "Blueprint/UserWidget.h" 
 #include "Widget/CPlayerWidget.h"
+#include "Widget/CDeathWidget.h"
 #include "Camera/CameraComponent.h"
 #include "Portal/CPortal.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
@@ -18,6 +19,7 @@
 #include "GAS/GA/Sprint.h"
 #include "GAS/GA/Jump.h"
 #include "Equipment/CEquipment.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 ACPlayer::ACPlayer()
 {
@@ -76,6 +78,9 @@ ACPlayer::ACPlayer()
 	CHelpers::GetClass(&EquipmentClass, "/Game/Equipment/BP_CEquipment");
 	CheckNull(EquipmentClass);
 
+	CHelpers::GetClass(&DeathWidgetClass, "/Game/Widget/WB_CDeathWidget");
+	CheckNull(DeathWidgetClass);
+
 	TeamId = 0;
 }
 
@@ -86,6 +91,8 @@ void ACPlayer::BeginPlay()
 	GetMesh()->SetAnimClass(AnimClass);
 
 	PlayerWidget = CreateWidget<UCPlayerWidget>(GetWorld(), WidgetClass);
+	CheckNull(PlayerWidget);
+
 	PlayerWidget->AddToViewport();
 
 	OnActorBeginOverlap.AddDynamic(this, &ACPlayer::BeginOverlap);
@@ -101,6 +108,12 @@ void ACPlayer::BeginPlay()
 		ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 
 		SetGAS();
 	}
+
+	DeathWidget = CreateWidget<UCDeathWidget>(GetWorld(), DeathWidgetClass);
+	CheckNull(DeathWidget);
+
+	DeathWidget->AddToViewport();
+	DeathWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 FGenericTeamId ACPlayer::GetGenericTeamId() const
@@ -129,8 +142,6 @@ void ACPlayer::Tick(float DeltaTime)
 			TextComp->SetText(FText::FromString(Tag.ToString()));
 		}
 	}
-
-	 //TakeDamage
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -308,6 +319,40 @@ void ACPlayer::OnJump()
 void ACPlayer::OffJump()
 {
 	ASC->CancelAbilityHandle(ASC->FindAbilitySpecFromClass(USummon::StaticClass())->Handle);
+}
+
+void ACPlayer::ShowDeathWidget()
+{
+	GetController<APlayerController>()->SetInputMode(FInputModeUIOnly());
+
+	DeathWidget->SetVisibility(ESlateVisibility::Visible);
+
+	GetController<APlayerController>()->SetShowMouseCursor(true);
+
+	PrintLine();
+
+	GetWorld()->GetTimerManager().ClearTimer(WidgetHandle);
+}
+
+void ACPlayer::Death()
+{
+	// 위젯 변화 모든 위젯끄기
+	ASC->CancelAllAbilities();
+
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
+
+	GetController<APlayerController>()->SetInputMode(FInputModeUIOnly());
+
+	TArray<UUserWidget*> Widgets;
+	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, UUserWidget::StaticClass());
+
+	for (auto& Widget : Widgets)
+	{
+		Widget->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	GetWorld()->GetTimerManager().SetTimer(WidgetHandle, this, &ACPlayer::ShowDeathWidget, 3.f, false);
 }
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)

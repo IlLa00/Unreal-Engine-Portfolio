@@ -26,6 +26,8 @@ public:
 	UFUNCTION()
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
+	void ShowPortalWidget();
+
 public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 		USkeletalMeshComponent* MeshComp;
