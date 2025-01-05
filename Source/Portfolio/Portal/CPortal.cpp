@@ -7,7 +7,6 @@
 #include "Widget/CPortalWidget.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Blueprint/WidgetBlueprintLibrary.h"
 
 ACPortal::ACPortal()
 {
@@ -65,20 +64,17 @@ void ACPortal::Tick(float DeltaTime)
 
 void ACPortal::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
-
 	ACharacter* Character = Cast<ACharacter>(OtherActor);
 	CheckNull(Character);
 
 	Character->GetCharacterMovement()->SetActive(false);
 
-	TArray<UUserWidget*> Widgets;
-	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, UUserWidget::StaticClass(), false);
+	ShowPortalWidget();
+}
 
-	for (const auto& Widget : Widgets)
-	{
-		Widget->SetVisibility(ESlateVisibility::Hidden);
-	}
+void ACPortal::ShowPortalWidget()
+{
+	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 
 	PortalWidget->SetVisibility(ESlateVisibility::Visible);
 

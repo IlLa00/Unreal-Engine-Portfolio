@@ -12,6 +12,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UTextRenderComponent;
 class UCPlayerWidget;
+class UCDeathWidget;
 class UAbilitySystemComponent;
 class UCCharacterAttributeSet;
 class UGameplayEffect;
@@ -37,6 +38,8 @@ public:
 
 public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	void Death();
 
 private:
 	void SetGAS();
@@ -67,6 +70,8 @@ private:
 	void OnJump();
 	void OffJump();
 
+	void ShowDeathWidget();
+
 public:
 	UFUNCTION()
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
@@ -96,6 +101,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 		TSubclassOf<UCPlayerWidget> WidgetClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+		TSubclassOf<UCDeathWidget> DeathWidgetClass;
+		
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UAbilitySystemComponent> ASC;
 
@@ -113,8 +121,11 @@ protected:
 
 private:
 	UCPlayerWidget* PlayerWidget;
+	UCDeathWidget* DeathWidget;
 	ACEquipment* Equipment;
 
 	FGameplayTagContainer TagContainer;
 	FGameplayEffectSpecHandle RegenerateStminaHandle;
+
+	FTimerHandle WidgetHandle;
 };
