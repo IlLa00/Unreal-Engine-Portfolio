@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Widget/CDeathWidget.h"
 
 bool UCPortalWidget::Initialize()
 {
@@ -95,13 +96,23 @@ void UCPortalWidget::CancelWidget()
 
 	for (const auto& Widget : Widgets)
 	{
+		CLog::Print(Widget->GetName());
+
 		if (Widget->GetClass() == this->GetClass())
 			continue;
+
+		if (Widget->GetClass() == UCDeathWidget::StaticClass())
+		{
+			Widget->SetVisibility(ESlateVisibility::Hidden);
+			continue;
+		}
 
 		Widget->SetVisibility(ESlateVisibility::Visible);
 	}
 
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
+
+	PrintLine();
 
 	this->SetVisibility(ESlateVisibility::Hidden);
 }
