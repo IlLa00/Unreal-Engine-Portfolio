@@ -7,6 +7,7 @@
 #include "Widget/CPortalWidget.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 ACPortal::ACPortal()
 {
@@ -71,8 +72,16 @@ void ACPortal::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 
 	Character->GetCharacterMovement()->SetActive(false);
 
+	TArray<UUserWidget*> Widgets;
+	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, UUserWidget::StaticClass(), false);
+
+	for (const auto& Widget : Widgets)
+	{
+		Widget->SetVisibility(ESlateVisibility::Hidden);
+	}
+
 	PortalWidget->SetVisibility(ESlateVisibility::Visible);
-	
+
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
 

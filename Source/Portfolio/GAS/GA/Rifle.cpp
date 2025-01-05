@@ -56,7 +56,7 @@ void URifle::Shoot()
 	Player->PlayAnimMontage(AttackMontage);
 
 	FVector Start = Player->GetCameraComp()->GetComponentLocation() + Player->GetCameraComp()->GetForwardVector() * 100.f;
-	FVector End = Start + Player->GetCameraComp()->GetForwardVector() * 2000.f;
+	FVector End = Start + Player->GetCameraComp()->GetForwardVector() * 5000.f;
 
 	TArray<AActor*> IgnoreActors;
 
@@ -70,9 +70,11 @@ void URifle::Shoot()
 		ICAIInterface* AI = Cast<ICAIInterface>(HitResult.GetActor());
 		CheckNull(AI);
 
-		AI->GetAIAttributeSet()->Attack(AI->GetAIAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage(), GetOwningActorFromActorInfo());
-
-		CLog::Print(HitResult.GetActor()->GetName());
-		CLog::Print(HitResult.GetComponent()->GetName());
+		if (!AI->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Dead"))))
+		{
+			AI->GetAIAttributeSet()->Attack(AI->GetAIAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage(), GetOwningActorFromActorInfo());
+			CLog::Print(HitResult.GetActor()->GetName());
+			CLog::Print(HitResult.GetComponent()->GetName());
+		}
 	}
 }

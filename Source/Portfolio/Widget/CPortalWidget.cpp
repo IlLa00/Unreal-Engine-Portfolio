@@ -4,6 +4,7 @@
 #include "CGameModeBase.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 bool UCPortalWidget::Initialize()
 {
@@ -89,8 +90,19 @@ void UCPortalWidget::CancelWidget()
 
 	Character->GetCharacterMovement()->SetActive(true);
 
-	SetVisibility(ESlateVisibility::Hidden);
+	TArray<UUserWidget*> Widgets;
+	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, UUserWidget::StaticClass(), false);
+
+	for (const auto& Widget : Widgets)
+	{
+		if (Widget->GetClass() == this->GetClass())
+			continue;
+
+		Widget->SetVisibility(ESlateVisibility::Visible);
+	}
 
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
+
+	this->SetVisibility(ESlateVisibility::Hidden);
 }
 

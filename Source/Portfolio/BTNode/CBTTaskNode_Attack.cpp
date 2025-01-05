@@ -159,7 +159,6 @@ EBTNodeResult::Type UCBTTaskNode_Attack::AbortTask(UBehaviorTreeComponent& Owner
 			{
 				if (Pet->GetAbilitySystemComponent())
 				{
-
 					if (Pet->GetAbilitySystemComponent()->GetCurrentMontage())
 					{
 						Pet->GetAbilitySystemComponent()->CancelAbilityHandle(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);

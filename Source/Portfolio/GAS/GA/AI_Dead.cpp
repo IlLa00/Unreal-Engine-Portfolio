@@ -83,7 +83,7 @@ void UAI_Dead::Dead(ACharacter* Character)
 		FT.SetRotation(FQuat());
 
 		GetWorld()->SpawnActor<ACItem>(Monster->GetDataAsset()->Datas[Monster->GetIndex()].DropItem, FT);
-		
+		PrintLine();
 		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
 	}
 	else if (Character->IsA<ACBoss>())
@@ -99,23 +99,12 @@ void UAI_Dead::Dead(ACharacter* Character)
 		TArray<UActorComponent*> Comps;
 		Boss->GetComponents(Comps);
 
-		for (auto& Comp : Comps)
-		{
-			if (Comp->IsA<UCapsuleComponent>())
-			{
-				UCapsuleComponent* CapComp = Cast<UCapsuleComponent>(Comp);
-				CheckNull(CapComp);
-
-				CapComp->SetCollisionObjectType(ECC_PhysicsBody);
-			}
-		}
-
 		FTransform FT;
 		FT.SetLocation(Boss->GetActorLocation());
 		FT.SetRotation(FQuat());
 
 		GetWorld()->SpawnActor<ACItem>(Boss->GetBossDataAsset()->DropItem, FT);
-
+		PrintLine();
 		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
 	}
 	else if (Character->IsA<ACPet>())
