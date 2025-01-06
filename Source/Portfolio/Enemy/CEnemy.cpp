@@ -30,6 +30,8 @@ ACEnemy::ACEnemy()
 
 	AIAttribute = CreateDefaultSubobject<UCAIAttributeSet>("AIAttribute");
 	CheckNull(AIAttribute);
+
+
 }
 
 void ACEnemy::BeginPlay()
@@ -66,6 +68,15 @@ void ACEnemy::Tick(float DeltaTime)
 		{
 			TextComp->SetText(FText::FromString(Tag.ToString()));
 		}
+	}
+	
+	float Distance = GetDistanceTo(GetWorld()->GetFirstPlayerController()->GetPawn());
+
+	if (Distance > 50000.f)
+	{
+		GetController()->UnPossess();
+		GetController()->Destroy();
+		Destroy();
 	}
 }
 

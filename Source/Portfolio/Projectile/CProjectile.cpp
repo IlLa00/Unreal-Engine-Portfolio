@@ -29,6 +29,8 @@ ACProjectile::ACProjectile()
 
 	CHelpers::CreateActorComponent(this, &ProjectileComp, "ProjectileComp");
 	CheckNull(ProjectileComp);
+
+	SetLifeSpan(10.f);
 }
 
 void ACProjectile::BeginPlay()

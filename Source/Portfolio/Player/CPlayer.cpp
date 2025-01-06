@@ -329,19 +329,15 @@ void ACPlayer::ShowDeathWidget()
 
 	GetController<APlayerController>()->SetShowMouseCursor(true);
 
-	PrintLine();
-
 	GetWorld()->GetTimerManager().ClearTimer(WidgetHandle);
 }
 
 void ACPlayer::Death()
 {
-	// À§Á¬ º¯È­ ¸ðµç À§Á¬²ô±â
 	ASC->CancelAllAbilities();
 
-	//GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
-	//GetMesh()->UpdateComponentToWorld();
 
 	GetController<APlayerController>()->SetInputMode(FInputModeUIOnly());
 

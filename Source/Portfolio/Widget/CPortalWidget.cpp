@@ -101,9 +101,9 @@ void UCPortalWidget::CancelWidget()
 		if (Widget->GetClass() == this->GetClass())
 			continue;
 
-		if (Widget->GetClass() == UCDeathWidget::StaticClass())
+		if (Widget->IsA<UCDeathWidget>())
 		{
-			Widget->SetVisibility(ESlateVisibility::Hidden);
+			PrintLine();
 			continue;
 		}
 

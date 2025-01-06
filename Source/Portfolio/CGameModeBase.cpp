@@ -60,23 +60,10 @@ void ACGameModeBase::Teleport(FName Area)
 		if (Area == Actor->Tags[0])
 		{
 			ACPlayer* Player = Cast<ACPlayer>(GetWorld()->GetFirstPlayerController()->GetPawn());
-			CheckNull(Player); // ¿©±â°¡ ¾ÈµÊ
+			CheckNull(Player); 
 
-			/*
-			if (Player->GetMesh()->IsSimulatingPhysics())
-			{
-				Player->GetMesh()->SetSimulatePhysics(false);
-				PrintLine();
-			}
-			*/
-			if (!(Player->GetMesh()->GetCollisionProfileName() == FName("CharacterMesh")))
-			{
-				Player->GetMesh()->SetCollisionProfileName(TEXT("CharacterMesh"));
-				PrintLine();
-			}
-
-			Player->SetActorLocation(Actor->GetActorLocation());
-			Player->GetMesh()->UpdateComponentToWorld();
+			Player->SetActorLocationAndRotation(Actor->GetActorLocation(), FQuat(FRotator(0, 0, 0)));
+			Player->GetMesh()->SetRelativeRotation(FRotator(0, -90,0));
 
 			PlayerArea = Actor->Tags[0];
 

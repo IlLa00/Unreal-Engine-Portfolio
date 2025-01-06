@@ -1,6 +1,7 @@
 #include "CDeathWidget.h"
 #include "Global.h"
 #include "Components/Button.h"
+#include "Player/CPlayer.h"
 #include "Portal/CPortal.h"
 
 bool UCDeathWidget::Initialize()
@@ -15,6 +16,24 @@ bool UCDeathWidget::Initialize()
 
 void UCDeathWidget::Revive()
 {
+	ACPlayer* Player = Cast<ACPlayer>(GetOwningPlayer()->GetPawn());
+	CheckNull(Player);
+
+	if (Player->GetMesh()->IsSimulatingPhysics())
+	{
+		Player->GetMesh()->SetSimulatePhysics(false);
+	}
+
+	if (!(Player->GetMesh()->GetCollisionProfileName() == FName("CharacterMesh")))
+	{
+		Player->GetMesh()->SetCollisionProfileName(TEXT("CharacterMesh"));
+	}
+
+
+	Player->GetMesh()->AttachToComponent(Player->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform);
+	Player->GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
+	Player->GetMesh()->UpdateComponentToWorld();
+
 	this->SetVisibility(ESlateVisibility::Hidden);
 	
 	ACPortal* Portal = Cast<ACPortal>(UGameplayStatics::GetActorOfClass(GetWorld(), ACPortal::StaticClass()));

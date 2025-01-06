@@ -21,7 +21,9 @@ private:
 	void Shoot();
 
 private:
-	UAnimMontage* AttackMontage;
+	UAnimMontage* AttackAimMontage;
+	UAnimMontage* AttackHipMontage;
+
 	FTimerHandle TimerHandle;
 };
 

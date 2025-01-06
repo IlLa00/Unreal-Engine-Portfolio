@@ -30,6 +30,8 @@ ACStorm::ACStorm()
 
 	CHelpers::CreateActorComponent(this, &ProjectileComp, "ProjectileComp");
 	CheckNull(ProjectileComp);
+
+	SetLifeSpan(8.f);
 }
 
 void ACStorm::BeginPlay()

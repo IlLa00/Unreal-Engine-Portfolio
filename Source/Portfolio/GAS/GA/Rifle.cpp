@@ -10,8 +10,12 @@
 
 URifle::URifle()
 {
-	CHelpers::GetAsset(&AttackMontage, "/Game/Assets/Montage/Fire_Rifle_Ironsights_Montage");
-	CheckNull(AttackMontage);
+	CHelpers::GetAsset(&AttackAimMontage, "/Game/Assets/Montage/Fire_Rifle_Ironsights_Montage");
+	CheckNull(AttackAimMontage);
+
+	CHelpers::GetAsset(&AttackHipMontage, "/Game/Assets/Montage/Fire_Rifle_Hip_Montage");
+	CheckNull(AttackHipMontage);
+	
 }
 
 void URifle::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -53,7 +57,10 @@ void URifle::Shoot()
 	ACPlayer* Player = Cast<ACPlayer>(GetOwningActorFromActorInfo()->GetOwner());
 	CheckNull(Player);
 
-	Player->PlayAnimMontage(AttackMontage);
+	if (Player->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Sub.Aim"))))
+		Player->PlayAnimMontage(AttackAimMontage);
+	else
+		Player->PlayAnimMontage(AttackHipMontage);
 
 	FVector Start = Player->GetCameraComp()->GetComponentLocation() + Player->GetCameraComp()->GetForwardVector() * 100.f;
 	FVector End = Start + Player->GetCameraComp()->GetForwardVector() * 5000.f;
