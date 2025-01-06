@@ -46,4 +46,6 @@ private:
 	UCEnemyHealthWidget* HealthWidgetObject;
 	UCMonsterMeshDataAsset* DataAsset;
 	int32 Index;
+
+	float Distance;
 };

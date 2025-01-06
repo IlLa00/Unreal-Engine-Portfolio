@@ -92,6 +92,7 @@ void ACEnemyController::OnUnPossess()
 	Super::OnUnPossess();
 
 	PerceptionComp->OnPerceptionUpdated.Clear();
+	Destroy();
 }
 
 void ACEnemyController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)

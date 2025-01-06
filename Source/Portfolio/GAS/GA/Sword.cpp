@@ -12,6 +12,9 @@ USword::USword()
 
 	CHelpers::GetClass(&BPDecreaseStaminaEffect, "/Game/GAS/BP_GE_DecreaseStamina");
 	CheckNull(BPDecreaseStaminaEffect);
+
+	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Weapon.Action.Sword")));
+	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(FName("Weapon.Action.Sword")));
 }
 
 void USword::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -39,30 +42,23 @@ void USword::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 	else
 		Player->PlayAnimMontage(AttackMontageClasses[0]);
 
-	if (Player->GetAbilitySystemComponent())
-	{
-		FGameplayEffectSpecHandle DecreaseStaminaHandle;
-		FGameplayEffectContextHandle EffectContext = Player->GetAbilitySystemComponent()->MakeEffectContext();
+	//if (Player->GetAbilitySystemComponent())
+	//{
+	//	FGameplayEffectSpecHandle DecreaseStaminaHandle;
+	//	FGameplayEffectContextHandle EffectContext = Player->GetAbilitySystemComponent()->MakeEffectContext();
 
-		DecreaseStaminaHandle = Player->GetAbilitySystemComponent()->MakeOutgoingSpec(BPDecreaseStaminaEffect, 1.0f, EffectContext);
+	//	DecreaseStaminaHandle = Player->GetAbilitySystemComponent()->MakeOutgoingSpec(BPDecreaseStaminaEffect, 1.0f, EffectContext);
 
-		FGameplayEffectSpec* EffectSpec = DecreaseStaminaHandle.Data.Get();
+	//	FGameplayEffectSpec* EffectSpec = DecreaseStaminaHandle.Data.Get();
 
-		// Magnitude 값 확인
-		for (const FModifierSpec& Modifier : EffectSpec->Modifiers)
-		{
-			CLog::Print(Modifier.GetEvaluatedMagnitude());
+	//	// Magnitude 값 확인
+	//	for (const FModifierSpec& Modifier : EffectSpec->Modifiers)
+	//	{
+	//		CLog::Print(Modifier.GetEvaluatedMagnitude());
+	//	}
 
-			//if (Modifier.GetEvaluatedMagnitude() == UMyAttributeSet::GetStaminaAttribute())
-			//{
-			//	// Magnitude 값 가져오기 (예: 소모되는 스테미너 값)
-			//	float StaminaCost = Modifier.Magnitude.GetValueAtLevel(1.0f);
-
-			//}
-		}
-
-		Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*DecreaseStaminaHandle.Data.Get());
-	}
+	//	Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*DecreaseStaminaHandle.Data.Get());
+	//}
 
 }
 

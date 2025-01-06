@@ -6,6 +6,7 @@
 #include "CAIInterface.generated.h"
 
 class UCAIAttributeSet;
+class UWidgetComponent;
 
 UINTERFACE(MinimalAPI)
 class UCAIInterface : public UInterface
@@ -20,5 +21,6 @@ class PORTFOLIO_API ICAIInterface
 public:
 	virtual FGameplayTagContainer& GetTagContainer() = 0;
 	virtual UCAIAttributeSet* GetAIAttributeSet() = 0;
-	
+	virtual UWidgetComponent* GetDamageTextComponent() = 0;
+
 };

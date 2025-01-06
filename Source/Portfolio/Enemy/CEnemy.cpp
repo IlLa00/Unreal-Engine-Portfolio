@@ -4,6 +4,7 @@
 #include "GameplayTagContainer.h"
 #include "GameplayTagsManager.h"
 #include "Components/TextRenderComponent.h"
+#include "Components/WidgetComponent.h"
 #include "DataAsset/CMonsterMeshDataAsset.h"
 #include "GAS/Attribute/CMonsterAttributeSet.h"
 #include "GAS/Attribute/CAIAttributeSet.h"
@@ -13,6 +14,7 @@
 #include "GAS/GA/AI_Dead.h"
 #include "Player/CPlayer.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
+#include "Widget/CDamageWidget.h"
 
 ACEnemy::ACEnemy()
 {
@@ -21,6 +23,9 @@ ACEnemy::ACEnemy()
 	CHelpers::CreateSceneComponent(this, &TextComp, "TextComp", GetMesh());
 	CheckNull(TextComp);
 
+	CHelpers::CreateSceneComponent(this, &DamageTextComp, "DamageTextComp", GetMesh());
+	CheckNull(DamageTextComp);
+	
 	TextComp->SetRelativeLocation(FVector(0, 0, 200));
 	TextComp->SetRelativeRotation(FRotator(0, 90, 0));
 	TextComp->SetHorizontalAlignment(EHTA_Center);
@@ -30,8 +35,6 @@ ACEnemy::ACEnemy()
 
 	AIAttribute = CreateDefaultSubobject<UCAIAttributeSet>("AIAttribute");
 	CheckNull(AIAttribute);
-
-
 }
 
 void ACEnemy::BeginPlay()
@@ -56,6 +59,8 @@ void ACEnemy::BeginPlay()
 
 	TagContainer.AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
 
+	if(AIAttribute)
+		AIAttribute->OnDamaged.AddDynamic(this, &ACEnemy::SetDamageText);
 }
 
 void ACEnemy::Tick(float DeltaTime)
@@ -69,20 +74,19 @@ void ACEnemy::Tick(float DeltaTime)
 			TextComp->SetText(FText::FromString(Tag.ToString()));
 		}
 	}
-	
-	float Distance = GetDistanceTo(GetWorld()->GetFirstPlayerController()->GetPawn());
-
-	if (Distance > 50000.f)
-	{
-		GetController()->UnPossess();
-		GetController()->Destroy();
-		Destroy();
-	}
 }
 
 UAbilitySystemComponent* ACEnemy::GetAbilitySystemComponent() const
 {
 	return ASC;
+}
+
+void ACEnemy::SetDamageText(float NewValue)
+{
+	PrintLine();
+
+	DamageTextComp->SetWidgetClass(UCDamageWidget::StaticClass());
+	CheckNull(DamageTextComp->GetWidgetClass());
 }
 
 void ACEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

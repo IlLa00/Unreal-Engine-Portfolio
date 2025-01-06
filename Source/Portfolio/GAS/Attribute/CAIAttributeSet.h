@@ -13,6 +13,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAIHealthChanged, float, NewHealth, float, BaseHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAIDamageChanged, float, NewDamage, float, BaseDamage);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDamaged, float, NewValue);
 
 UCLASS()
 class PORTFOLIO_API UCAIAttributeSet : public UAttributeSet
@@ -46,6 +47,8 @@ public:
 public:
 	FAIHealthChanged OnHealthChange;
 	FAIDamageChanged OnDamageChange;
+
+	FDamaged OnDamaged;
 
 	AActor* LastDamageCauser;
 };

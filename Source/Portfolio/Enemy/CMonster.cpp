@@ -10,6 +10,7 @@
 #include "Player/CPlayer.h"
 #include "Pet/CPet.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
+#include "Enemy/CEnemyController.h"
 
 ACMonster::ACMonster()
 {
@@ -153,6 +154,17 @@ void ACMonster::BeginPlay()
 void ACMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	Distance = GetDistanceTo(GetWorld()->GetFirstPlayerController()->GetPawn());
+
+	if (Distance > 50000.f)
+	{
+		ACEnemyController* AIC = Cast<ACEnemyController>(GetController());
+		CheckNull(AIC);
+
+		AIC->OnUnPossess();
+		Destroy();
+	}
 }
 
 void ACMonster::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -174,6 +186,8 @@ void ACMonster::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 
 		Pet->GetAIAttributeSet()->SetCurrentHealth(Pet->GetAIAttributeSet()->GetCurrentHealth() - AIAttribute->GetCurrentDamage());
 	}
+
+
 }
 
 void ACMonster::SetMesh(FName PlayerArea) 

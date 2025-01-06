@@ -9,6 +9,7 @@
 
 class UCapsuleComponent;
 class UTextRenderComponent;
+class UWidgetComponent;
 class UAbilitySystemComponent;
 class UBehaviorTree;
 class UCAIAttributeSet;
@@ -33,6 +34,7 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual FGameplayTagContainer& GetTagContainer() override { return TagContainer; }
 	virtual UCAIAttributeSet* GetAIAttributeSet() override { return AIAttribute; }
+	virtual UWidgetComponent* GetDamageTextComponent() override { return DamageTextComp; }
 	UBehaviorTree* GetBehaviorTree() { return BT; }
 
 	FORCEINLINE virtual UCPetDataAsset* GetDataAsset() { return DataAsset; }
@@ -44,6 +46,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Text")
 		UTextRenderComponent* TextComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+		UWidgetComponent* DamageTextComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UAbilitySystemComponent> ASC;
