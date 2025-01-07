@@ -7,4 +7,6 @@
 void UCDamageWidget::SetDamageText(float NewValue)
 {
 	DamageText->SetText(FText::AsNumber(NewValue));
+
+	ShowDamageText();
 }

@@ -14,6 +14,9 @@ class PORTFOLIO_API UCDamageWidget : public UUserWidget
 public:
 	void SetDamageText(float NewValue);
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void ShowDamageText();
+
 private:
 	UPROPERTY(meta = (BindWidget))
 	UEditableTextBox* DamageText;

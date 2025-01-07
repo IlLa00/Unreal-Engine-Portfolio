@@ -5,6 +5,7 @@
 #include "CGameModeBase.generated.h"
 
 class ACSpawner;
+class ACBGMManager;
 
 UCLASS()
 class PORTFOLIO_API ACGameModeBase : public AGameModeBase
@@ -32,4 +33,6 @@ private:
 	TArray<AActor*> TargetPointActors;
 
 	FString TargetPointName[5];
+
+	ACBGMManager* BGMManager;
 };

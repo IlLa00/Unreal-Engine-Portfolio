@@ -23,18 +23,22 @@ ACEnemy::ACEnemy()
 	CHelpers::CreateSceneComponent(this, &TextComp, "TextComp", GetMesh());
 	CheckNull(TextComp);
 
-	CHelpers::CreateSceneComponent(this, &DamageTextComp, "DamageTextComp", GetMesh());
-	CheckNull(DamageTextComp);
-	
 	TextComp->SetRelativeLocation(FVector(0, 0, 200));
 	TextComp->SetRelativeRotation(FRotator(0, 90, 0));
 	TextComp->SetHorizontalAlignment(EHTA_Center);
+
+	CHelpers::CreateSceneComponent(this, &DamageTextComp, "DamageTextComp", GetMesh());
+	CheckNull(DamageTextComp);
+
+	CHelpers::GetClass(&DamageWidgetClass, "/Game/Widget/WB_CDamageWidget");
+	CheckNull(DamageWidgetClass);
 
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
 	CheckNull(ASC);
 
 	AIAttribute = CreateDefaultSubobject<UCAIAttributeSet>("AIAttribute");
 	CheckNull(AIAttribute);
+
 }
 
 void ACEnemy::BeginPlay()
@@ -46,17 +50,28 @@ void ACEnemy::BeginPlay()
 
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
 
-	ASC->InitAbilityActorInfo(this, this);
+	if (DamageTextComp)
+	{
+		DamageTextComp->SetWidgetClass(DamageWidgetClass);
+		DamageTextComp->RegisterComponent();
+		DamageTextComp->SetWorldLocation(GetActorLocation());
+		DamageTextComp->SetVisibility(true);
+	}
 
-	FGameplayAbilitySpec AttackSpec(UAI_Attack::StaticClass());
-	ASC->GiveAbility(AttackSpec);
+	if (ASC)
+	{
+		ASC->InitAbilityActorInfo(this, this);
 
-	FGameplayAbilitySpec HitSpec(UAI_GetHit::StaticClass());
-	ASC->GiveAbility(HitSpec);
+		FGameplayAbilitySpec AttackSpec(UAI_Attack::StaticClass());
+		ASC->GiveAbility(AttackSpec);
 
-	FGameplayAbilitySpec DeadSpec(UAI_Dead::StaticClass());
-	ASC->GiveAbility(DeadSpec);
+		FGameplayAbilitySpec HitSpec(UAI_GetHit::StaticClass());
+		ASC->GiveAbility(HitSpec);
 
+		FGameplayAbilitySpec DeadSpec(UAI_Dead::StaticClass());
+		ASC->GiveAbility(DeadSpec);
+	}
+	
 	TagContainer.AddTag(FGameplayTag::RequestGameplayTag("AI.State.Idle"));
 
 	if(AIAttribute)
@@ -83,10 +98,24 @@ UAbilitySystemComponent* ACEnemy::GetAbilitySystemComponent() const
 
 void ACEnemy::SetDamageText(float NewValue)
 {
-	PrintLine();
+	CheckNull(DamageTextComp->GetWidget());
 
-	DamageTextComp->SetWidgetClass(UCDamageWidget::StaticClass());
-	CheckNull(DamageTextComp->GetWidgetClass());
+	UCDamageWidget* Widget = Cast<UCDamageWidget>(DamageTextComp->GetWidget());
+	CheckNull(Widget);
+
+	DamageTextComp->SetVisibility(true);
+
+	Widget->SetDamageText(NewValue);
+
+	FTimerHandle TimerHandle;
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this,&ACEnemy::HiddenDamage, 1.f, false);
+}
+
+void ACEnemy::HiddenDamage()
+{
+	PrintLine();
+	DamageTextComp->SetVisibility(false);
 }
 
 void ACEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

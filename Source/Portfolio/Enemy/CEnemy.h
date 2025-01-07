@@ -12,6 +12,7 @@ class UWidgetComponent;
 class UAbilitySystemComponent;
 class UBehaviorTree;
 class UCAIAttributeSet;
+class UCDamageWidget;
 
 UCLASS()
 class PORTFOLIO_API ACEnemy : public ACharacter, public IAbilitySystemInterface, public ICAIInterface
@@ -39,7 +40,9 @@ public:
 	UBehaviorTree* GetBehaviorTree() { return BT; }
 
 	UFUNCTION()
-		virtual void SetDamageText(float NewValue);
+		void SetDamageText(float NewValue);
+
+	void HiddenDamage();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Text")
@@ -60,4 +63,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UCAIAttributeSet> AIAttribute;
 	
+protected:
+	TSubclassOf<UCDamageWidget> DamageWidgetClass;
 };

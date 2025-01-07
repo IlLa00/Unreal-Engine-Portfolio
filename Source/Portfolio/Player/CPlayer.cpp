@@ -354,8 +354,8 @@ void ACPlayer::Death()
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	if (OtherActor == Cast<ACPortal>(OtherActor)) 
-		GetCharacterMovement()->StopMovementImmediately(); // todo.. 이거 의미있는지?
+	//if (OtherActor == Cast<ACPortal>(OtherActor)) 
+	//	GetCharacterMovement()->StopMovementImmediately(); // todo.. 이거 의미있는지?
 
 	if (OtherActor->IsA(ATriggerVolume::StaticClass())) 
 	{
