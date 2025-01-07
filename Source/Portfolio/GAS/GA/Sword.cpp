@@ -23,7 +23,7 @@ void USword::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 
 	ACPlayer* Player = Cast<ACPlayer>(ActorInfo->AvatarActor->GetOwner());
 	CheckNull(Player);
-	
+
 	if (Player->GetCurrentMontage() == AttackMontageClasses[0])
 	{
 		Player->StopAnimMontage();
@@ -41,25 +41,6 @@ void USword::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 	}
 	else
 		Player->PlayAnimMontage(AttackMontageClasses[0]);
-
-	//if (Player->GetAbilitySystemComponent())
-	//{
-	//	FGameplayEffectSpecHandle DecreaseStaminaHandle;
-	//	FGameplayEffectContextHandle EffectContext = Player->GetAbilitySystemComponent()->MakeEffectContext();
-
-	//	DecreaseStaminaHandle = Player->GetAbilitySystemComponent()->MakeOutgoingSpec(BPDecreaseStaminaEffect, 1.0f, EffectContext);
-
-	//	FGameplayEffectSpec* EffectSpec = DecreaseStaminaHandle.Data.Get();
-
-	//	// Magnitude °ª È®ÀÎ
-	//	for (const FModifierSpec& Modifier : EffectSpec->Modifiers)
-	//	{
-	//		CLog::Print(Modifier.GetEvaluatedMagnitude());
-	//	}
-
-	//	Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*DecreaseStaminaHandle.Data.Get());
-	//}
-
 }
 
 void USword::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
