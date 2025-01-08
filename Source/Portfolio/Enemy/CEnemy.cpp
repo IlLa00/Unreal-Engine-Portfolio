@@ -4,6 +4,7 @@
 #include "GameplayTagContainer.h"
 #include "GameplayTagsManager.h"
 #include "Components/TextRenderComponent.h"
+#include "NavigationInvokerComponent.h"
 #include "Components/WidgetComponent.h"
 #include "DataAsset/CMonsterMeshDataAsset.h"
 #include "GAS/Attribute/CMonsterAttributeSet.h"
@@ -29,6 +30,9 @@ ACEnemy::ACEnemy()
 
 	CHelpers::CreateSceneComponent(this, &DamageTextComp, "DamageTextComp", GetMesh());
 	CheckNull(DamageTextComp);
+
+	CHelpers::CreateActorComponent(this, &InvokerComp, "InvokerComp");
+	CheckNull(InvokerComp);
 
 	CHelpers::GetClass(&DamageWidgetClass, "/Game/Widget/WB_CDamageWidget");
 	CheckNull(DamageWidgetClass);

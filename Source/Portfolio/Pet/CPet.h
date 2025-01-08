@@ -9,6 +9,7 @@
 
 class UCapsuleComponent;
 class UTextRenderComponent;
+class UNavigationInvokerComponent;
 class UWidgetComponent;
 class UAbilitySystemComponent;
 class UBehaviorTree;
@@ -46,6 +47,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Text")
 		UTextRenderComponent* TextComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Component")
+		UNavigationInvokerComponent* InvokerComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 		UWidgetComponent* DamageTextComp;

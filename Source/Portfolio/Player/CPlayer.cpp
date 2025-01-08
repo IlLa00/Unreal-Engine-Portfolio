@@ -107,9 +107,11 @@ void ACPlayer::BeginPlay()
 	{
 		ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 
 		SetGAS();
-
-		AttributeSet->OnStaminaEmpty.AddDynamic(this, &ACPlayer::OnStaminaEmpty);
 	}
+	
+	CheckNull(AttributeSet);
+
+	AttributeSet->OnStaminaEmpty.AddDynamic(this, &ACPlayer::OnStaminaEmpty);
 
 	DeathWidget = CreateWidget<UCDeathWidget>(GetWorld(), DeathWidgetClass);
 	CheckNull(DeathWidget);

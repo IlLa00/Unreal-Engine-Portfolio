@@ -11,7 +11,7 @@ public class Portfolio : ModuleRules
         PublicIncludePaths.Add(ModuleDirectory);
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "AIModule",
-            "GameplayTasks","Niagara" });
+			"GameplayTasks","Niagara","NavigationSystem" });
 
 		//PrivateDependencyModuleNames.AddRange(new string[] {  });
 

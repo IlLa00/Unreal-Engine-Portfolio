@@ -4,6 +4,8 @@
 #include "Abilities/GameplayAbility.h"
 #include "Rifle.generated.h"
 
+class UParticleSystem;
+
 UCLASS()
 class PORTFOLIO_API URifle : public UGameplayAbility
 {
@@ -23,6 +25,7 @@ private:
 private:
 	UAnimMontage* AttackAimMontage;
 	UAnimMontage* AttackHipMontage;
+	UParticleSystem* ImpactParticle;
 
 	FTimerHandle TimerHandle;
 };

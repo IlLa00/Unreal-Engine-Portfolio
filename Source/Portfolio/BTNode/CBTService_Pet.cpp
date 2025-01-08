@@ -7,6 +7,7 @@
 #include "Pet/CPetController.h"
 #include "Pet/CPet.h"
 #include "Enemy/CEnemy.h"
+#include "Enemy/CBoss.h"
 #include "Player/CPlayer.h"
 
 UCBTService_Pet::UCBTService_Pet()
@@ -27,23 +28,25 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 	CheckNull(Pet);
 
 	ACPlayer* Player = Cast<ACPlayer>(AIC->GetBlackboardComponent()->GetValueAsObject("PlayerKey"));
-
 	ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetBlackboardComponent()->GetValueAsObject("EnemyKey"));
+	ACBoss* Boss = Cast<ACBoss>(AIC->GetBlackboardComponent()->GetValueAsObject("BossKey"));
 
 	AIC->GetBlackboardComponent()->SetValueAsVector("PlayerLocation", Pet->GetOwner()->GetActorLocation()); 
+	
+	SetTarget(AIC, Pet, Enemy, Boss);
 
 	if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.GetHit"))))
 	{
 		return;
 	}
 
-	if (Player)
+	if (AIC->GetBlackboardComponent()->GetValueAsObject("PlayerKey"))
 	{
-		if (Enemy)
+		if (AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey"))
 		{
-			float DistanceToEnemy = Pet->GetDistanceTo(Enemy);
+			float DistanceToEnemy = Pet->GetDistanceTo(Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")));
 
-			if (DistanceToEnemy < 500.f)
+			if (DistanceToEnemy < 800.f)
 			{
 				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer"))))
 					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer")));
@@ -90,4 +93,29 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 			Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.Action.ChasingPlayer"));
 	}
 
+}
+
+void UCBTService_Pet::SetTarget(ACPetController* AIC, ACPet* Pet, ACEnemy* Enemy, ACBoss* Boss)
+{
+	float DistanceToEnemy = 0.0f;
+	float DistanceToBoss = 0.0f;
+
+	if (Pet != nullptr && !(Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Dead")))))
+	{
+		DistanceToEnemy = Pet->GetDistanceTo(Enemy);
+	}
+
+	if (Boss != nullptr)
+	{
+		DistanceToBoss = Pet->GetDistanceTo(Boss);
+	}
+
+	if (DistanceToEnemy >= DistanceToBoss)
+	{
+		AIC->GetBlackboardComponent()->SetValueAsObject("AttackTargetKey", Enemy);
+	}
+	else
+	{
+		AIC->GetBlackboardComponent()->SetValueAsObject("AttackTargetKey", Boss);
+	}
 }

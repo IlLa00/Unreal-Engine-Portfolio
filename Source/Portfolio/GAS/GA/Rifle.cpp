@@ -7,6 +7,7 @@
 #include "GAS/Attribute/CWeaponAttributeSet.h"
 #include "Interface/CAIInterface.h"
 #include "GAS/Attribute/CAIAttributeSet.h"
+#include "Particles/ParticleSystem.h"
 
 URifle::URifle()
 {
@@ -16,6 +17,8 @@ URifle::URifle()
 	CHelpers::GetAsset(&AttackHipMontage, "/Game/Assets/Montage/Fire_Rifle_Hip_Montage");
 	CheckNull(AttackHipMontage);
 	
+	CHelpers::GetAsset(&ImpactParticle, "/Game/Assets/Particles_Rifle/Particles/VFX_Impact_Default");
+	CheckNull(ImpactParticle);
 }
 
 void URifle::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -31,7 +34,6 @@ void URifle::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 			GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 	}
-
 
 	if (!GetWorld()->GetTimerManager().IsTimerActive(TimerHandle))
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &URifle::Shoot, 0.1f, true);
@@ -82,6 +84,8 @@ void URifle::Shoot()
 			AI->GetAIAttributeSet()->Attack(AI->GetAIAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage(), GetOwningActorFromActorInfo());
 			CLog::Print(HitResult.GetActor()->GetName());
 			CLog::Print(HitResult.GetComponent()->GetName());
+
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticle, HitResult.Location);
 		}
 	}
 }

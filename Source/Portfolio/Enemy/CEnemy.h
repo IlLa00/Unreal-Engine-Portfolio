@@ -10,6 +10,7 @@
 class UTextRenderComponent;
 class UWidgetComponent;
 class UAbilitySystemComponent;
+class UNavigationInvokerComponent;
 class UBehaviorTree;
 class UCAIAttributeSet;
 class UCDamageWidget;
@@ -45,11 +46,14 @@ public:
 	void HiddenDamage();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Text")
+	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UTextRenderComponent* TextComp;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UWidgetComponent* DamageTextComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Component")
+		UNavigationInvokerComponent* InvokerComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TObjectPtr<UAbilitySystemComponent> ASC;

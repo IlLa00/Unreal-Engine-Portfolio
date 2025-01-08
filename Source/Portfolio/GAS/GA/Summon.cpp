@@ -36,6 +36,16 @@ void USummon::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGame
 		PetController->Destroy();
 	}
 		
-	if(Pet)
+	if (Pet)
+	{
+		TArray<AActor*> Actors;
+		Pet->GetAttachedActors(Actors);
+
+		for (const auto& actor : Actors)
+		{
+			actor->Destroy();
+		}
+
 		Pet->Destroy();
+	}
 }

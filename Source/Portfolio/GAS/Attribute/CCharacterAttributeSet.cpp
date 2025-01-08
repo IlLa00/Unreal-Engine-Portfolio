@@ -10,7 +10,6 @@ UCCharacterAttributeSet::UCCharacterAttributeSet()
 
 	InitCurrentHealth(GetBaseHealth()); 
 	InitCurrentStamina(GetBaseStamina());
-
 }
 
 void UCCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -18,6 +17,10 @@ void UCCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& Attri
     if (Attribute == GetCurrentStaminaAttribute())  
     {
         NewValue = FMath::Clamp(NewValue, 0.0f, GetBaseStamina() + 0.1f);
+    }
+    else if (Attribute == GetCurrentHealthAttribute())
+    {
+        NewValue = FMath::Clamp(NewValue, 0.0f, GetBaseHealth() + 0.1f);
     }
 }
 

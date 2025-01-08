@@ -4,6 +4,7 @@
 #include "GameplayTagContainer.h"
 #include "GameplayTagsManager.h"
 #include "Components/TextRenderComponent.h"
+#include "NavigationInvokerComponent.h"
 #include "CPetController.h"
 #include "GAS/GA/AI_Attack.h"
 #include "GAS/GA/AI_GetHit.h"
@@ -30,6 +31,9 @@ ACPet::ACPet()
 	TextComp->SetRelativeLocation(FVector(0, 0, 200));
 	TextComp->SetRelativeRotation(FRotator(0, 90, 0));
 	TextComp->SetHorizontalAlignment(EHTA_Center);
+
+	CHelpers::CreateActorComponent(this, &InvokerComp, "InvokerComp");
+	CheckNull(InvokerComp);
 
 	CHelpers::GetClass(&AnimClass, "/Game/Pet/ABP_CPet");
 	CheckNull(AnimClass);
