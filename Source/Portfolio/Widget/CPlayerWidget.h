@@ -25,6 +25,9 @@ public:
 	void UpdateHealthBar(float Health);
 	void UpdateStaminaBar(float Stamina);
 
+	void UpdateHealthText(float Health);
+	void UpdateStaminaText(float Stamina);
+
 	void UpdateEquipWeaponName(FText WeaponName);
 	void UpdateEquipWeaponImage(UTexture* WeaponImage);
 
@@ -41,6 +44,18 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UProgressBar* PlayerStaminaBar;
+
+	UPROPERTY(meta = (BindWidget))
+	UEditableTextBox* CurrentHealthText;
+
+	UPROPERTY(meta = (BindWidget))
+	UEditableTextBox* BaseHealthText;
+
+	UPROPERTY(meta = (BindWidget))
+	UEditableTextBox* CurrentStaminaText;
+
+	UPROPERTY(meta = (BindWidget))
+	UEditableTextBox* BaseStaminaText;
 
 	UPROPERTY(meta = (BindWidget))
 	UEditableTextBox* EquipWeaponName;

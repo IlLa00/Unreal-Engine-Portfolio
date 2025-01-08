@@ -7,19 +7,26 @@
 #include "CableComponent.h"
 #include "Components/SplineComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GAS/Attribute/CCharacterAttributeSet.h"
 
 UHookGun::UHookGun()
 {
 	CHelpers::GetAsset(&AttackMontage, "/Game/Assets/Montage/Fire_Rifle_Ironsights_Montage");
 	CheckNull(AttackMontage);
+
+	CHelpers::GetClass(&BPHookGunEffect, "/Game/GAS/BP_GE_HookGun");
+	CheckNull(BPHookGunEffect);
 }
 
 void UHookGun::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
 	ACPlayer* Player = Cast<ACPlayer>(GetOwningActorFromActorInfo()->GetOwner());
 	CheckNull(Player);
+
+	if (Player->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.StaminaEmpty"))) || Player->GetAttributeSet()->GetCurrentStamina() <= 50.f)
+	{
+		return;
+	}
 
 	Player->PlayAnimMontage(AttackMontage); // ¹ß»ç ¸ùÅ¸ÁÖ
 
@@ -32,6 +39,8 @@ void UHookGun::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 	{
 		GetWorld()->GetTimerManager().SetTimer(EndTimerHandle, this, &UHookGun::FireEnd, 1.f, false);
 	}
+
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
 void UHookGun::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
@@ -75,6 +84,11 @@ void UHookGun::FireHook()
 
 	if (GetWorld()->LineTraceSingleByObjectType(HitResult, Start, End, Parms))
 	{
+		FGameplayEffectContextHandle EffectContext = Player->GetAbilitySystemComponent()->MakeEffectContext();
+		FGameplayEffectSpecHandle EffectSpecHandle = Player->GetAbilitySystemComponent()->MakeOutgoingSpec(BPHookGunEffect, 1.0f, EffectContext);
+
+		Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+
 		HookGun->GetCableComp()->EndLocation = HitResult.Location;
 
 		SplineLaunch(HitResult.Location);

@@ -27,6 +27,7 @@ void UCBTService_Enemy::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	CheckNull(Enemy);
 
 	ACPlayer* Player = Cast<ACPlayer>(AIC->GetBlackboardComponent()->GetValueAsObject("PlayerKey"));
+
 	ACPet* Pet = Cast<ACPet>(AIC->GetBlackboardComponent()->GetValueAsObject("PetKey"));
 
 	SetTarget(AIC, Enemy, Player, Pet);
@@ -77,7 +78,7 @@ void UCBTService_Enemy::SetTarget(ACEnemyController* AIC, ACEnemy* Enemy, ACPlay
 	float DistanceToPlayer = 0.0f;
 	float DistanceToPet = 0.0f;
 
-	if (Player != nullptr)
+	if (Player != nullptr && !(Player->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Dead")))))
 	{
 		DistanceToPlayer = Enemy->GetDistanceTo(Player);
 	}

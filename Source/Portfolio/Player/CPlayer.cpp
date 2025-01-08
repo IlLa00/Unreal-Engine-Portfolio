@@ -107,6 +107,8 @@ void ACPlayer::BeginPlay()
 	{
 		ASC->InitAbilityActorInfo(this, this); // 반드시 호출해야함 
 		SetGAS();
+
+		AttributeSet->OnStaminaEmpty.AddDynamic(this, &ACPlayer::OnStaminaEmpty);
 	}
 
 	DeathWidget = CreateWidget<UCDeathWidget>(GetWorld(), DeathWidgetClass);
@@ -127,12 +129,12 @@ void ACPlayer::Tick(float DeltaTime)
 
 	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Idle")))) // 아무것도 안하고 있을 때
 	{
-		if(AttributeSet->GetCurrentStamina() < AttributeSet->GetBaseStamina()) // 이 조건문 안걸면 디버그할때 보이는 화면과 다르게 스테미너가 좀더 차는거같음
-			ASC->ApplyGameplayEffectSpecToSelf(*RegenerateStminaHandle.Data.Get()); // 저절로 스테미나가 참
+		if (AttributeSet->GetCurrentStamina() < AttributeSet->GetBaseStamina())
+			ASC->ApplyGameplayEffectSpecToSelf(*RegenerateStminaHandle.Data.Get());
 	}
 	else
 	{
-		// PrintLine(); // 일단 이렇게
+		
 	}
 
 	if (TagContainer.Num() > 0)
@@ -334,6 +336,8 @@ void ACPlayer::ShowDeathWidget()
 
 void ACPlayer::Death()
 {
+	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Dead")));
+
 	ASC->CancelAllAbilities();
 
 	GetMesh()->SetSimulatePhysics(true);
@@ -354,9 +358,6 @@ void ACPlayer::Death()
 
 void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	//if (OtherActor == Cast<ACPortal>(OtherActor)) 
-	//	GetCharacterMovement()->StopMovementImmediately(); // todo.. 이거 의미있는지?
-
 	if (OtherActor->IsA(ATriggerVolume::StaticClass())) 
 	{
 		ACGameModeBase* MyGameMode = Cast<ACGameModeBase>(GetWorld()->GetAuthGameMode());
@@ -366,11 +367,32 @@ void ACPlayer::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	}
 }
 
+void ACPlayer::OnStaminaEmpty()
+{
+	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.StaminaEmpty"))))
+	{
+		return;
+	}
+
+	TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Idle")));
+	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.StaminaEmpty")));
+
+	FTimerHandle TimerHandle;
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACPlayer::CanDoAbilities, 5.f, false);
+}
+
 void ACPlayer::SetUsePawnControlRotation(bool bUse)
 {
 	if (bUse)
 		bUseControllerRotationYaw = false;
 	else
 		bUseControllerRotationYaw = true;
+}
+
+void ACPlayer::CanDoAbilities()
+{
+	TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.State.StaminaEmpty")));
+	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Idle")));
 }
 

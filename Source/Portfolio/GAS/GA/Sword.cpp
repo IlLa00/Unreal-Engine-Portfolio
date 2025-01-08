@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Player/CPlayer.h"
 #include "AbilitySystemComponent.h"
+#include "GameplayEffectTypes.h"
 
 USword::USword()
 {
@@ -12,17 +13,19 @@ USword::USword()
 
 	CHelpers::GetClass(&BPDecreaseStaminaEffect, "/Game/GAS/BP_GE_DecreaseStamina");
 	CheckNull(BPDecreaseStaminaEffect);
-
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Weapon.Action.Sword")));
-	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(FName("Weapon.Action.Sword")));
 }
 
 void USword::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
 	ACPlayer* Player = Cast<ACPlayer>(ActorInfo->AvatarActor->GetOwner());
 	CheckNull(Player);
+
+	if (Player->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.StaminaEmpty"))))
+	{
+		return;
+	}
+
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	if (Player->GetCurrentMontage() == AttackMontageClasses[0])
 	{
@@ -41,6 +44,13 @@ void USword::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 	}
 	else
 		Player->PlayAnimMontage(AttackMontageClasses[0]);
+
+	CheckNull(BPDecreaseStaminaEffect);
+
+	FGameplayEffectContextHandle EffectContext = Player->GetAbilitySystemComponent()->MakeEffectContext();
+	FGameplayEffectSpecHandle EffectSpecHandle = Player->GetAbilitySystemComponent()->MakeOutgoingSpec(BPDecreaseStaminaEffect, 1.0f, EffectContext);
+	
+	Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data.Get(), Player->GetAbilitySystemComponent());
 }
 
 void USword::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)

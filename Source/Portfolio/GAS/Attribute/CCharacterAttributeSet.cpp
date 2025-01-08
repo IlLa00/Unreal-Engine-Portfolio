@@ -27,6 +27,10 @@ void UCCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute& Attr
 
     if (Attribute == GetCurrentStaminaAttribute()) 
     {
+        if (GetCurrentStamina() == 0.f)
+        {
+            OnStaminaEmpty.Broadcast();
+        }
         OnStaminaChanged.Broadcast(NewValue); 
     }
 
@@ -39,7 +43,6 @@ void UCCharacterAttributeSet::PostAttributeChange(const FGameplayAttribute& Attr
 
             Player->Death();
         }
-
 
        OnHealthChanged.Broadcast(NewValue); 
     }

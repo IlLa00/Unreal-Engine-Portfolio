@@ -39,6 +39,8 @@ void UCPortalWidget::TeleportToGrassland()
 
 	GameMode->Teleport("Glassland");
 
+	GrasslandButton->SetIsEnabled(true);
+
 	CancelWidget();
 }
 
@@ -48,6 +50,8 @@ void UCPortalWidget::TeleportToRockPlain()
 	CheckNull(GameMode);
 
 	GameMode->Teleport("RockPlain");
+
+	RockPlainButton->SetIsEnabled(true);
 
 	CancelWidget();
 }
@@ -59,6 +63,8 @@ void UCPortalWidget::TeleportToDessert()
 
 	GameMode->Teleport("Dessert");
 
+	DessertButton->SetIsEnabled(true);
+
 	CancelWidget();
 }
 
@@ -69,6 +75,8 @@ void UCPortalWidget::TeleportToBambooForest()
 
 	GameMode->Teleport("BambooForest");
 
+	BambooForestButton->SetIsEnabled(true);
+
 	CancelWidget();
 }
 
@@ -78,6 +86,8 @@ void UCPortalWidget::TeleportToCliff()
 	CheckNull(GameMode);
 
 	GameMode->Teleport("Cliff");
+
+	CliffButton->SetIsEnabled(true);
 
 	CancelWidget();
 }
@@ -112,8 +122,6 @@ void UCPortalWidget::CancelWidget()
 
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 
-	PrintLine();
-
-	this->SetVisibility(ESlateVisibility::Hidden);
+	RemoveFromParent();
 }
 

@@ -82,7 +82,7 @@ void UCBTService_Boss::SetTarget(ACEnemyController* AIC, ACBoss* Boss, ACPlayer*
 	float DistanceToPlayer = 0.0f;
 	float DistanceToPet = 0.0f;
 
-	if (Player != nullptr)
+	if (Player != nullptr && !(Player->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Dead")))))
 	{
 		DistanceToPlayer = Boss->GetDistanceTo(Player);
 	}

@@ -5,7 +5,8 @@
 #include "Particles/ParticleSystem.h"
 #include "Blueprint/UserWidget.h" 
 #include "Widget/CPortalWidget.h"
-#include "GameFramework/Character.h"
+#include "Player/CPlayer.h"
+#include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 ACPortal::ACPortal()
@@ -64,20 +65,22 @@ void ACPortal::Tick(float DeltaTime)
 
 void ACPortal::BeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	ACharacter* Character = Cast<ACharacter>(OtherActor);
-	CheckNull(Character);
+	ACPlayer* Player = Cast<ACPlayer>(OtherActor);
+	CheckNull(Player);
 
-	Character->GetCharacterMovement()->SetActive(false);
+	Player->GetCharacterMovement()->SetActive(false);
+	Player->GetAbilitySystemComponent()->CancelAllAbilities();
 
 	ShowPortalWidget();
 }
 
 void ACPortal::ShowPortalWidget()
 {
+	PortalWidget = CreateWidget<UCPortalWidget>(GetWorld(), WidgetClass);
+	CheckNull(PortalWidget);
+
+	PortalWidget->AddToViewport();
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
-
-	PortalWidget->SetVisibility(ESlateVisibility::Visible);
-
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
 

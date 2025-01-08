@@ -72,6 +72,9 @@ void ACGameModeBase::Teleport(FName Area)
 
 			PlayerArea = Actor->Tags[0];
 
+			if (Player->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Dead"))))
+				Player->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Dead")));
+
 			break;
 		}
 	}

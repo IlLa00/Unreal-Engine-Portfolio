@@ -157,7 +157,7 @@ void ACMonster::Tick(float DeltaTime)
 
 	Distance = GetDistanceTo(GetWorld()->GetFirstPlayerController()->GetPawn());
 
-	if (Distance > 50000.f)
+	if (Distance > 30000.f)
 	{
 		ACEnemyController* AIC = Cast<ACEnemyController>(GetController());
 		CheckNull(AIC);

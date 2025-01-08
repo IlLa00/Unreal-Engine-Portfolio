@@ -37,6 +37,7 @@ void UCPlayerWidget::UpdateHealthBar(float Health)
 	if (PlayerHealthBar)
 	{
 		PlayerHealthBar->SetPercent(Health / 100.f);  // 0 ~ 100 사이로 비율 계산
+		UpdateHealthText(Health);
 	}
 }
 
@@ -45,6 +46,25 @@ void UCPlayerWidget::UpdateStaminaBar(float Stamina)
 	if (PlayerStaminaBar)
 	{
 		PlayerStaminaBar->SetPercent(Stamina / 100.f);  // 0 ~ 100 사이로 비율 계산
+		UpdateStaminaText(Stamina);
+	}
+}
+
+void UCPlayerWidget::UpdateHealthText(float Health)
+{
+	if (CurrentHealthText && BaseHealthText)
+	{
+		CurrentHealthText->SetText(FText::AsNumber(int32(Health)));
+		BaseHealthText->SetText(FText::AsNumber(100.f));
+	}
+}
+
+void UCPlayerWidget::UpdateStaminaText(float Stamina)
+{
+	if (CurrentStaminaText && BaseStaminaText)
+	{
+		CurrentStaminaText->SetText(FText::AsNumber(int32(Stamina)));
+		BaseStaminaText->SetText(FText::AsNumber(100.f));
 	}
 }
 

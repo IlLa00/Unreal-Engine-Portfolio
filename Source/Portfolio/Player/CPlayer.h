@@ -76,6 +76,9 @@ public:
 	UFUNCTION()
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
+	UFUNCTION()
+		void OnStaminaEmpty();
+
 	FORCEINLINE UCCharacterAttributeSet* GetAttributeSet() { return AttributeSet; } 
 	FORCEINLINE FGameplayTagContainer& GetTagContainer() { return TagContainer; }
 	FORCEINLINE UCPlayerWidget* GetPlayerWidget() { return PlayerWidget; }
@@ -84,6 +87,7 @@ public:
 	FORCEINLINE UCameraComponent* GetCameraComp() { return CameraComp; }
 
 	void SetUsePawnControlRotation(bool bUse);
+	void CanDoAbilities();
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")

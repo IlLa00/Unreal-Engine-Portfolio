@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Components/Button.h"
 #include "Player/CPlayer.h"
+#include "GAS/Attribute/CCharacterAttributeSet.h"
 #include "Portal/CPortal.h"
 
 bool UCDeathWidget::Initialize()
@@ -29,10 +30,11 @@ void UCDeathWidget::Revive()
 		Player->GetMesh()->SetCollisionProfileName(TEXT("CharacterMesh"));
 	}
 
-
 	Player->GetMesh()->AttachToComponent(Player->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform);
 	Player->GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
 	Player->GetMesh()->UpdateComponentToWorld();
+
+	Player->GetAttributeSet()->SetCurrentHealth(Player->GetAttributeSet()->GetBaseHealth());
 
 	this->SetVisibility(ESlateVisibility::Hidden);
 	

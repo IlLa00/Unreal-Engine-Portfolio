@@ -13,6 +13,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChanged, float, NewHealth); 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStaminaChanged, float, NewStamina);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStaminaEmpty);
 
 UCLASS()
 class PORTFOLIO_API UCCharacterAttributeSet : public UAttributeSet
@@ -47,5 +48,5 @@ public:
 public:
 	FHealthChanged OnHealthChanged;
 	FStaminaChanged OnStaminaChanged;
-
+	FStaminaEmpty OnStaminaEmpty;
 };

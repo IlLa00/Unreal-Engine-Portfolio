@@ -30,6 +30,7 @@ protected:
 
 private:
 	UAnimMontage* AttackMontage;
+	TSubclassOf<UGameplayEffect> BPHookGunEffect;
 
 	FTimerHandle TraceTimerHandle;
 	FTimerHandle EndTimerHandle;
