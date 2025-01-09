@@ -8,6 +8,7 @@
 #include "Widget/CPlayerWidget.h"
 #include "DataAsset/CWeaponDataAsset.h"
 #include "GAS/GA/ReloadRifle.h"
+#include "GAS/GA/Aim.h"
 
 ACEquipment::ACEquipment()
 {
@@ -71,6 +72,14 @@ void ACEquipment::Tick(float DeltaTime)
 void ACEquipment::Equip(int32 slot)
 {
 	CheckNull(EquipMontage);
+
+	if (CurrentEquipWeapon && CurrentEquipWeapon->IsA<ACRifle>())
+	{
+		UGameplayAbility* Aim = Cast<UGameplayAbility>(UAim::StaticClass());
+		CheckNull(Aim);
+
+		CurrentEquipWeapon->GetAbilitySystemComponent()->CancelAbility(Aim);
+	}
 
 	OwnerCharacter->PlayAnimMontage(EquipMontage);
 

@@ -26,6 +26,8 @@ void UAim::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGamep
 
 void UAim::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
 {
+	PrintLine();
+
 	ACPlayer* Player = Cast<ACPlayer>(ActorInfo->AvatarActor->GetOwner());
 	CheckNull(Player);
 
