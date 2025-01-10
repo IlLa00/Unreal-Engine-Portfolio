@@ -1,6 +1,6 @@
 # Unreal Portfolio        
 (대충 많은 걸 보여줄수있는 메인 스샷)             
-GAS 프레임워크에 기반한 팰월드(https://namu.wiki/w/Palworld) 모작으로 1인 제작된 간단한 싱글플레이 게임입니다.    
+GAS 프레임워크에 기반한 팰월드 모작으로 1인 제작된 간단한 싱글플레이 게임입니다.    
 엔진 : UE 5.2 / 에디터 : VS 2022 / 제작기간 : 2개월~     
 Notion : https://thoughtful-shop-228.notion.site/Unreal-12f894b38b10807ab856cce6331820f5?pvs=4        
 # 들어가기 앞서,
@@ -71,7 +71,7 @@ bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& 
 ## GameplayEffect와 Attribute와의 연동.
 - 플레이어는 특정 어빌리티를 발동하면 스테미너가 감소하는 GameplayEffect가 발동됩니다.
 > Sword의 Ability를 발동하는 사진입니다.     
-<img src="https://github.com/user-attachments/assets/e78dd087-a56e-4144-a2b8-b4fc092d089c" width="1800px" height="600px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+<img src="https://github.com/user-attachments/assets/e78dd087-a56e-4144-a2b8-b4fc092d089c" width="1800px" height="300px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
 - Sword의 AcivateAbility함수 내에서 GameplayEffect를 실행합니다.    
 ```c++
 FGameplayEffectContextHandle EffectContext = Player->GetAbilitySystemComponent()->MakeEffectContext();
@@ -79,30 +79,27 @@ FGameplayEffectSpecHandle EffectSpecHandle = Player->GetAbilitySystemComponent()
 
 Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data.Get(), Player->GetAbilitySystemComponent());
 ```
+- GameplayEffect가 정상적으로 실행이 되면 Stamina가 감소됩니다.    
 (대충 뛰면 칼을 휘두르면 움짤)     
 
-사실 데미지처리에 대한 아쉬운점 블라블라~      
+GameplayEffect는 블루프린트에서 만들어서 C++에 가져와 적용시키는 모습입니다, 데미지 처리도 GE를 통해서 구현할려고 했으나 모디파이어 설정에서 난항을 겪어 직접적으로 Attribute를 조절하게 되었습니다.       
 ## 그외 기술
 ### Level    
-- **버추얼 텍스처 스트리밍**을 사용해 오픈월드의 대규모 환경 텍스쳐 로딩을 최적화.(스샷추가)                  
-- 네비게이션 메시를 에디터에서 빌드하지 않고 **네비게이션 인보커**를 사용해 런타임에서 생성.(스샷추가?)     
+- **버추얼 텍스처 스트리밍**을 사용해 랜드스케이프 대규모 환경 텍스쳐 로딩을 최적화하여 텍스처 스트리밍 풀이 초과하는 오류를 해결하였습니다.(스샷추가)                  
+- **네비게이션 인보커**를 사용해 런타임에서 네비게이션 메시를 필요한 만큼 생성하게 만들어 에디터에서 수많은 네비게이션 메시를 빌드하지 않게 했습니다, 이는 AI의 NavigationInvokerComponent와 이어집니다.(스샷추가?)         
 
 ## AI
-- AI는 기본적으로 **CAIInterface**를 상속받아 코드의 재사용성 증가. 다형성 지원   
-- **NavigationInvokerComponent**로 객체 주변에 자동으로 네비게이션 메시 생성.    
-- Boss는 공중에 떠있을 때 시각감지를 잘 쓰지 못하는 문제가 발생해 청각감지를 추가.
-### Pet
-- 플레이어 GA Summon으로 생성되고 삭제됨.        
-- **AIPerceptionConfig_Sight**로 감지하며 보스와 몬스터 중에 보스를 우선순위로 타겟팅.     
- 
-(대충 펫이 행동하는 움짤)    
+- AI는 기본적으로 **CAIInterface**를 상속받아 인터페이스의 장점인 다형성과 코드의 재사용성을 이용해 유연한 코드를 구현해보았습니다.         
+- **NavigationInvokerComponent**로 객체 주변에 자동으로 필요한만큼 네비게이션 메시를 생성합니다.        
+- Boss는 공중에 떠있을 때 Z축을 크게 감지를 하지못하는 시각감지를 잘 쓰지 못하는 문제가 발생해 **청각감지**를 추가를 하였습니다.    
+    
 ### Monster
 - GameMode가 관리하는 Spawner 클래스로 스폰되며 SpawnActorDeferred로 데이터 에셋의 값들을 읽어와 몬스터들의 메시와 애님클래스가 설정된 뒤에 스폰됨.    
 - 플레이어와 거리가 매우 멀어지면 삭제됨.    
 - 각각 다른 메시를 가진 몬스터들은 모두 AttackCollision을 가지고 각기 다른 소켓에 위치해 있음. (공격 몽타주에 따라 달라짐.)    
 - **AIPerceptionConfig_Sight**로 감지하며 플레이어와 펫중 플레이어를 우선순위로 타겟팅.    
 <img src="https://github.com/user-attachments/assets/c7846b6e-ff96-4873-9a45-6f0d91de2540" width="600px" height="400px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>    
-(대충 몬스터가 행동하는 움짤)    
+(대충 몬스터가 행동하는 움짤)        
 #### Boss
 - 지형에 1마리씩 배치, 레벨에 총 5마리가 스폰되어 있음.    
 - 지면에 있을 때는 CharacterMovement를 사용하지만 공중에 있을 때는 **FloatingPawnMovement** 사용.          
