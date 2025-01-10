@@ -90,33 +90,28 @@ GameplayEffect는 블루프린트에서 만들어서 C++에 가져와 적용시�
 
 ## AI
 - AI는 기본적으로 **CAIInterface**를 상속받아 인터페이스의 장점인 다형성과 코드의 재사용성을 이용해 유연한 코드를 구현해보았습니다.         
-- **NavigationInvokerComponent**로 객체 주변에 자동으로 필요한만큼 네비게이션 메시를 생성합니다.        
-- Boss는 공중에 떠있을 때 Z축을 크게 감지를 하지못하는 시각감지를 잘 쓰지 못하는 문제가 발생해 **청각감지**를 추가를 하였습니다.    
+- **NavigationInvokerComponent**로 객체 주변에 자동으로 필요한만큼 네비게이션 메시를 생성합니다.
+    
+### Boss
+- 공중에 떠있을 때 Z축을 크게 감지를 하지못하는 시각감지를 잘 쓰지 못하는 문제가 발생해 **청각감지**를 추가를 하였습니다.
+- **FloatingPawnMovementComponent**를 이용해 Boss가 공중에 뜨게 구현했습니다.
     
 ### Monster
-- GameMode가 관리하는 Spawner 클래스로 스폰되며 SpawnActorDeferred로 데이터 에셋의 값들을 읽어와 몬스터들의 메시와 애님클래스가 설정된 뒤에 스폰됨.    
-- 플레이어와 거리가 매우 멀어지면 삭제됨.    
-- 각각 다른 메시를 가진 몬스터들은 모두 AttackCollision을 가지고 각기 다른 소켓에 위치해 있음. (공격 몽타주에 따라 달라짐.)    
-- **AIPerceptionConfig_Sight**로 감지하며 플레이어와 펫중 플레이어를 우선순위로 타겟팅.    
-<img src="https://github.com/user-attachments/assets/c7846b6e-ff96-4873-9a45-6f0d91de2540" width="600px" height="400px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>    
-(대충 몬스터가 행동하는 움짤)        
-#### Boss
-- 지형에 1마리씩 배치, 레벨에 총 5마리가 스폰되어 있음.    
-- 지면에 있을 때는 CharacterMovement를 사용하지만 공중에 있을 때는 **FloatingPawnMovement** 사용.          
--  **AIPerceptionConfig_Hearing**로 감지하며 플레이어와 펫 중 플레이어를 먼저 타깃으로 인식하게 설정.    
-<img src="https://github.com/user-attachments/assets/4cf85110-4f49-4a36-a4c8-380f8657bb4f" width="600px" height="400px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>    
-(대충 보스가 행동하는 움짤)
-### Portal
+- GameMode가 관리하는 Spawner 클래스로 스폰되며 **SpawnActorDeferred**로 데이터 에셋의 값들을 읽어와 몬스터들의 메시와 애님클래스가 설정된 뒤에 스폰됩니다.         
+- **AIPerceptionConfig_Sight**로 감지하며 플레이어와 펫중 플레이어를 우선순위로 타겟팅.  
+
+## Portal
 - 플레이어와 오버랩 이벤트 발생 시, 포탈 위젯을 띄워 플레이어가 텔레포트 할 수 있게 함.    
 - 실제 텔레포트 로직은 GameMode에서 실행.    
 (대충 텔레포트 하는 움짤)
-#### Item
-- 몬스터나 보스가 죽으면 아이템을 드롭.
-- 아이템의 종류에 따라 아이템을 먹을 시, 고유의 GE 발동.    
+
+## Item
+- 몬스터나 보스가 죽으면 아이템을 드롭.    
+- 아이템의 종류에 따라 아이템을 먹을 시, 고유의 GE 발동.        
 (대충 아이템 먹는 움짤)
 
 
-
+# 후기?
 
 
 
