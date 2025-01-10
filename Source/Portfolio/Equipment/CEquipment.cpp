@@ -75,10 +75,7 @@ void ACEquipment::Equip(int32 slot)
 
 	if (CurrentEquipWeapon && CurrentEquipWeapon->IsA<ACRifle>())
 	{
-		UGameplayAbility* Aim = Cast<UGameplayAbility>(UAim::StaticClass());
-		CheckNull(Aim);
-
-		CurrentEquipWeapon->GetAbilitySystemComponent()->CancelAbility(Aim);
+		CurrentEquipWeapon->GetAbilitySystemComponent()->CancelAbility(CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAim::StaticClass())->Ability);
 	}
 
 	OwnerCharacter->PlayAnimMontage(EquipMontage);
