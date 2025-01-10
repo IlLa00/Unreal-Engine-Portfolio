@@ -50,7 +50,6 @@ void USprint::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGame
 
 void USprint::DecreaseStamina()
 {
-	// 스테미너 감소 로직
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
 
 	if (ASC)

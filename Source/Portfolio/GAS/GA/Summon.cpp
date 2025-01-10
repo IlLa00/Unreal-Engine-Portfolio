@@ -17,35 +17,30 @@ void USummon::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGa
 	PetController = ActorInfo->OwnerActor->GetWorld()->SpawnActor<ACPetController>(ACPetController::StaticClass());
 	CheckNull(PetController);
 
-	FTransform SpawnTM; 
+	FTransform SpawnTM;
 	SpawnTM.SetLocation(ActorInfo->AvatarActor->GetActorLocation() + FVector(0, 100, 0));
 
 	Pet = ActorInfo->OwnerActor->GetWorld()->SpawnActor<ACPet>(PetClass, SpawnTM);
 	CheckNull(Pet);
 
-	PetController->Possess(Pet); 
+	PetController->Possess(Pet);
 }
 
 void USummon::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
 {
 	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
 
-	if (PetController)
-	{
-		PetController->UnPossess();
-		PetController->Destroy();
-	}
-		
-	if (Pet)
-	{
-		TArray<AActor*> Actors;
-		Pet->GetAttachedActors(Actors);
+	CheckNull(PetController);
+	CheckNull(Pet);
 
-		for (const auto& actor : Actors)
-		{
-			actor->Destroy();
-		}
+	PetController->UnPossess();
+	PetController->Destroy();
 
-		Pet->Destroy();
-	}
+	TArray<AActor*> Actors;
+	Pet->GetAttachedActors(Actors);
+
+	for (const auto& actor : Actors)
+		actor->Destroy();
+	
+	Pet->Destroy();
 }
