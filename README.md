@@ -1,7 +1,8 @@
 # Unreal Portfolio        
 (대충 많은 걸 보여줄수있는 메인 스샷)             
 GAS 프레임워크에 기반한 팰월드(오픈월드 서바이벌 / https://namu.wiki/w/Palworld) 모작으로 1인 제작된 간단한 싱글플레이 게임.    
-엔진 : UE 5.2 / 에디터 : VS 2022 / 제작기간 : 2개월~    
+엔진 : UE 5.2 / 에디터 : VS 2022 / 제작기간 : 2개월~     
+포트폴리오 작업 연대기 : https://thoughtful-shop-228.notion.site/Unreal-12f894b38b10807ab856cce6331820f5?pvs=4    
 # 기술 설명    
 ## 데이터 관리
 <img src="https://github.com/user-attachments/assets/4edb563a-bde8-44bf-83f4-271fb6c70176" width="400px" height="100px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>    
