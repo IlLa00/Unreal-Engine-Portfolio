@@ -13,7 +13,7 @@ ACGameModeBase::ACGameModeBase()
 
 	// Set DefaultPawnClass
 	TSubclassOf<ACPlayer> PlayerClass;
-	CHelpers::GetClass(&PlayerClass, "/Script/Engine.Blueprint'/Game/Player/BP_CPlayer.BP_CPlayer_C'");
+	CHelpers::GetClass(&PlayerClass, "/Game/Player/BP_CPlayer");
 	CheckNull(PlayerClass);
 
 	DefaultPawnClass = PlayerClass;

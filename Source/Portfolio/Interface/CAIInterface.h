@@ -22,5 +22,4 @@ public:
 	virtual FGameplayTagContainer& GetTagContainer() = 0;
 	virtual UCAIAttributeSet* GetAIAttributeSet() = 0;
 	virtual UWidgetComponent* GetDamageTextComponent() = 0;
-
 };

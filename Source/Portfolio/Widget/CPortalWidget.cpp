@@ -106,14 +106,11 @@ void UCPortalWidget::CancelWidget()
 
 	for (const auto& Widget : Widgets)
 	{
-		CLog::Print(Widget->GetName());
-
 		if (Widget->GetClass() == this->GetClass())
 			continue;
 
 		if (Widget->IsA<UCDeathWidget>())
 		{
-			PrintLine();
 			continue;
 		}
 

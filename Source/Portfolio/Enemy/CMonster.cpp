@@ -206,7 +206,7 @@ void ACMonster::SetMesh(FName PlayerArea)
 		GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
 		GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 	}
-	else if (DataAsset && PlayerArea == "RockPlain")
+	else if (DataAsset && PlayerArea == "Rock Plain")
 	{
 		if (FMath::FRand() < 0.5f)
 		{
@@ -220,7 +220,7 @@ void ACMonster::SetMesh(FName PlayerArea)
 		GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
 		GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 	}
-	else if (DataAsset && PlayerArea == "BamBooForest")
+	else if (DataAsset && PlayerArea == "Bamboo Forest")
 	{
 		if (FMath::FRand() < 0.5f)
 		{
@@ -234,11 +234,25 @@ void ACMonster::SetMesh(FName PlayerArea)
 		GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
 		GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 	}
+	else if (DataAsset && PlayerArea == "Dessert")
+	{
+		if (FMath::FRand() < 0.5f)
+		{
+			Index = 6;
+		}
+		else
+		{
+			Index = 7;
+		}
+		GetMesh()->SetSkeletalMesh(DataAsset->Datas[Index].SkeletalMeshAssets);
+		GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
+		GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
+	}
 	else if (DataAsset && PlayerArea == "Cliff")
 	{
 		if (FMath::FRand() < 0.5f)
 		{
-			Index = 4;
+			Index = 5;
 		}
 		else
 		{

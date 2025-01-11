@@ -22,8 +22,6 @@ void UCAIAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, 
 	ICAIInterface* AI = Cast<ICAIInterface>(GetOwningActor()); 
 	CheckNull(AI);
 
-	
-
 	if (NewValue <= 0.f) // Á×¾úÀ¸¸é ÃÑ¶ä ÀÌÁ¦ ¼÷·Ãµµ Ã³¸®´Â µÆÀ¸³ª ¿©·¯¹ø È£ÃâµÊ ¾Æ¸¶ °è¼Ó ¶§¸®´Â°Ô µÇ¼­ ±×·²µí
 	{
 		TagHelpers::AIChangeStateTag(AI->GetTagContainer(), "AI.Action.Dead");

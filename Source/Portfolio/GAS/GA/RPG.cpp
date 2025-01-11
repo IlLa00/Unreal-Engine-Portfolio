@@ -7,7 +7,7 @@
 
 URPG::URPG()
 {
-	CHelpers::GetClass(&Rocket, "/Game/Weapon/BP_Rocket");
+	CHelpers::GetClass(&Rocket, "/Game/Weapon/BP_CRocket");
 	CheckNull(Rocket);
 }
 
@@ -24,7 +24,12 @@ void URPG::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGamep
 	UStaticMeshComponent* MeshComp = RPG->GetComponentByClass<UStaticMeshComponent>();
 	CheckNull(MeshComp);
 
-	GetWorld()->SpawnActor<AActor>(Rocket, MeshComp->GetSocketLocation("FireLocation"), Player->GetCameraComp()->GetForwardVector().Rotation());
+	FActorSpawnParameters SpawnParam;
+	SpawnParam.Owner = RPG;
+
+	GetWorld()->SpawnActor<AActor>(Rocket, MeshComp->GetSocketLocation("FireLocation"), Player->GetCameraComp()->GetForwardVector().Rotation(), SpawnParam);
+
+	EndAbility(Handle, ActorInfo, ActivationInfo, false, false);
 }
 
 void URPG::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
