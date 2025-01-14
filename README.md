@@ -9,9 +9,9 @@ Notion : https://thoughtful-shop-228.notion.site/Unreal-12f894b38b10807ab856cce6
 # 기술 설명
 > GAS 프레임워크를 적용해본만큼, GAS의 기능 위주로 설명하겠습니다.
 ## 목차   
-[1. GAS의 Attribute와 데이터 에셋의 연동.](#-gas의-attribute와-데이터-에셋의-연동)     
-[2. GAS의 GameplayTag와 AI들과의 연동.](#-gas의-gameplaytag와-ai들과의-연동)    
-## GAS의 Attribute와 데이터 에셋의 연동
+[GAS의 Attribute와 데이터 에셋의 연동.](#-gas의-attribute와-데이터-에셋의-연동)     
+[2. GAS의 GameplayTag와 AI들과의 연동](#-gas의-gameplaytag와-ai들과의-연동)    
+## GAS의 Attribute와 데이터 에셋의 연동.
 - 코드의 큰 변경없이 쉽게 데이터 수정이 가능해지는 유지보수성을 위해 데이터 에셋을 채택하였습니다.    
 <img src="https://github.com/user-attachments/assets/4edb563a-bde8-44bf-83f4-271fb6c70176" width="400px" height="100px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>     
 - 각각의 데이터 에셋은 공통적으로 **Attribute**와 연동되는 값(Base ~)들을 가지고있고 고유의 필요한 값들을 가지고 있습니다.
