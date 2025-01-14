@@ -9,9 +9,9 @@ Notion : https://thoughtful-shop-228.notion.site/Unreal-12f894b38b10807ab856cce6
 # 기술 설명
 > GAS 프레임워크를 적용해본만큼, GAS의 기능 위주로 설명하겠습니다.
 ## 목차   
-[1. GAS의 Attribute와 데이터 에셋의 연동.](##GAS의-Attribute와-데이터-에셋의-연동.)     
-[2. GAS의 GameplayTag와 AI들과의 연동.](##GAS의-GameplayTag와-AI들과의-연동.)    
-## GAS의 Attribute와 데이터 에셋의 연동.
+[1. GAS의 Attribute와 데이터 에셋의 연동.](##-gas의-attribute와-데이터-에셋의-연동)     
+[2. GAS의 GameplayTag와 AI들과의 연동.](##-gas의-gameplaytag와-ai들과의-연동)    
+## GAS의 Attribute와 데이터 에셋의 연동
 - 코드의 큰 변경없이 쉽게 데이터 수정이 가능해지는 유지보수성을 위해 데이터 에셋을 채택하였습니다.    
 <img src="https://github.com/user-attachments/assets/4edb563a-bde8-44bf-83f4-271fb6c70176" width="400px" height="100px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>     
 - 각각의 데이터 에셋은 공통적으로 **Attribute**와 연동되는 값(Base ~)들을 가지고있고 고유의 필요한 값들을 가지고 있습니다.
@@ -30,7 +30,7 @@ if (ASC && AIAttribute)
 ```
 > 이런 방식으로 데이터 에셋에서 수치만 조절해도 코드에서 따로 수정할 필요가 없어 **유지보수가 용이**하고, 프로그래머 뿐만 아니라 다른 직군들도 쉽게 변경 가능케 해 **수월한 협업**을 기대해볼 수 있습니다.
 
-## GAS의 GameplayTag와 AI들과의 연동.
+## GAS의 GameplayTag와 AI들과의 연동
 - AI들의 행동을 정의하는 태그들을 설정합니다.    
 <img src="https://github.com/user-attachments/assets/93376070-1a88-42da-885c-895b3bdb2741" width="300px" height="150px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>    
 - AI들은 BehaviorTree의 Service노드에서 조건에 따라 **GamplayTag**의 교체가 이루어지며 상태를 관리합니다.
