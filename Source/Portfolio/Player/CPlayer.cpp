@@ -237,6 +237,7 @@ void ACPlayer::OnSprint()
 		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
 	}
 	
+	// todo.. 어빌리티있는지 확인
 	ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(USprint::StaticClass())->Handle); // todo.. 스테미너 조건 검사
 }
 

@@ -82,8 +82,6 @@ void URifle::Shoot()
 		if (!AI->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Dead"))))
 		{
 			AI->GetAIAttributeSet()->Attack(AI->GetAIAttributeSet()->GetCurrentHealth() - Rifle->GetAttiribute()->GetCurrentDamage(), GetOwningActorFromActorInfo());
-			CLog::Print(HitResult.GetActor()->GetName());
-			CLog::Print(HitResult.GetComponent()->GetName());
 
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticle, HitResult.Location);
 		}

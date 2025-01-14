@@ -161,6 +161,8 @@ EBTNodeResult::Type UCBTTaskNode_Attack::AbortTask(UBehaviorTreeComponent& Owner
 				{
 					if (Pet->GetAbilitySystemComponent()->GetCurrentMontage())
 					{
+						AIC->ClearFocus(EAIFocusPriority::Default);
+
 						Pet->GetAbilitySystemComponent()->CancelAbilityHandle(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
 
 						return EBTNodeResult::Aborted;
@@ -181,6 +183,8 @@ EBTNodeResult::Type UCBTTaskNode_Attack::AbortTask(UBehaviorTreeComponent& Owner
 				{
 					if (Enemy->GetCurrentMontage())
 					{
+						AIC->ClearFocus(EAIFocusPriority::Default);
+
 						Enemy->StopAnimMontage();
 
 						Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
@@ -203,6 +207,8 @@ EBTNodeResult::Type UCBTTaskNode_Attack::AbortTask(UBehaviorTreeComponent& Owner
 				{
 					if (Boss->GetCurrentMontage())
 					{
+						AIC->ClearFocus(EAIFocusPriority::Default);
+
 						Boss->StopAnimMontage();
 
 						Boss->GetAbilitySystemComponent()->CancelAbilityHandle(Boss->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Attack::StaticClass())->Handle);
