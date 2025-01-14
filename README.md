@@ -8,6 +8,13 @@ Notion : https://thoughtful-shop-228.notion.site/Unreal-12f894b38b10807ab856cce6
 (대충 전체적인 흐름의 구조를 나타내는 그림) (대충 GAS 흐름을 나타내는 그림)   
 # 기술 설명
 > GAS 프레임워크를 적용해본만큼, GAS의 기능 위주로 설명하겠습니다.
+# 목차   
+[1. GAS의 Attribute와 데이터 에셋의 연동.](#gas의-attribute와-데이터-에셋의-연동)     
+[2. GAS의 GameplayTag와 AI들과의 연동.](#gas의-gameplaytag와-ai들과의-연동)      
+[3. GAS의 Ability를 가진 객체.](#gas의-ability를-가진-객체)     
+[4. GameplayEffect와 Attribute와의 연동.](#gameplayeffect와-attribute와의-연동)       
+  
+[그 외 기술](#그외-기술)
 ## GAS의 Attribute와 데이터 에셋의 연동.
 - 코드의 큰 변경없이 쉽게 데이터 수정이 가능해지는 유지보수성을 위해 데이터 에셋을 채택하였습니다.    
 <img src="https://github.com/user-attachments/assets/4edb563a-bde8-44bf-83f4-271fb6c70176" width="400px" height="100px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>     
@@ -27,7 +34,7 @@ if (ASC && AIAttribute)
 ```
 > 이런 방식으로 데이터 에셋에서 수치만 조절해도 코드에서 따로 수정할 필요가 없어 **유지보수가 용이**하고, 프로그래머 뿐만 아니라 다른 직군들도 쉽게 변경 가능케 해 **수월한 협업**을 기대해볼 수 있습니다.
 
-## GAS의 GameplayTag와 AI들과의 연동.
+## GAS의 GameplayTag와 AI들과의 연동
 - AI들의 행동을 정의하는 태그들을 설정합니다.    
 <img src="https://github.com/user-attachments/assets/93376070-1a88-42da-885c-895b3bdb2741" width="300px" height="150px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>    
 - AI들은 BehaviorTree의 Service노드에서 조건에 따라 **GamplayTag**의 교체가 이루어지며 상태를 관리합니다.
@@ -64,7 +71,7 @@ bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& 
   - Rifle은 0.1초마다 LineTrace를 진행하는 Ability를 보유하고 있습니다.(대충 총쏘는 움짤)
     - 라인트레이스에 영향을 받은 액터의 어트리뷰트가 Rifle의 공격력만큼 영향을 받습니다.
   - HookGun은 바라보고 있는 방향에 갈고리 총을 쏘고 지면에 닿으면 그 지점으로 날아가는 Ability를 보유하고 있습니다.(대충 갈고리총 쏘는 움짤)      
-  - ?     
+  - RPG는 몬스터와 닿으면 주변에 SphereTrace를 진행하는 로켓을 발사하는 Ability를 보유하고 있습니다. (대충 로켓 쏘는 움짤)        
 ### AI 
 - Attack, Dead Ability를 공통으로 보유하고 있고 Boss를 제외하고 GetHit Ability를 보유하고 있습니다. (대충 AI들이 공격하고 죽는 움짤)
 
@@ -88,31 +95,24 @@ GameplayEffect는 블루프린트에서 만들어서 C++에 가져와 적용시�
 - **버추얼 텍스처 스트리밍**을 사용해 랜드스케이프 대규모 환경 텍스쳐 로딩을 최적화하여 텍스처 스트리밍 풀이 초과하는 오류를 해결하였습니다.(스샷추가)                  
 - **네비게이션 인보커**를 사용해 런타임에서 네비게이션 메시를 필요한 만큼 생성하게 만들어 에디터에서 수많은 네비게이션 메시를 빌드하지 않게 했습니다, 이는 AI의 NavigationInvokerComponent와 이어집니다.(스샷추가?)         
 
-## AI
+### AI
 - AI는 기본적으로 **CAIInterface**를 상속받아 인터페이스의 장점인 다형성과 코드의 재사용성을 이용해 유연한 코드를 구현해보았습니다.         
 - **NavigationInvokerComponent**로 객체 주변에 자동으로 필요한만큼 네비게이션 메시를 생성합니다.
     
 ### Boss
-- 공중에 떠있을 때 Z축을 크게 감지를 하지못하는 시각감지를 잘 쓰지 못하는 문제가 발생해 **청각감지**를 추가를 하였습니다.
+- 공중에 떠있을 때 Z축을 크게 감지를 하지못하는 시각감지를 잘 쓰지 못하는 문제가 발생해 **AIPerceptionConfig_Hearing**으로 감지를 설정했습니다.
 - **FloatingPawnMovementComponent**를 이용해 Boss가 공중에 뜨게 구현했습니다.
     
 ### Monster
 - GameMode가 관리하는 Spawner 클래스로 스폰되며 **SpawnActorDeferred**로 데이터 에셋의 값들을 읽어와 몬스터들의 메시와 애님클래스가 설정된 뒤에 스폰됩니다.         
-- **AIPerceptionConfig_Sight**로 감지하며 플레이어와 펫중 플레이어를 우선순위로 타겟팅.  
+- **AIPerceptionConfig_Sight**로 감지하며 플레이어와 펫중 플레이어를 우선순위로 타겟팅합니다.  
 
-## Portal
-- 플레이어와 오버랩 이벤트 발생 시, 포탈 위젯을 띄워 플레이어가 텔레포트 할 수 있게 함.    
-- 실제 텔레포트 로직은 GameMode에서 실행.    
+### Portal
+- 플레이어와 오버랩 이벤트 발생 시, 특정 지형으로 이동할 수 있게하는 위젯을 띄웁니다.        
+- 실제 텔레포트 로직은 GameMode에서 실행합니다.    
 (대충 텔레포트 하는 움짤)
 
-## Item
-- 몬스터나 보스가 죽으면 아이템을 드롭.    
-- 아이템의 종류에 따라 아이템을 먹을 시, 고유의 GE 발동.        
+### Item
+- 몬스터나 보스가 죽으면 아이템을 드롭합니다.        
+- 아이템의 종류에 따라 아이템을 먹을 시, 고유의 GE 발동이 됩니다.        
 (대충 아이템 먹는 움짤)
-
-
-# 후기?
-
-
-
- 
