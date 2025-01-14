@@ -71,7 +71,7 @@ bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& 
   - Rifle은 0.1초마다 LineTrace를 진행하는 Ability를 보유하고 있습니다.(대충 총쏘는 움짤)
     - 라인트레이스에 영향을 받은 액터의 어트리뷰트가 Rifle의 공격력만큼 영향을 받습니다.
   - HookGun은 바라보고 있는 방향에 갈고리 총을 쏘고 지면에 닿으면 그 지점으로 날아가는 Ability를 보유하고 있습니다.(대충 갈고리총 쏘는 움짤)      
-  - ?     
+  - RPG는 몬스터와 닿으면 주변에 SphereTrace를 진행하는 로켓을 발사하는 Ability를 보유하고 있습니다. (대충 로켓 쏘는 움짤)        
 ### AI 
 - Attack, Dead Ability를 공통으로 보유하고 있고 Boss를 제외하고 GetHit Ability를 보유하고 있습니다. (대충 AI들이 공격하고 죽는 움짤)
 
