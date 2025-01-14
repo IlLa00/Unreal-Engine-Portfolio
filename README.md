@@ -8,6 +8,9 @@ Notion : https://thoughtful-shop-228.notion.site/Unreal-12f894b38b10807ab856cce6
 (대충 전체적인 흐름의 구조를 나타내는 그림) (대충 GAS 흐름을 나타내는 그림)   
 # 기술 설명
 > GAS 프레임워크를 적용해본만큼, GAS의 기능 위주로 설명하겠습니다.
+## 목차   
+[1. GAS의 Attribute와 데이터 에셋의 연동.](##GAS의-Attribute와-데이터-에셋의-연동.)     
+[2. GAS의 GameplayTag와 AI들과의 연동.](##GAS의-GameplayTag와-AI들과의-연동.)    
 ## GAS의 Attribute와 데이터 에셋의 연동.
 - 코드의 큰 변경없이 쉽게 데이터 수정이 가능해지는 유지보수성을 위해 데이터 에셋을 채택하였습니다.    
 <img src="https://github.com/user-attachments/assets/4edb563a-bde8-44bf-83f4-271fb6c70176" width="400px" height="100px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>     
@@ -93,7 +96,7 @@ GameplayEffect는 블루프린트에서 만들어서 C++에 가져와 적용시�
 - **NavigationInvokerComponent**로 객체 주변에 자동으로 필요한만큼 네비게이션 메시를 생성합니다.
     
 ### Boss
-- 공중에 떠있을 때 Z축을 크게 감지를 하지못하는 시각감지를 잘 쓰지 못하는 문제가 발생해 **청각감지**를 추가를 하였습니다.
+- 공중에 떠있을 때 Z축을 크게 감지를 하지못하는 시각감지를 잘 쓰지 못하는 문제가 발생해 **AIPerceptionConfig_Hearing**으로 감지를 설정했습니다.
 - **FloatingPawnMovementComponent**를 이용해 Boss가 공중에 뜨게 구현했습니다.
     
 ### Monster
@@ -109,10 +112,3 @@ GameplayEffect는 블루프린트에서 만들어서 C++에 가져와 적용시�
 - 몬스터나 보스가 죽으면 아이템을 드롭.    
 - 아이템의 종류에 따라 아이템을 먹을 시, 고유의 GE 발동.        
 (대충 아이템 먹는 움짤)
-
-
-# 후기?
-
-
-
- 
