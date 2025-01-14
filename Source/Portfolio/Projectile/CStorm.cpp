@@ -8,9 +8,7 @@
 #include "Player/CPlayer.h"
 #include "Enemy/CEnemy.h"
 #include "Enemy/CBoss.h"
-#include "GAS/Attribute/CMonsterAttributeSet.h"
 #include "Pet/CPet.h"
-#include "GAS/Attribute/CPetAttributeSet.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
 #include "GAS/Attribute/CAIAttributeSet.h"
 

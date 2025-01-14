@@ -8,9 +8,7 @@
 #include "AbilitySystemComponent.h"
 #include "Player/CPlayer.h"
 #include "Enemy/CEnemy.h"
-#include "GAS/Attribute/CMonsterAttributeSet.h"
 #include "Pet/CPet.h"
-#include "GAS/Attribute/CPetAttributeSet.h"
 #include "Interface/CAIInterface.h"
 #include "GAS/Attribute/CAIAttributeSet.h"
 

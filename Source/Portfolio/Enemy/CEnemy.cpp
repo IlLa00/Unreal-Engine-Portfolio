@@ -7,7 +7,6 @@
 #include "NavigationInvokerComponent.h"
 #include "Components/WidgetComponent.h"
 #include "DataAsset/CMonsterMeshDataAsset.h"
-#include "GAS/Attribute/CMonsterAttributeSet.h"
 #include "GAS/Attribute/CAIAttributeSet.h"
 #include "CEnemyController.h"
 #include "GAS/GA/AI_Attack.h"

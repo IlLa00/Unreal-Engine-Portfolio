@@ -28,6 +28,9 @@ void UCPlayerWidget::NativeConstruct()
 		Player->GetAttributeSet()->OnStaminaChanged.AddDynamic(this, &UCPlayerWidget::OnStaminaChange);
 	}
 
+
+
+
 	if(AimImage)
 		SetAimWidget(false);
 }
@@ -75,7 +78,17 @@ void UCPlayerWidget::UpdateEquipWeaponName(FText WeaponName)
 
 void UCPlayerWidget::UpdateEquipWeaponImage(UTexture* WeaponImage)
 {
+	if (WeaponImage == nullptr)
+	{
+		EquipWeaponImage->Brush.SetResourceObject(nullptr);
+	}
 	EquipWeaponImage->Brush.SetResourceObject(WeaponImage);
+}
+
+void UCPlayerWidget::UpdateEquipWeaponProficiency(float Proficiency)
+{
+	if(ProficiencyBar)
+		ProficiencyBar->SetPercent(Proficiency / 100); // TODO.. 이거 하드코딩 손봐야함
 }
 
 void UCPlayerWidget::UpdateCurrentBullet(float Value)

@@ -4,7 +4,6 @@
 #include "GAS/Attribute/CWeaponAttributeSet.h"
 #include "Components/BoxComponent.h"
 #include "Enemy/CEnemy.h"
-#include "GAS/Attribute/CMonsterAttributeSet.h"
 #include "Interface/CAIInterface.h"
 #include "GAS/Attribute/CAIAttributeSet.h"
 

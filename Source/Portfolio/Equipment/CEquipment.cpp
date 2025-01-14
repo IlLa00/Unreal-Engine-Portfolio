@@ -9,6 +9,7 @@
 #include "DataAsset/CWeaponDataAsset.h"
 #include "GAS/GA/ReloadRifle.h"
 #include "GAS/GA/Aim.h"
+#include "GAS/Attribute/CWeaponAttributeSet.h"
 
 ACEquipment::ACEquipment()
 {
@@ -82,9 +83,20 @@ void ACEquipment::Equip(int32 slot)
 
 	NewWeapon = EquipWeapon[slot - 1];
 
-	// À§Á¬ º¯È­
-	OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponImage(NewWeapon->GetWeaponImage()); 
-	OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponName(NewWeapon->GetWeaponName());
+	if (NewWeapon == CurrentEquipWeapon)
+	{
+		OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponImage(nullptr);
+		OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponName(FText());
+		OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponProficiency(0.f);
+		OwnerCharacter->GetPlayerWidget()->ShowCurrentBullet(false);
+		return;
+	}
+	else
+	{
+		OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponImage(NewWeapon->GetWeaponImage());
+		OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponName(NewWeapon->GetWeaponName());
+		OwnerCharacter->GetPlayerWidget()->UpdateEquipWeaponProficiency(NewWeapon->GetAttiribute()->GetCurrentProficiency());
+	}
 
 	if (NewWeapon->IsA<ACRifle>())
 	{

@@ -1,5 +1,7 @@
 #include "CWeaponAttributeSet.h"
 #include "Global.h"
+#include "Widget/CPlayerWidget.h"
+#include "Player/CPlayer.h"
 
 UCWeaponAttributeSet::UCWeaponAttributeSet()
 {
@@ -15,6 +17,11 @@ void UCWeaponAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribu
 {
 	if (Attribute == GetCurrentProficiencyAttribute())
 	{
+		ACPlayer* Player = Cast<ACPlayer>(GetOwningActor()->GetOwner());
+		CheckNull(Player);
+
+		Player->GetPlayerWidget()->UpdateEquipWeaponProficiency(NewValue);
+
 		if (GetCurrentProficiency() >= GetBaseProficiency())
 		{
 			SetBaseDamage(GetBaseDamage() + 5.f);

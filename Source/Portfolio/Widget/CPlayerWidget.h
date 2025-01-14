@@ -30,6 +30,7 @@ public:
 
 	void UpdateEquipWeaponName(FText WeaponName);
 	void UpdateEquipWeaponImage(UTexture* WeaponImage);
+	void UpdateEquipWeaponProficiency(float Proficiency);
 
 	void UpdateCurrentBullet(float Value);
 	void UpdateBaseBullet(float Value);
@@ -62,6 +63,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UImage* EquipWeaponImage;
+
+	UPROPERTY(meta = (BindWidget))
+	UProgressBar* ProficiencyBar;
 
 	UPROPERTY(meta = (BindWidget))
 	UEditableTextBox* CurrentBullet;

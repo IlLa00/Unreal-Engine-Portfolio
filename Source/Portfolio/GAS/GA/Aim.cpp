@@ -15,8 +15,8 @@ void UAim::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGamep
 
 	Player->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Sub.Aim")));
 
-	Player->GetSpringArmComp()->TargetArmLength = 100.f;
-	Player->SetUsePawnControlRotation(false);
+	/*Player->GetSpringArmComp()->TargetArmLength = 100.f;
+	Player->SetUsePawnControlRotation(false);*/
 
 	if(Player->GetPlayerWidget())
 		Player->GetPlayerWidget()->SetAimWidget(true);

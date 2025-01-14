@@ -30,7 +30,7 @@ void UCAIAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, 
 		CheckNull(Weapon);
 		CheckNull(Weapon->GetAttiribute());
 
-		Weapon->GetAttiribute()->SetCurrentProficiency(Weapon->GetAttiribute()->GetCurrentProficiency() + 50.f);
+		Weapon->GetAttiribute()->SetCurrentProficiency(Weapon->GetAttiribute()->GetCurrentProficiency() + 25.f);
 	}
 
 	if (OldValue > NewValue) // 체력이 감소했으면

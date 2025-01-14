@@ -39,6 +39,9 @@ void ACSword::BeginPlay()
 			Attribute->SetCurrentDamage(Attribute->GetBaseDamage());
 			Attribute->SetCurrentProficiency(0.f);
 
+			Attribute->SetBaseProficiency(data.BaseProficiency);
+			Attribute->SetCurrentProficiency(Attribute->GetBaseProficiency());
+
 			if(data.WeaponImage)
 				WeaponImage = data.WeaponImage;
 

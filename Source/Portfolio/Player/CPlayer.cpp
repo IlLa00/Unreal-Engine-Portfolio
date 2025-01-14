@@ -134,10 +134,6 @@ void ACPlayer::Tick(float DeltaTime)
 		if (AttributeSet->GetCurrentStamina() < AttributeSet->GetBaseStamina())
 			ASC->ApplyGameplayEffectSpecToSelf(*RegenerateStminaHandle.Data.Get());
 	}
-	else
-	{
-		
-	}
 
 	if (TagContainer.Num() > 0)
 	{
@@ -145,6 +141,12 @@ void ACPlayer::Tick(float DeltaTime)
 		{
 			TextComp->SetText(FText::FromString(Tag.ToString()));
 		}
+	}
+
+	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Sub.Aim")))) // 아무것도 안하고 있을 
+	{
+		GetSpringArmComp()->TargetArmLength = 100.f;
+		SetUsePawnControlRotation(false);
 	}
 }
 
