@@ -24,10 +24,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
-	UFUNCTION()
-	void Hit(AActor* OverlappedActor, AActor* OtherActor);
-
-protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 	USceneComponent* RootComp;
 

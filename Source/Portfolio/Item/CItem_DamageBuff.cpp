@@ -43,6 +43,7 @@ void ACItem_DamageBuff::BeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 	{
 		(*Weapons[i]).GetAttiribute()->SetBaseDamage((*Weapons[i]).GetAttiribute()->GetBaseDamage() + Value);
 		(*Weapons[i]).GetAttiribute()->SetCurrentDamage((*Weapons[i]).GetAttiribute()->GetCurrentDamage() + Value);
+
 		CLog::Print((*Weapons[i]).GetAttiribute()->GetBaseDamage());
 		CLog::Print((*Weapons[i]).GetAttiribute()->GetCurrentDamage());
 	}

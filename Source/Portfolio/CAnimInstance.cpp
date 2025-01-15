@@ -40,7 +40,7 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	IsFall = OwnerCharacter->GetCharacterMovement()->IsFalling();
 
-	Pitch = OwnerCharacter->GetControlRotation().Pitch;
+	Pitch = TryGetPawnOwner()->GetBaseAimRotation().Pitch;
 }
 
 void UCAnimInstance::NativeBeginPlay()

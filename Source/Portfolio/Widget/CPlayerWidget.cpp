@@ -78,9 +78,15 @@ void UCPlayerWidget::UpdateEquipWeaponImage(UTexture* WeaponImage)
 {
 	if (WeaponImage == nullptr)
 	{
-		EquipWeaponImage->Brush.SetResourceObject(nullptr);
+		EquipWeaponImage->SetVisibility(ESlateVisibility::Hidden);
+		ProficiencyBar->SetVisibility(ESlateVisibility::Hidden);
 	}
-	EquipWeaponImage->Brush.SetResourceObject(WeaponImage);
+	else
+	{
+		EquipWeaponImage->SetVisibility(ESlateVisibility::Visible);
+		ProficiencyBar->SetVisibility(ESlateVisibility::Visible);
+		EquipWeaponImage->Brush.SetResourceObject(WeaponImage);
+	}
 }
 
 void UCPlayerWidget::UpdateEquipWeaponProficiency(float Proficiency)

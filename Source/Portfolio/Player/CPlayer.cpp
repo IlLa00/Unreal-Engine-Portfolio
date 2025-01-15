@@ -94,6 +94,7 @@ void ACPlayer::BeginPlay()
 	CheckNull(PlayerWidget);
 
 	PlayerWidget->AddToViewport();
+	PlayerWidget->UpdateEquipWeaponImage(nullptr);
 
 	OnActorBeginOverlap.AddDynamic(this, &ACPlayer::BeginOverlap);
 
