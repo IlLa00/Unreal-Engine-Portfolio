@@ -3,6 +3,7 @@
 #include "Enemy/CMonster.h"
 #include "Pet/CPet.h"
 #include "DataAsset/CPetDataAsset.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 void UAI_GetHit::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -11,6 +12,8 @@ void UAI_GetHit::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
 		ACMonster* Monster = Cast<ACMonster>(OwnerInfo->AvatarActor);
 		CheckNull(Monster);
 		CheckNull(Monster->GetDataAsset());
+
+		Monster->GetCharacterMovement()->StopMovementImmediately();
 
 		MontageToPlay = Monster->GetDataAsset()->Datas->MontageDatas.HittedMontage;
 	}

@@ -1,13 +1,12 @@
 #include "CBTTaskNode_GetHit.h"
 #include "Global.h"
-#include "BehaviorTree/BehaviorTree.h"
-#include "Pet/CPetController.h"
-#include "Pet/CPet.h"
-#include "Enemy/CEnemy.h"
-#include "Enemy/CEnemyController.h"
+#include "AIController.h"
+#include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
+#include "Interface/CAIInterface.h"
 #include "GAS/GA/AI_Attack.h"
 #include "GAS/GA/AI_GetHit.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 UCBTTaskNode_GetHit::UCBTTaskNode_GetHit()
@@ -21,33 +20,15 @@ EBTNodeResult::Type UCBTTaskNode_GetHit::ExecuteTask(UBehaviorTreeComponent& Own
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
-	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
+	if (OwnerComp.GetAIOwner()->GetPawn()->GetClass()->ImplementsInterface(UAbilitySystemInterface::StaticClass()))
 	{
-		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
-		CheckNullResult(AIC, EBTNodeResult::Failed);
+		IAbilitySystemInterface* ASI = Cast<IAbilitySystemInterface>(OwnerComp.GetAIOwner()->GetPawn());
+		CheckNullResult(ASI, EBTNodeResult::Failed);
 
-		ACPet* Pet = Cast<ACPet>(AIC->GetPawn());
-		CheckNullResult(Pet, EBTNodeResult::Failed);
-		CheckNullResult(Pet->GetAbilitySystemComponent(), EBTNodeResult::Failed);
-
-		Pet->GetAbilitySystemComponent()->TryActivateAbility(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
+		ASI->GetAbilitySystemComponent()->TryActivateAbility(ASI->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
 
 		return EBTNodeResult::InProgress;
 	}
-	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Enemy").ToString())
-	{
-		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
-		CheckNullResult(AIC, EBTNodeResult::Failed);
-
-		ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetPawn());
-		CheckNullResult(Enemy, EBTNodeResult::Failed);
-		CheckNullResult(Enemy->GetAbilitySystemComponent(), EBTNodeResult::Failed);
-
-		Enemy->GetAbilitySystemComponent()->TryActivateAbility(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
-
-		return EBTNodeResult::InProgress;
-	}
-
 	return EBTNodeResult::Failed;
 }
 
@@ -55,38 +36,19 @@ void UCBTTaskNode_GetHit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
-	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
+	if (OwnerComp.GetAIOwner()->GetPawn()->GetClass()->ImplementsInterface(UAbilitySystemInterface::StaticClass()))
 	{
-		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
-		CheckNull(AIC);
+		IAbilitySystemInterface* ASI = Cast<IAbilitySystemInterface>(OwnerComp.GetAIOwner()->GetPawn());
+		CheckNull(ASI);
 
-		ACPet* Pet = Cast<ACPet>(AIC->GetPawn());
-		CheckNull(Pet);
-		CheckNull(Pet->GetAbilitySystemComponent());
-
-		if (!Pet->GetCurrentMontage())
+		if (!ASI->GetAbilitySystemComponent()->GetCurrentMontage())
 		{
-			Pet->GetAbilitySystemComponent()->CancelAbilityHandle(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
+			ASI->GetAbilitySystemComponent()->CancelAbilityHandle(ASI->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
 
-			Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.GetHit")));
+			ICAIInterface* AI = Cast<ICAIInterface>(OwnerComp.GetAIOwner()->GetCharacter());
+			CheckNull(AI);
 
-			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-		}
-	}
-	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Enemy").ToString())
-	{
-		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
-		CheckNull(AIC);
-
-		ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetPawn());
-		CheckNull(Enemy);
-		CheckNull(Enemy->GetAbilitySystemComponent());
-
-		if (!Enemy->GetCurrentMontage())
-		{
-			Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
-
-			Enemy->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.GetHit")));
+			AI->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.GetHit")));
 
 			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		}
@@ -97,39 +59,22 @@ EBTNodeResult::Type UCBTTaskNode_GetHit::AbortTask(UBehaviorTreeComponent& Owner
 {
 	Super::AbortTask(OwnerComp, NodeMemory);
 
-	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
+	if (OwnerComp.GetAIOwner()->GetPawn()->GetClass()->ImplementsInterface(UAbilitySystemInterface::StaticClass()))
 	{
-		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
-		CheckNullResult(AIC, EBTNodeResult::Failed);
+		IAbilitySystemInterface* ASI = Cast<IAbilitySystemInterface>(OwnerComp.GetAIOwner()->GetPawn());
+		CheckNullResult(ASI, EBTNodeResult::Failed);
 
-		ACPet* Pet = Cast<ACPet>(AIC->GetPawn());
-		CheckNullResult(Pet, EBTNodeResult::Failed);
-		CheckNullResult(Pet->GetAbilitySystemComponent(), EBTNodeResult::Failed);
+		if (ASI->GetAbilitySystemComponent()->GetCurrentMontage())
+			ASI->GetAbilitySystemComponent()->CurrentMontageStop();
 
-		if (Pet->GetCurrentMontage())
-			Pet->StopAnimMontage();
+		ASI->GetAbilitySystemComponent()->CancelAbilityHandle(ASI->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
 
-		Pet->GetAbilitySystemComponent()->CancelAbilityHandle(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
+		ICAIInterface* AI = Cast<ICAIInterface>(OwnerComp.GetAIOwner()->GetCharacter());
+		CheckNullResult(AI, EBTNodeResult::Failed);
+
+		AI->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.GetHit")));
 
 		return EBTNodeResult::Aborted;
 	}
-	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Enemy").ToString())
-	{
-		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
-		CheckNullResult(AIC, EBTNodeResult::Failed);
-		{
-			ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetPawn());
-			CheckNullResult(Enemy, EBTNodeResult::Failed);
-			CheckNullResult(Enemy->GetAbilitySystemComponent(), EBTNodeResult::Failed);
-
-			if (Enemy->GetCurrentMontage())
-				Enemy->StopAnimMontage();
-
-			Enemy->GetAbilitySystemComponent()->CancelAbilityHandle(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_GetHit::StaticClass())->Handle);
-
-			return EBTNodeResult::Aborted;
-		}
-	}
-
 	return EBTNodeResult::Failed;
 }

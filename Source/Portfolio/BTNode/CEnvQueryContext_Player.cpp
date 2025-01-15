@@ -26,5 +26,4 @@ void UCEnvQueryContext_Player::ProvideContext(FEnvQueryInstance& QueryInstance, 
 		}
 	}
 	return;
-	// UEnvQueryItemType_Actor::SetContextHelper(ContextData, UGameplayStatics::GetPlayerPawn(Querier->GetWorld(), 0));
 }

@@ -3,10 +3,6 @@
 #include "Widget/CPlayerWidget.h"
 #include "Player/CPlayer.h"
 
-UCWeaponAttributeSet::UCWeaponAttributeSet()
-{
-	
-}
 
 void UCWeaponAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
@@ -32,9 +28,4 @@ void UCWeaponAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribu
 			CLog::Print(GetCurrentDamage());
 		}
 	}
-}
-
-void UCWeaponAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
-{
-
 }

@@ -1,74 +1,26 @@
 #include "CBTTaskNode_Dead.h"
 #include "Global.h"
-#include "BehaviorTree/BehaviorTree.h"
+#include "AIController.h"
+#include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
-#include "Pet/CPetController.h"
-#include "Pet/CPet.h"
-#include "Enemy/CEnemyController.h"
-#include "Enemy/CEnemy.h"
-#include "Enemy/CBoss.h"
 #include "GAS/GA/AI_Dead.h"
-
-UCBTTaskNode_Dead::UCBTTaskNode_Dead()
-{
-	bNotifyTick = true;
-}
+#include "GameFramework/Character.h"
 
 EBTNodeResult::Type UCBTTaskNode_Dead::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
-	if (OwnerComp.GetRootTree()->GetName() == FName("BT_Enemy").ToString())
+	if (OwnerComp.GetAIOwner()->GetPawn()->GetClass()->ImplementsInterface(UAbilitySystemInterface::StaticClass()))
 	{
-		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
-		if (AIC)
-		{
-			ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetPawn());
-			if (Enemy)
-			{
-				if (Enemy->GetAbilitySystemComponent())
-				{
-					Enemy->GetAbilitySystemComponent()->TryActivateAbility(Enemy->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Dead::StaticClass())->Handle);
+		IAbilitySystemInterface* ASI = Cast<IAbilitySystemInterface>(OwnerComp.GetAIOwner()->GetPawn());
+		CheckNullResult(ASI, EBTNodeResult::Failed);
 
-					return EBTNodeResult::Succeeded;
-				}
-			}
-		}
+		if(OwnerComp.GetAIOwner()->GetCharacter()->GetCurrentMontage())
+			OwnerComp.GetAIOwner()->GetCharacter()->StopAnimMontage();
+		
+		ASI->GetAbilitySystemComponent()->TryActivateAbility(ASI->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Dead::StaticClass())->Handle);
+
+		return EBTNodeResult::Succeeded;
 	}
-	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Boss").ToString())
-	{
-		ACEnemyController* AIC = Cast<ACEnemyController>(OwnerComp.GetAIOwner());
-		if (AIC)
-		{
-			ACBoss* Boss = Cast<ACBoss>(AIC->GetPawn());
-			if (Boss)
-			{
-				if (Boss->GetAbilitySystemComponent())
-				{
-					Boss->GetAbilitySystemComponent()->TryActivateAbility(Boss->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Dead::StaticClass())->Handle);
-
-					return EBTNodeResult::Succeeded;
-				}
-			}
-		}
-	}
-	else if (OwnerComp.GetRootTree()->GetName() == FName("BT_Pet").ToString())
-	{
-		ACPetController* AIC = Cast<ACPetController>(OwnerComp.GetAIOwner());
-		if (AIC)
-		{
-			ACPet* Pet = Cast<ACPet>(AIC->GetPawn());
-			if (Pet)
-			{
-				if (Pet->GetAbilitySystemComponent())
-				{
-					Pet->GetAbilitySystemComponent()->TryActivateAbility(Pet->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UAI_Dead::StaticClass())->Handle);
-
-					return EBTNodeResult::Succeeded;
-				}
-			}
-		}
-	}
-
 	return EBTNodeResult::Failed;
 }

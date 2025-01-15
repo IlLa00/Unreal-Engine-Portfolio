@@ -43,9 +43,6 @@ void ACBoss::BeginPlay()
 		AIAttribute->SetCurrentHealth(AIAttribute->GetBaseHealth());
 		AIAttribute->SetCurrentDamage(AIAttribute->GetBaseDamage());
 	}
-
-	CLog::Print(AIAttribute->GetCurrentHealth());
-	CLog::Print(AIAttribute->GetCurrentDamage());
 }
 
 void ACBoss::Tick(float DeltaTime)
@@ -65,14 +62,13 @@ void ACBoss::SetWidget(bool state)
 			CheckNull(BossWidget);
 
 			BossWidget->AddToViewport();
-
-			BossWidget->SetVisibility(ESlateVisibility::Visible);
 			BossWidget->Update(AIAttribute->GetCurrentHealth(), AIAttribute->GetBaseHealth());
 		}
 	}
 	else
 	{
-		if (BossWidget)
-			BossWidget->SetVisibility(ESlateVisibility::Hidden);
+		CheckNull(BossWidget);
+
+		BossWidget->RemoveFromParent();
 	}
 }

@@ -31,6 +31,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
 		bool IsFall;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Movement")
+		float Pitch;
+
 	UPROPERTY(BlueprintReadOnly, Category = "GameplayTag")
 		FGameplayTagContainer TagContainer;
 };

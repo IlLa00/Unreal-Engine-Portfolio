@@ -29,8 +29,6 @@ void UCPlayerWidget::NativeConstruct()
 	}
 
 
-
-
 	if(AimImage)
 		SetAimWidget(false);
 }

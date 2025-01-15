@@ -43,7 +43,7 @@ void UCBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		CheckNull(Target);
 
 		float DistanceToTarget = Boss->GetDistanceTo(Target);
-		float AttackRange = Anim->IsFly ? 2800.f : 1300.f;
+		float AttackRange = Anim->IsFly ? 3500.f : 1500.f;
 
 		if(DistanceToTarget < AttackRange)
 		{

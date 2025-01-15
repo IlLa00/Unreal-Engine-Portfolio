@@ -39,6 +39,8 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 			{
 				MontageToPlay = Monster->GetDataAsset()->Datas[Monster->GetIndex()].MontageDatas.DeadMontage;
 
+				PrintLine();
+
 				Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
 				Dead(Monster); 
 			}
@@ -83,7 +85,7 @@ void UAI_Dead::Dead(ACharacter* Character)
 		FT.SetRotation(FQuat());
 
 		GetWorld()->SpawnActor<ACItem>(Monster->GetDataAsset()->Datas[Monster->GetIndex()].DropItem, FT);
-		PrintLine();
+
 		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
 	}
 	else if (Character->IsA<ACBoss>())
@@ -96,15 +98,15 @@ void UAI_Dead::Dead(ACharacter* Character)
 		Boss->GetMesh()->SetSimulatePhysics(true);
 		Boss->GetComponentByClass<UTextRenderComponent>()->SetActive(false);
 
-		TArray<UActorComponent*> Comps;
-		Boss->GetComponents(Comps);
+		/*TArray<UActorComponent*> Comps;
+		Boss->GetComponents(Comps);*/
 
 		FTransform FT;
 		FT.SetLocation(Boss->GetActorLocation());
 		FT.SetRotation(FQuat());
 
 		GetWorld()->SpawnActor<ACItem>(Boss->GetBossDataAsset()->DropItem, FT);
-		PrintLine();
+
 		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
 	}
 	else if (Character->IsA<ACPet>())
