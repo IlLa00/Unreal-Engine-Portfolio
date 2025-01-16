@@ -185,3 +185,9 @@ void ACEquipment::Reload()
 		CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle);
 	}
 }
+
+void ACEquipment::Test2()
+{
+	if (CurrentEquipWeapon)
+		CurrentEquipWeapon->Test3();
+}

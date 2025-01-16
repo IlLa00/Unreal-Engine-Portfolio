@@ -48,6 +48,8 @@ public:
 
 	virtual void OnDamageBuff();
 
+	virtual void Test3();
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		USceneComponent* RootComp;
@@ -83,4 +85,7 @@ protected:
 	float Proficiency;
 
 	FGameplayEffectSpecHandle DamageBuffEffectHandle;
+
+	TSubclassOf<UGameplayEffect> TestEffect;
+	FGameplayEffectSpecHandle Test;
 };

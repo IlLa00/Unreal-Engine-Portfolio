@@ -5,8 +5,8 @@
 
 UTESTGameplayEffect::UTESTGameplayEffect()
 {
-    DurationPolicy = EGameplayEffectDurationType::HasDuration;
-    DurationMagnitude = FGameplayEffectModifierMagnitude(10.0f);
+    DurationPolicy = EGameplayEffectDurationType::Instant;
+    // DurationMagnitude = FGameplayEffectModifierMagnitude(10.0f);
 
     FGameplayModifierInfo Modifier;
     Modifier.Attribute = FGameplayAttribute(FindFieldChecked<FProperty>(
@@ -14,7 +14,13 @@ UTESTGameplayEffect::UTESTGameplayEffect()
     ));
 
     Modifier.ModifierOp = EGameplayModOp::Additive;  // Add 방식
-    Modifier.ModifierMagnitude = FGameplayEffectModifierMagnitude(10.0f); // 10만큼 추가
+    Modifier.ModifierMagnitude = FGameplayEffectModifierMagnitude(10.0f); // 여길바꿔야함
 
     Modifiers.Add(Modifier);
 }
+
+void UTESTGameplayEffect::SetModifier(float Value)
+{
+    Modifiers.GetData()->ModifierMagnitude = FGameplayEffectModifierMagnitude(Value);
+}
+ 

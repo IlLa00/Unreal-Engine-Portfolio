@@ -80,6 +80,8 @@ void UAI_Dead::Dead(ACharacter* Character)
 			Comp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
 
+		Monster->GetComponentByClass<UWidgetComponent>()->De
+
 		FTransform FT;
 		FT.SetLocation(Monster->GetActorLocation());
 		FT.SetRotation(FQuat());

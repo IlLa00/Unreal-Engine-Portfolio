@@ -13,4 +13,6 @@ class PORTFOLIO_API UTESTGameplayEffect : public UGameplayEffect
 public:
 	UTESTGameplayEffect();
 	
+public:
+	void SetModifier(float Value);
 };

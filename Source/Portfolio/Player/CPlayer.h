@@ -144,8 +144,5 @@ private:
 	FGameplayTagContainer TagContainer;
 	FGameplayEffectSpecHandle RegenerateStminaHandle;
 
-	TSubclassOf<UGameplayEffect> TestEffect;
-	FGameplayEffectSpecHandle Test;
-
 	FTimerHandle WidgetHandle;
 };

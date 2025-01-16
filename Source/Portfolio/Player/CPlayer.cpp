@@ -23,8 +23,6 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 
-#include "GAS/GE/TESTGameplayEffect.h"
-
 ACPlayer::ACPlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -91,9 +89,6 @@ ACPlayer::ACPlayer()
 	CheckNull(DeathWidgetClass);
 
 	TeamId = 0;
-
-	TestEffect = UTESTGameplayEffect::StaticClass();
-	CheckNull(TestEffect);
 }
 
 void ACPlayer::BeginPlay()
@@ -224,9 +219,6 @@ void ACPlayer::SetGameplayEffect()
 	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
 
 	RegenerateStminaHandle = ASC->MakeOutgoingSpec(BPRegenerateStaminaEffect, 1.0f, EffectContext);
-
-	Test = ASC->MakeOutgoingSpec(TestEffect, 1.f, EffectContext);
-
 }
 
 void ACPlayer::OnMoveForward(float Axis)
@@ -372,8 +364,7 @@ void ACPlayer::OffBuff()
 
 void ACPlayer::Test1()
 {
-	PrintLine();
-	ASC->ApplyGameplayEffectSpecToSelf(*Test.Data.Get());
+	Equipment->Test2();
 }
 
 void ACPlayer::Death()

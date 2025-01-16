@@ -7,6 +7,8 @@
 #include "Interface/CAIInterface.h"
 #include "GAS/Attribute/CAIAttributeSet.h"
 
+#include "GAS/GE/TESTGameplayEffect.h"
+
 ACWeapon::ACWeapon()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -32,6 +34,8 @@ ACWeapon::ACWeapon()
 	CHelpers::GetClass(&BPDamageBuffEffect, "/Game/GAS/BP_GE_DamageBuff");
 	CheckNull(BPDamageBuffEffect);
 
+	TestEffect = UTESTGameplayEffect::StaticClass();
+	CheckNull(TestEffect);
 }
 
 void ACWeapon::BeginPlay()
@@ -45,6 +49,9 @@ void ACWeapon::BeginPlay()
 	{
 		AttackCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ACWeapon::BeginOverlap);
 	}
+
+	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+	Test = ASC->MakeOutgoingSpec(TestEffect, 1.f, EffectContext);
 }
 
 void ACWeapon::Tick(float DeltaTime)
@@ -65,6 +72,11 @@ void ACWeapon::OnDamageBuff()
 	DamageBuffEffectHandle = ASC->MakeOutgoingSpec(BPDamageBuffEffect, 1.0f, EffectContext);
 
 	ASC->ApplyGameplayEffectSpecToSelf(*DamageBuffEffectHandle.Data.Get());
+}
+
+void ACWeapon::Test3()
+{
+	ASC->ApplyGameplayEffectSpecToSelf(*Test.Data.Get());
 }
 
 void ACWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
