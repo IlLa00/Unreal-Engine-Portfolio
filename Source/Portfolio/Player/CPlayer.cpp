@@ -20,6 +20,10 @@
 #include "GAS/GA/Jump.h"
 #include "Equipment/CEquipment.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
+
+#include "GAS/GE/TESTGameplayEffect.h"
 
 ACPlayer::ACPlayer()
 {
@@ -43,8 +47,13 @@ ACPlayer::ACPlayer()
 	SpringArmComp->bUsePawnControlRotation = true;
 	bUseControllerRotationYaw = false;
 
+	CHelpers::CreateSceneComponent(this, &NiagaraComp, "NiagaraComp", GetMesh());
+	CheckNull(NiagaraComp);
+	NiagaraComp->SetRelativeLocation(FVector(0, 0, 88));
+	NiagaraComp->bAutoActivate = false;
+
 	CHelpers::CreateSceneComponent(this, &CameraComp, "CameraComp", SpringArmComp);
-	CameraComp->SetRelativeLocation(FVector(0, 70, 0));
+	CheckNull(CameraComp);
 
 	CHelpers::CreateSceneComponent(this, &TextComp, "TextComp", GetMesh());
 	CheckNull(TextComp);
@@ -82,6 +91,9 @@ ACPlayer::ACPlayer()
 	CheckNull(DeathWidgetClass);
 
 	TeamId = 0;
+
+	TestEffect = UTESTGameplayEffect::StaticClass();
+	CheckNull(TestEffect);
 }
 
 void ACPlayer::BeginPlay()
@@ -180,6 +192,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACPlayer::OnJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACPlayer::OffJump);
+
+	PlayerInputComponent->BindAction("Test", IE_Pressed, this, &ACPlayer::Test1);
 }
 
 UAbilitySystemComponent* ACPlayer::GetAbilitySystemComponent() const
@@ -210,6 +224,9 @@ void ACPlayer::SetGameplayEffect()
 	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
 
 	RegenerateStminaHandle = ASC->MakeOutgoingSpec(BPRegenerateStaminaEffect, 1.0f, EffectContext);
+
+	Test = ASC->MakeOutgoingSpec(TestEffect, 1.f, EffectContext);
+
 }
 
 void ACPlayer::OnMoveForward(float Axis)
@@ -291,13 +308,13 @@ void ACPlayer::OnEquipLastSlot()
 
 void ACPlayer::OnMainAction()
 {
-	SetUsePawnControlRotation(false); //  todo.. 아무것도 안들때도 되어버림
+	// SetUsePawnControlRotation(false); //  todo.. 아무것도 안들때도 되어버림
 	Equipment->OnMainAction();
 }
 
 void ACPlayer::OffMainAction()
 {
-	SetUsePawnControlRotation(true);
+	// SetUsePawnControlRotation(true);
 	Equipment->OffMainAction();
 }
 
@@ -338,6 +355,25 @@ void ACPlayer::ShowDeathWidget()
 	GetController<APlayerController>()->SetShowMouseCursor(true);
 
 	GetWorld()->GetTimerManager().ClearTimer(WidgetHandle);
+}
+
+void ACPlayer::OnBuff()
+{
+	NiagaraComp->SetActive(true);
+	
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACPlayer::OffBuff, 10.f, false);
+}
+
+void ACPlayer::OffBuff()
+{
+	NiagaraComp->Deactivate();
+}
+
+void ACPlayer::Test1()
+{
+	PrintLine();
+	ASC->ApplyGameplayEffectSpecToSelf(*Test.Data.Get());
 }
 
 void ACPlayer::Death()

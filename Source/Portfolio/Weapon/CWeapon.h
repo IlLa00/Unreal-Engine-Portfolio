@@ -13,6 +13,7 @@ class UCWeaponAttributeSet;
 class UCWeaponDataAsset;
 class UTexture;
 class UBoxComponent;
+class UGameplayEffect;
 
 UCLASS()
 class PORTFOLIO_API ACWeapon : public AActor, public IAbilitySystemInterface, public ICAttackCompInterface
@@ -42,9 +43,10 @@ public:
 	virtual UCWeaponDataAsset* GetDataAsset() { return DataAsset; }
 	virtual UTexture* GetWeaponImage() { return WeaponImage; }
 	virtual FText GetWeaponName() { return WeaponName; }
-	// virtual float GetWeaponProficiency() { return Proficiency; }
 
 	virtual UBoxComponent* GetAttackComp() override { return AttackCollisionComp; }
+
+	virtual void OnDamageBuff();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
@@ -68,6 +70,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		FGameplayTag Tag;
 
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		TSubclassOf<UGameplayEffect> BPDamageBuffEffect;
+
 protected:
 	UCWeaponDataAsset* DataAsset;
 	FGameplayAbilitySpec WeaponAbilitySpec;
@@ -76,4 +81,6 @@ protected:
 	UTexture* WeaponImage;
 	FText WeaponName;
 	float Proficiency;
+
+	FGameplayEffectSpecHandle DamageBuffEffectHandle;
 };

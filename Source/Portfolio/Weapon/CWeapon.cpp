@@ -29,6 +29,9 @@ ACWeapon::ACWeapon()
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
 	CheckNull(ASC);
 
+	CHelpers::GetClass(&BPDamageBuffEffect, "/Game/GAS/BP_GE_DamageBuff");
+	CheckNull(BPDamageBuffEffect);
+
 }
 
 void ACWeapon::BeginPlay()
@@ -53,6 +56,15 @@ void ACWeapon::Tick(float DeltaTime)
 UAbilitySystemComponent* ACWeapon::GetAbilitySystemComponent() const
 {
 	return ASC;
+}
+
+void ACWeapon::OnDamageBuff()
+{
+	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+
+	DamageBuffEffectHandle = ASC->MakeOutgoingSpec(BPDamageBuffEffect, 1.0f, EffectContext);
+
+	ASC->ApplyGameplayEffectSpecToSelf(*DamageBuffEffectHandle.Data.Get());
 }
 
 void ACWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

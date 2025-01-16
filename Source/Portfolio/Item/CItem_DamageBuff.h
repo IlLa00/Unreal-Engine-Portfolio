@@ -6,6 +6,7 @@
 
 class UNiagaraComponent;
 class UNiagaraSystem;
+class UGameplayEffect;
 
 UCLASS()
 class PORTFOLIO_API ACItem_DamageBuff : public ACItem
@@ -27,4 +28,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Niagara")
 	UNiagaraSystem* OverlapParitcle;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayEffect")
+	TSubclassOf<UGameplayEffect> BPDamageBuffEffect;
 };

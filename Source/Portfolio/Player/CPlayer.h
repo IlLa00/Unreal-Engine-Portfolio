@@ -17,6 +17,8 @@ class UAbilitySystemComponent;
 class UCCharacterAttributeSet;
 class UGameplayEffect;
 class ACEquipment;
+class UNiagaraComponent;
+class UNiagaraSystem;
 
 UCLASS()
 class PORTFOLIO_API ACPlayer : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface
@@ -72,6 +74,8 @@ private:
 
 	void ShowDeathWidget();
 
+	void Test1();
+
 public:
 	UFUNCTION()
 		void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
@@ -89,12 +93,18 @@ public:
 	void SetUsePawnControlRotation(bool bUse);
 	void CanDoAbilities();
 
+	void OnBuff();
+	void OffBuff();
+
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 		USpringArmComponent* SpringArmComp;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 		UCameraComponent* CameraComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Niagara")
+		UNiagaraComponent* NiagaraComp;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 		TSubclassOf<UAnimInstance> AnimClass;
@@ -123,6 +133,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Team")
 		int32 TeamId;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Niagara")
+		UNiagaraSystem* OverlapParitcle;
+
 private:
 	UCPlayerWidget* PlayerWidget;
 	UCDeathWidget* DeathWidget;
@@ -130,6 +143,9 @@ private:
 
 	FGameplayTagContainer TagContainer;
 	FGameplayEffectSpecHandle RegenerateStminaHandle;
+
+	TSubclassOf<UGameplayEffect> TestEffect;
+	FGameplayEffectSpecHandle Test;
 
 	FTimerHandle WidgetHandle;
 };
