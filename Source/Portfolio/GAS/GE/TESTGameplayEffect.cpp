@@ -19,8 +19,4 @@ UTESTGameplayEffect::UTESTGameplayEffect()
     Modifiers.Add(Modifier);
 }
 
-void UTESTGameplayEffect::SetModifier(float Value)
-{
-    Modifiers.GetData()->ModifierMagnitude = FGameplayEffectModifierMagnitude(Value);
-}
  

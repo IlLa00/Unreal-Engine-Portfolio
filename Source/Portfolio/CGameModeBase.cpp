@@ -26,8 +26,8 @@ void ACGameModeBase::BeginPlay()
 {
 	PlayerArea = "Grasslands"; // 플레이어지역 초기 설정, 하드코딩 불편
 
-	FVector SpawnLocation = FVector(0, 0, 0); // 기본 위치로 설정
-	FRotator SpawnRotation = FRotator::ZeroRotator; // 회전은 기본값
+	FVector SpawnLocation = FVector(0, 0, 0); 
+	FRotator SpawnRotation = FRotator::ZeroRotator; 
 
 	Spawner = GetWorld()->SpawnActor<ACSpawner>(SpawnerClass, SpawnLocation, SpawnRotation);
 	CheckNull(Spawner);

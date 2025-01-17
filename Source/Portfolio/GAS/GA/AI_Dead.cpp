@@ -13,6 +13,7 @@
 #include "DataAsset/CBossDataAsset.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/WidgetComponent.h"
 
 void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -80,7 +81,7 @@ void UAI_Dead::Dead(ACharacter* Character)
 			Comp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
 
-		Monster->GetComponentByClass<UWidgetComponent>()->De
+		Monster->GetComponentByClass<UWidgetComponent>()->Deactivate();
 
 		FTransform FT;
 		FT.SetLocation(Monster->GetActorLocation());
