@@ -45,6 +45,8 @@ public:
 
 	void HiddenDamage();
 
+	void Dead();
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UTextRenderComponent* TextComp;

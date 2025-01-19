@@ -92,6 +92,13 @@ void ACEnemy::Tick(float DeltaTime)
 			TextComp->SetText(FText::FromString(Tag.ToString()));
 		}
 	}
+
+	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Dead"))))
+	{
+		FTimerHandle DeadTimer;
+		GetWorld()->GetTimerManager().SetTimer(DeadTimer, this, &ACEnemy::Dead, 10.f, false);
+	}
+
 }
 
 UAbilitySystemComponent* ACEnemy::GetAbilitySystemComponent() const
@@ -117,8 +124,18 @@ void ACEnemy::SetDamageText(float NewValue)
 
 void ACEnemy::HiddenDamage()
 {
-	PrintLine();
 	DamageTextComp->SetVisibility(false);
+}
+
+void ACEnemy::Dead()
+{
+	if (GetController())
+	{
+		GetController()->UnPossess();
+		GetController()->Destroy();
+	}
+	
+	Destroy();
 }
 
 void ACEnemy::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

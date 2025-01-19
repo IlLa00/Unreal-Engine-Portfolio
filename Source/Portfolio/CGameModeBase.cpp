@@ -24,10 +24,24 @@ ACGameModeBase::ACGameModeBase()
 
 void ACGameModeBase::BeginPlay()
 {
-	PlayerArea = "Grasslands"; // 플레이어지역 초기 설정, 하드코딩 불편
+	ACPlayer* Player = Cast<ACPlayer>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	CheckNull(Player);
 
-	FVector SpawnLocation = FVector(0, 0, 0); 
-	FRotator SpawnRotation = FRotator::ZeroRotator; 
+	TArray<AActor*> OverlappingActors;
+	Player->GetOverlappingActors(OverlappingActors);
+
+	for (const auto& Actor : OverlappingActors)
+	{
+		if (Actor->IsA<ATriggerVolume>())
+		{
+			for (const auto& MyTags : Actor->Tags)
+				PlayerArea = MyTags;
+			CLog::Print(PlayerArea.ToString());
+		}
+	}
+
+	FVector SpawnLocation = FVector(0, 0, 0);
+	FRotator SpawnRotation = FRotator::ZeroRotator;
 
 	Spawner = GetWorld()->SpawnActor<ACSpawner>(SpawnerClass, SpawnLocation, SpawnRotation);
 	CheckNull(Spawner);
@@ -35,7 +49,7 @@ void ACGameModeBase::BeginPlay()
 	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, this, &ACGameModeBase::Spawn, 5.f, true); // 5초마다 스폰함수 실행
 
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetPoint::StaticClass(), TargetPointActors);
-	
+
 	for (const auto& Actor : TargetPointActors)
 	{
 		for (const auto& Tag : Actor->Tags)
@@ -65,10 +79,10 @@ void ACGameModeBase::Teleport(FName Area)
 		if (Area == Actor->Tags[0])
 		{
 			ACPlayer* Player = Cast<ACPlayer>(GetWorld()->GetFirstPlayerController()->GetPawn());
-			CheckNull(Player); 
+			CheckNull(Player);
 
 			Player->SetActorLocationAndRotation(Actor->GetActorLocation(), FQuat(FRotator(0, 0, 0)));
-			Player->GetMesh()->SetRelativeRotation(FRotator(0, -90,0));
+			Player->GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 
 			PlayerArea = Actor->Tags[0];
 

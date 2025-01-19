@@ -81,7 +81,12 @@ void UAI_Dead::Dead(ACharacter* Character)
 			Comp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
 
-		Monster->GetComponentByClass<UWidgetComponent>()->Deactivate();
+		for (auto& Comp : Monster->GetComponentsByClass(UWidgetComponent::StaticClass()))
+		{
+			Comp->Deactivate();
+		}
+
+		Monster->GetComponentByClass<UTextRenderComponent>()->Deactivate();
 
 		FTransform FT;
 		FT.SetLocation(Monster->GetActorLocation());
@@ -98,11 +103,19 @@ void UAI_Dead::Dead(ACharacter* Character)
 
 		Boss->GetController()->UnPossess(); 
 
-		Boss->GetMesh()->SetSimulatePhysics(true);
-		Boss->GetComponentByClass<UTextRenderComponent>()->SetActive(false);
+		// Boss->GetMesh()->SetSimulatePhysics(true);
 
-		/*TArray<UActorComponent*> Comps;
-		Boss->GetComponents(Comps);*/
+		TArray<UShapeComponent*> OutComps;
+		Boss->GetComponents<UShapeComponent>(OutComps);
+
+		for (const auto& Comp : OutComps)
+		{
+			Comp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		}
+
+		Boss->GetComponentByClass<UWidgetComponent>()->Deactivate();
+		Boss->GetComponentByClass<UTextRenderComponent>()->Deactivate();
+		Boss->GetComponentByClass<UFloatingPawnMovement>()->Deactivate();
 
 		FTransform FT;
 		FT.SetLocation(Boss->GetActorLocation());
