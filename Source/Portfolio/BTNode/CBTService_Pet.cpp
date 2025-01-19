@@ -31,8 +31,8 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 	ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetBlackboardComponent()->GetValueAsObject("EnemyKey"));
 	ACBoss* Boss = Cast<ACBoss>(AIC->GetBlackboardComponent()->GetValueAsObject("BossKey"));
 
-	AIC->GetBlackboardComponent()->SetValueAsVector("PlayerLocation", Pet->GetOwner()->GetActorLocation()); 
-	
+	AIC->GetBlackboardComponent()->SetValueAsVector("PlayerLocation", Pet->GetOwner()->GetActorLocation());
+
 	SetTarget(AIC, Pet, Enemy, Boss);
 
 	if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.GetHit"))))
@@ -46,7 +46,7 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 		{
 			float DistanceToEnemy = Pet->GetDistanceTo(Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject("AttackTargetKey")));
 
-			if (DistanceToEnemy < 800.f)
+			if (DistanceToEnemy < 300.f)
 			{
 				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer"))))
 					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer")));
@@ -54,6 +54,21 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol")));
 				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach"))))
 					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
+				if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
+				if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Jump"))))
+					Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Jump")));
+			}
+			else if (DistanceToEnemy < 800.f)
+			{
+				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer")));
+				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol")));
+				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
+				if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Jump"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Jump")));
 				if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack"))))
 					Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
 			}
@@ -63,6 +78,8 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer")));
 				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol"))))
 					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol")));
+				if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Jump"))))
+					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Jump")));
 				if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack"))))
 					Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
 				if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach"))))
@@ -77,6 +94,8 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 				Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
 			if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack"))))
 				Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
+			if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Jump"))))
+				Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Jump")));
 			if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol"))))
 				Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Patrol")));
 		}
@@ -89,6 +108,8 @@ void UCBTService_Pet::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 			Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Approach")));
 		if (Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack"))))
 			Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Attack")));
+		if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Jump"))))
+			Pet->GetTagContainer().RemoveTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Jump")));
 		if (!Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.ChasingPlayer"))))
 			Pet->GetTagContainer().AddTag(FGameplayTag::RequestGameplayTag("AI.Action.ChasingPlayer"));
 	}
