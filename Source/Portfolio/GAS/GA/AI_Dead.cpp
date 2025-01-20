@@ -103,8 +103,6 @@ void UAI_Dead::Dead(ACharacter* Character)
 
 		Boss->GetController()->UnPossess(); 
 
-		// Boss->GetMesh()->SetSimulatePhysics(true);
-
 		TArray<UShapeComponent*> OutComps;
 		Boss->GetComponents<UShapeComponent>(OutComps);
 
@@ -116,6 +114,14 @@ void UAI_Dead::Dead(ACharacter* Character)
 		Boss->GetComponentByClass<UWidgetComponent>()->Deactivate();
 		Boss->GetComponentByClass<UTextRenderComponent>()->Deactivate();
 		Boss->GetComponentByClass<UFloatingPawnMovement>()->Deactivate();
+		Boss->GetComponentByClass<UCharacterMovementComponent>()->Activate();
+
+		Boss->SetWidget(false);
+
+		//Boss->GetMesh()->SetAllPhysicsLinearVelocity(FVector::ZeroVector);
+		//Boss->GetMesh()->SetAllPhysicsAngularVelocityInRadians(FVector::ZeroVector);
+		//Boss->GetMesh()->SetSimulatePhysics(true);
+		//Boss->GetMesh()->SetWorldLocation(Boss->GetActorLocation(), true, nullptr, ETeleportType::TeleportPhysics); // ÀÌ°Å Àß¾ÈµÊ
 
 		FTransform FT;
 		FT.SetLocation(Boss->GetActorLocation());

@@ -19,6 +19,7 @@ class UGameplayEffect;
 class ACEquipment;
 class UNiagaraComponent;
 class UNiagaraSystem;
+class UCInventory;
 
 UCLASS()
 class PORTFOLIO_API ACPlayer : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface
@@ -74,7 +75,7 @@ private:
 
 	void ShowDeathWidget();
 
-	void Test1();
+	void OnOffInventory();
 
 public:
 	UFUNCTION()
@@ -145,4 +146,6 @@ private:
 	FGameplayEffectSpecHandle RegenerateStminaHandle;
 
 	FTimerHandle WidgetHandle;
+
+	UCInventory* Inventory;
 };

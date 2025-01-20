@@ -121,12 +121,12 @@ void UCBTService_Pet::SetTarget(ACPetController* AIC, ACPet* Pet, ACEnemy* Enemy
 	float DistanceToEnemy = 0.0f;
 	float DistanceToBoss = 0.0f;
 
-	if (Pet != nullptr && !(Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Dead")))))
+	if (Enemy != nullptr && !(Enemy->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Dead")))))
 	{
 		DistanceToEnemy = Pet->GetDistanceTo(Enemy);
 	}
 
-	if (Boss != nullptr)
+	if (Boss != nullptr && !(Boss->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Dead")))))
 	{
 		DistanceToBoss = Pet->GetDistanceTo(Boss);
 	}

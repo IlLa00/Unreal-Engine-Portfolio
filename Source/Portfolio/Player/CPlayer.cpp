@@ -22,6 +22,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "Inventory/CInventory.h"
 
 ACPlayer::ACPlayer()
 {
@@ -126,6 +127,11 @@ void ACPlayer::BeginPlay()
 
 	DeathWidget->AddToViewport();
 	DeathWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	Inventory = NewObject<UCInventory>();
+	CheckNull(Inventory);
+
+	PrintLine();
 }
 
 FGenericTeamId ACPlayer::GetGenericTeamId() const
@@ -188,7 +194,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACPlayer::OnJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACPlayer::OffJump);
 
-	PlayerInputComponent->BindAction("Test", IE_Pressed, this, &ACPlayer::Test1);
+	PlayerInputComponent->BindAction("Inventory", IE_Pressed, this, &ACPlayer::OnOffInventory);
 }
 
 UAbilitySystemComponent* ACPlayer::GetAbilitySystemComponent() const
@@ -349,6 +355,10 @@ void ACPlayer::ShowDeathWidget()
 	GetWorld()->GetTimerManager().ClearTimer(WidgetHandle);
 }
 
+void ACPlayer::OnOffInventory()
+{
+}
+
 void ACPlayer::OnBuff()
 {
 	NiagaraComp->SetActive(true);
@@ -360,11 +370,6 @@ void ACPlayer::OnBuff()
 void ACPlayer::OffBuff()
 {
 	NiagaraComp->Deactivate();
-}
-
-void ACPlayer::Test1()
-{
-	Equipment->Test2();
 }
 
 void ACPlayer::Death()

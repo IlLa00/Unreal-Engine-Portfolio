@@ -85,7 +85,7 @@ void UCBTService_Enemy::SetTarget(ACEnemyController* AIC, ACEnemy* Enemy, ACPlay
 		DistanceToPlayer = Enemy->GetDistanceTo(Player);
 	}
 
-	if (Pet != nullptr)
+	if (Pet != nullptr && !(Pet->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("AI.Action.Dead")))))
 	{
 		DistanceToPet = Enemy->GetDistanceTo(Pet);
 	}
