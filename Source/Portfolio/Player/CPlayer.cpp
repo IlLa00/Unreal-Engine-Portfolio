@@ -131,7 +131,8 @@ void ACPlayer::BeginPlay()
 	Inventory = NewObject<UCInventory>();
 	CheckNull(Inventory);
 
-	PrintLine();
+	Inventory->SetOwner(this);
+
 }
 
 FGenericTeamId ACPlayer::GetGenericTeamId() const
@@ -357,6 +358,7 @@ void ACPlayer::ShowDeathWidget()
 
 void ACPlayer::OnOffInventory()
 {
+	Inventory->OnOffInventoryWidget();
 }
 
 void ACPlayer::OnBuff()

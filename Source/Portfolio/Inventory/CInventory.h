@@ -4,6 +4,8 @@
 #include "UObject/NoExportTypes.h"
 #include "CInventory.generated.h"
 
+class UCInventoryWidget;
+class ACPlayer;
 class ACItem;
 
 UCLASS()
@@ -17,6 +19,14 @@ public:
 public:
 	virtual void PostInitProperties() override;
 
+	void OnOffInventoryWidget();
+	void SetOwner(ACPlayer* InOwner);
+
 private:
 	TArray<ACItem*> Items;
+
+	TSubclassOf<UCInventoryWidget> WidgetClass;
+	UCInventoryWidget* Widget;
+
+	ACPlayer* Owner;
 };
