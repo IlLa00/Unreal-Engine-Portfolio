@@ -9,6 +9,8 @@ ACItem_Test::ACItem_Test()
 {
 	CHelpers::GetAsset(&DataTable, "/Game/DataTable/DT_Item");
 	CheckNull(DataTable);
+
+    Count = 1;
 }
 
 void ACItem_Test::BeginPlay()
@@ -25,6 +27,11 @@ void ACItem_Test::BeginPlay()
             ItemTexture = Row->Texture;
         }
     }
+}
+
+void ACItem_Test::IncreaseCount()
+{
+    Count++;
 }
 
 void ACItem_Test::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

@@ -19,7 +19,7 @@ public:
 public:
 	virtual void PostInitProperties() override;
 
-	FORCEINLINE TArray<ACItem_Test*> GetItems() { return Items; }
+	FORCEINLINE TMap<FName, ACItem_Test*> GetItems() { return Items; }
 
 	void OnOffInventoryWidget();
 	void SetOwner(ACPlayer* InOwner);
@@ -27,7 +27,7 @@ public:
 	void AddItemToInventory(ACItem_Test* Item);
 
 private:
-	TArray<ACItem_Test*> Items;
+	TMap<FName, ACItem_Test*> Items;
 
 	TSubclassOf<UCInventoryWidget> WidgetClass;
 	UCInventoryWidget* Widget;

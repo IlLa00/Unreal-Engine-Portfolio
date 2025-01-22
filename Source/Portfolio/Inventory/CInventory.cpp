@@ -23,26 +23,21 @@ void UCInventory::OnOffInventoryWidget()
 
 	if (Widget)
 	{
-		Owner->GetCharacterMovement()->Activate();
-
 		Widget->RemoveFromParent();
 		Widget = nullptr;
 
-		// Owner->GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
+		Owner->GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
 		Owner->GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 	}
 	else
 	{
-		Owner->GetCharacterMovement()->Deactivate();
-
 		Widget = CreateWidget<UCInventoryWidget>(Owner->GetWorld(), WidgetClass);
 		CheckNull(Widget);
 
 		Widget->AddToViewport();
 
-		// Owner->GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
+		Owner->GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 		Owner->GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
-
 	}
 }
 
@@ -53,6 +48,12 @@ void UCInventory::SetOwner(ACPlayer* InOwner)
 
 void UCInventory::AddItemToInventory(ACItem_Test* Item)
 {
-	Items.Add(Item);
-	
+	if (Items.Contains(Item->GetItemName()))
+	{
+		(*Items.Find(Item->GetItemName()))->IncreaseCount();
+	}
+	else
+	{
+		Items.Add(Item->GetItemName(), Item);
+	}
 }
