@@ -5,6 +5,7 @@
 #include "CItem_Test.generated.h"
 
 class UDataTable;
+class UTexture;
 
 UCLASS()
 class PORTFOLIO_API ACItem_Test : public ACItem
@@ -17,9 +18,14 @@ public:
 public:
 	void BeginPlay() override;
 
+	FORCEINLINE FName GetItemName() { return ItemName; }
+	FORCEINLINE UTexture* GetItemTexture() { return ItemTexture; }
+
 protected:
 	virtual void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
 private:
 	UDataTable* DataTable;
+	FName ItemName;
+	UTexture* ItemTexture;
 };

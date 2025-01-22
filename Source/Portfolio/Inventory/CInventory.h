@@ -6,7 +6,7 @@
 
 class UCInventoryWidget;
 class ACPlayer;
-class ACItem;
+class ACItem_Test;
 
 UCLASS()
 class PORTFOLIO_API UCInventory : public UObject
@@ -19,11 +19,15 @@ public:
 public:
 	virtual void PostInitProperties() override;
 
+	FORCEINLINE TArray<ACItem_Test*> GetItems() { return Items; }
+
 	void OnOffInventoryWidget();
 	void SetOwner(ACPlayer* InOwner);
 
+	void AddItemToInventory(ACItem_Test* Item);
+
 private:
-	TArray<ACItem*> Items;
+	TArray<ACItem_Test*> Items;
 
 	TSubclassOf<UCInventoryWidget> WidgetClass;
 	UCInventoryWidget* Widget;
