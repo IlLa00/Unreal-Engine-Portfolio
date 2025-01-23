@@ -92,7 +92,10 @@ void UAI_Dead::Dead(ACharacter* Character)
 		FT.SetLocation(Monster->GetActorLocation());
 		FT.SetRotation(FQuat());
 
-		GetWorld()->SpawnActor<ACItem>(Monster->GetDataAsset()->Datas[Monster->GetIndex()].DropItem, FT);
+		for (const auto& Item : Monster->GetDataAsset()->Datas[Monster->GetIndex()].DropItems)
+		{
+			GetWorld()->SpawnActor<ACItem>(Item, FT);
+		}
 
 		EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfoRef(), true, true);
 	}

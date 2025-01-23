@@ -17,10 +17,11 @@ public:
 	TArray<TObjectPtr<UAnimMontage>> AttackMontage;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<UAnimMontage> HittedMontage;
+	TObjectPtr<UAnimMontage> DeadMontage;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<UAnimMontage> DeadMontage;
+	TObjectPtr<UAnimMontage> HittedMontage;
+
 };
 
 USTRUCT(BlueprintType)
@@ -45,8 +46,7 @@ public:
 		float BaseDamage;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<ACItem> DropItem;
-		
+		TArray<TSubclassOf<ACItem>> DropItems;
 };
 
 

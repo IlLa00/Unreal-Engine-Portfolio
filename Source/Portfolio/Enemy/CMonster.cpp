@@ -136,8 +136,13 @@ void ACMonster::BeginPlay()
 		}
 	}
 
-	HealthWidgetComp->InitWidget();
+	if (HealthWidgetComp)
+	{
+		HealthWidgetComp->InitWidget();
+	}
+
 	HealthWidgetObject = Cast<UCEnemyHealthWidget>(HealthWidgetComp->GetUserWidgetObject());
+	
 
 	if (HealthWidgetObject)
 		HealthWidgetObject->Update(AIAttribute->GetCurrentHealth(), AIAttribute->GetBaseHealth());

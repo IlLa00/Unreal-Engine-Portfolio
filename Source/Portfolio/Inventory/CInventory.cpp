@@ -48,6 +48,8 @@ void UCInventory::SetOwner(ACPlayer* InOwner)
 
 void UCInventory::AddItemToInventory(ACItem_Test* Item)
 {
+	CheckNull(Item);
+
 	if (Items.Contains(Item->GetItemName()))
 	{
 		(*Items.Find(Item->GetItemName()))->IncreaseCount();

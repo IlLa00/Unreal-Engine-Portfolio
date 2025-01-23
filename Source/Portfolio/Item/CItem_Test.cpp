@@ -10,6 +10,15 @@ ACItem_Test::ACItem_Test()
 	CHelpers::GetAsset(&DataTable, "/Game/DataTable/DT_Item");
 	CheckNull(DataTable);
 
+    UStaticMesh* MeshAsset;
+    CHelpers::GetAsset(&MeshAsset, "/Game/Lowpoly_Objects_Pack/backpack");
+    CheckNull(MeshAsset);
+
+    CHelpers::CreateSceneComponent(this, &MeshComp, "MeshComp", RootComponent);
+    CheckNull(MeshComp);
+
+    MeshComp->SetStaticMesh(MeshAsset);
+
     Count = 1;
 }
 
@@ -17,16 +26,14 @@ void ACItem_Test::BeginPlay()
 {
 	Super::BeginPlay();
 
-    TArray<FName> RowNames = DataTable->GetRowNames();
-    for (const FName& RowName : RowNames)
-    {
-        FItemDataTable* Row = DataTable->FindRow<FItemDataTable>("NewRow", TEXT(""));
-        if (Row)
-        {
-            ItemName = Row->Name;
-            ItemTexture = Row->Texture;
-        }
-    }
+    TArray<FName> DTRowNames = DataTable->GetRowNames();
+
+    int32 Index = FMath::RandRange(0, DTRowNames.Num() - 1);
+
+    FItemDataTable* Row = DataTable->FindRow<FItemDataTable>(DTRowNames[Index], TEXT(""));
+
+    ItemName = Row->Name;
+    ItemTexture = Row->Texture;
 }
 
 void ACItem_Test::IncreaseCount()
@@ -39,6 +46,8 @@ void ACItem_Test::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
     if (OtherActor->IsA<ACPlayer>())
     {
         ACPlayer* Player = Cast<ACPlayer>(OtherActor);
+        CheckNull(Player);
+
         Player->GetInventory()->AddItemToInventory(this);
 
         Destroy();
