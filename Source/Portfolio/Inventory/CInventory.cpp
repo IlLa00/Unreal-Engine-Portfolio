@@ -22,14 +22,9 @@ void UCInventory::OnOffInventoryWidget()
 	CheckNull(WidgetClass);
 
 	if (Widget)
-	{
-		Widget->RemoveFromParent();
 		Widget = nullptr;
 
-		Owner->GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
-		Owner->GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
-	}
-	else
+	if (!Widget)
 	{
 		Widget = CreateWidget<UCInventoryWidget>(Owner->GetWorld(), WidgetClass);
 		CheckNull(Widget);
@@ -50,12 +45,16 @@ void UCInventory::AddItemToInventory(ACItem_Test* Item)
 {
 	CheckNull(Item);
 
-	if (Items.Contains(Item->GetItemName()))
+	if (Item->GetItemName().IsValid())
 	{
-		(*Items.Find(Item->GetItemName()))->IncreaseCount();
+		if (Items.Contains(Item->GetItemName()))
+		{
+			(*Items.Find(Item->GetItemName()))->IncreaseCount();
+		}
+		else
+		{
+			Items.Add(Item->GetItemName(), Item);
+		}
 	}
-	else
-	{
-		Items.Add(Item->GetItemName(), Item);
-	}
+
 }

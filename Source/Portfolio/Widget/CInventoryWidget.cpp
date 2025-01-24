@@ -32,8 +32,15 @@ void UCInventoryWidget::NativeConstruct()
 
 	int32 Index = 0;
 
+	for (auto& Button : Buttons)
+	{
+		Button->WidgetStyle.Normal.TintColor = FSlateColor(FLinearColor(0, 0, 0, 0.3));
+	}
+
 	for (const auto& Item : Player->GetInventory()->GetItems())
 	{
+		Buttons[Index]->WidgetStyle.Normal.TintColor = FSlateColor(FLinearColor(1, 1, 1, 1));
+
 		Buttons[Index]->WidgetStyle.Normal.SetResourceObject(Item.Value->GetItemTexture());
 		Buttons[Index]->WidgetStyle.Hovered.SetResourceObject(Item.Value->GetItemTexture());
 		Buttons[Index]->WidgetStyle.Pressed.SetResourceObject(Item.Value->GetItemTexture());
@@ -46,7 +53,10 @@ void UCInventoryWidget::NativeConstruct()
 
 void UCInventoryWidget::CancelWidget()
 {
-	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
+	CheckNull(GetWorld());
+	CheckNull(GetWorld()->GetFirstPlayerController());
+
+	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameOnly());
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 
 	RemoveFromParent();

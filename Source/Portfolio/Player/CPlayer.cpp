@@ -358,6 +358,8 @@ void ACPlayer::ShowDeathWidget()
 
 void ACPlayer::OnOffInventory()
 {
+	CheckNull(Inventory);
+
 	Inventory->OnOffInventoryWidget();
 }
 
@@ -376,6 +378,7 @@ void ACPlayer::OffBuff()
 
 void ACPlayer::Death()
 {
+	TagContainer.Reset();
 	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Dead")));
 
 	ASC->CancelAllAbilities();

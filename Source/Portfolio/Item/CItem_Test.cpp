@@ -47,6 +47,7 @@ void ACItem_Test::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
     {
         ACPlayer* Player = Cast<ACPlayer>(OtherActor);
         CheckNull(Player);
+        CheckNull(Player->GetInventory());
 
         Player->GetInventory()->AddItemToInventory(this);
 
