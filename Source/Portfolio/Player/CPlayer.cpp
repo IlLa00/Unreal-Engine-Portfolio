@@ -358,6 +358,8 @@ void ACPlayer::ShowDeathWidget()
 
 void ACPlayer::OnOffInventory()
 {
+	ASC->CancelAllAbilities();
+
 	CheckNull(Inventory);
 
 	Inventory->OnOffInventoryWidget();

@@ -90,7 +90,7 @@ void UCBTService_Enemy::SetTarget(ACEnemyController* AIC, ACEnemy* Enemy, ACPlay
 		DistanceToPet = Enemy->GetDistanceTo(Pet);
 	}
 
-	if (DistanceToPlayer >= DistanceToPet)
+	if (DistanceToPlayer > DistanceToPet)
 	{
 		AIC->GetBlackboardComponent()->SetValueAsObject("AttackTargetKey", Player);
 	}
