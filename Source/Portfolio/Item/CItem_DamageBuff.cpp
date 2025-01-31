@@ -33,28 +33,18 @@ void ACItem_DamageBuff::BeginPlay()
 
 void ACItem_DamageBuff::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	/*if (OverlapParitcle)
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), OverlapParitcle, OtherActor->GetActorLocation());*/
-
 	ACPlayer* Player = Cast<ACPlayer>(OtherActor);
 	CheckNull(Player);
 
-	Player->OnBuff();
+	// Player->OnBuff();
 
 	ACWeapon** Weapons = Player->GetEquipment()->GetEquipWeapons();
 	CheckNull(Weapons);
 	
 	for (int i = 0; i < 4; i++)
 	{
-		// weapon들의 GE로 발동.
+		PrintLine();
 		(*Weapons[i]).OnDamageBuff();
-
-
-		/*(*Weapons[i]).GetAttiribute()->SetBaseDamage((*Weapons[i]).GetAttiribute()->GetBaseDamage() + Value);
-		(*Weapons[i]).GetAttiribute()->SetCurrentDamage((*Weapons[i]).GetAttiribute()->GetCurrentDamage() + Value);
-
-		CLog::Print((*Weapons[i]).GetAttiribute()->GetBaseDamage());
-		CLog::Print((*Weapons[i]).GetAttiribute()->GetCurrentDamage());*/
 	}
 
 	Destroy();

@@ -2,6 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "AbilitySystemInterface.h"
+#include "AbilitySystemComponent.h"
 #include "CItem.generated.h"
 
 class USkeletalMeshComponent;
@@ -10,7 +12,7 @@ class UNiagaraComponent;
 class UCItemDataAsset;
 
 UCLASS()
-class PORTFOLIO_API ACItem : public AActor
+class PORTFOLIO_API ACItem : public AActor, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 	
@@ -22,7 +24,7 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
-
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual float GetValue() { return Value; }
 
 protected:
@@ -35,6 +37,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UBoxComponent* BoxComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		TObjectPtr<UAbilitySystemComponent> ASC;
 
 protected:
 	UCItemDataAsset* DataAsset;

@@ -6,6 +6,7 @@
 
 class UNiagaraComponent;
 class UNiagaraSystem;
+class UGameplayEffect;
 
 UCLASS()
 class PORTFOLIO_API ACItem_HealBuff : public ACItem
@@ -25,6 +26,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Niagara")
 		UNiagaraComponent* NiagaraComp;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Niagara")
-		UNiagaraSystem* OverlapParitcle;
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "GE")
+		TSubclassOf<UGameplayEffect> BPHealEffect;
+
+	FGameplayEffectSpecHandle HealHandle;
 };

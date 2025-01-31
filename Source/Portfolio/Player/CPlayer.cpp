@@ -133,6 +133,8 @@ void ACPlayer::BeginPlay()
 
 	Inventory->SetOwner(this);
 
+	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Idle")));
+
 }
 
 FGenericTeamId ACPlayer::GetGenericTeamId() const

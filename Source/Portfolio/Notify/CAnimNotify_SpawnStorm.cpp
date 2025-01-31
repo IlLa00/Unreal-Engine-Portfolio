@@ -23,7 +23,7 @@ void UCAnimNotify_SpawnStorm::Notify(USkeletalMeshComponent* MeshComp, UAnimSequ
 
 	FHitResult HitResult;
 	FVector Start = Boss->GetActorLocation();
-	FVector End = Start + FVector(0, 0, -10000.f);
+	FVector End = Start + FVector(0, 0, -100000.f);
 
 	TArray<AActor*> Ignores;
 	Ignores.Add(Boss);

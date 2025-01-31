@@ -18,19 +18,31 @@ ACItem::ACItem()
 
 	CHelpers::GetAsset(&DataAsset, "/Game/DataAsset/DA_Item");
 	CheckNull(DataAsset);
+
+	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
+	CheckNull(ASC);
 }
 
 void ACItem::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ACItem::BeginOverlap);
+	if (ASC)
+		ASC->InitAbilityActorInfo(this, this);
+
+	if(BoxComp)
+		BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ACItem::BeginOverlap);
 }
 
 void ACItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+UAbilitySystemComponent* ACItem::GetAbilitySystemComponent() const
+{
+	return ASC;
 }
 
 void ACItem::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
