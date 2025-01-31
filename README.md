@@ -1,5 +1,5 @@
 # Unreal Portfolio        
-(메인 게임화면 스크린샷)                   
+![스크린샷 2025-01-31 214715](https://github.com/user-attachments/assets/95a8d9ba-fe70-4d6c-aa9c-8cfd96d56753)               
 GAS 프레임워크에 기반한 팰월드 모작으로 1인 제작된 간단한 싱글플레이 게임입니다.    
 엔진 : UE 5.2 / 에디터 : VS 2022 / 제작기간 : 2개월~     
 Notion : https://thoughtful-shop-228.notion.site/Unreal-12f894b38b10807ab856cce6331820f5?pvs=4        
@@ -11,7 +11,8 @@ Notion : https://thoughtful-shop-228.notion.site/Unreal-12f894b38b10807ab856cce6
 [1. GAS의 Attribute와 데이터 에셋의 연동.](#gas의-attribute와-데이터-에셋의-연동)     
 [2. GAS의 GameplayTag와 AI들과의 연동.](#gas의-gameplaytag와-ai들과의-연동)      
 [3. GAS의 Ability를 가진 객체.](#gas의-ability를-가진-객체)     
-[4. GameplayEffect와 Attribute와의 연동.](#gameplayeffect와-attribute와의-연동)       
+[4. GameplayEffect와 Attribute와의 연동.](#gameplayeffect와-attribute와의-연동)     
+[5. GameplayEffect와 GameplayCue와의 연동.](#gameplayeffect와-gameplaycue와의-연동).
   
 [그 외 기술](#그외-기술)
 ## GAS의 Attribute와 데이터 에셋의 연동.
@@ -88,7 +89,9 @@ Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpec
 - GameplayEffect가 정상적으로 실행이 되면 Stamina가 감소됩니다.    
 (대충 뛰면 칼을 휘두르면 움짤)     
 
-GameplayEffect는 블루프린트에서 만들어서 C++에 가져와 적용시키는 모습입니다, 데미지 처리도 GE를 통해서 구현할려고 했으나 모디파이어 설정에서 난항을 겪어 직접적으로 Attribute를 조절하게 되었습니다.       
+## GameplayEffect와 GameplayCue와의 연동.   
+- GameplayEffect
+  
 ## 그외 기술
 ### Level    
 - **버추얼 텍스처 스트리밍**을 사용해 랜드스케이프 대규모 환경 텍스쳐 로딩을 최적화하여 텍스처 스트리밍 풀이 초과하는 오류를 해결하였습니다.(스샷추가)                  
