@@ -40,8 +40,6 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 			{
 				MontageToPlay = Monster->GetDataAsset()->Datas[Monster->GetIndex()].MontageDatas.DeadMontage;
 
-				PrintLine();
-
 				Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
 				Dead(Monster); 
 			}
@@ -120,11 +118,6 @@ void UAI_Dead::Dead(ACharacter* Character)
 		Boss->GetComponentByClass<UCharacterMovementComponent>()->Activate();
 
 		Boss->SetWidget(false);
-
-		//Boss->GetMesh()->SetAllPhysicsLinearVelocity(FVector::ZeroVector);
-		//Boss->GetMesh()->SetAllPhysicsAngularVelocityInRadians(FVector::ZeroVector);
-		//Boss->GetMesh()->SetSimulatePhysics(true);
-		//Boss->GetMesh()->SetWorldLocation(Boss->GetActorLocation(), true, nullptr, ETeleportType::TeleportPhysics); // ÀÌ°Å Àß¾ÈµÊ
 
 		FTransform FT;
 		FT.SetLocation(Boss->GetActorLocation());

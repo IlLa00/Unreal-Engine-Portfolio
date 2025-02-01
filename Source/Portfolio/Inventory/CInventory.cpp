@@ -45,15 +45,15 @@ void UCInventory::AddItemToInventory(ACItem_Test* Item)
 {
 	CheckNull(Item);
 
-	if (Item->GetItemName().IsValid())
+	if (Item->GetItemName().IsValid() && !Item->GetItemName().ToString().IsEmpty())
 	{
-		if (Items.Contains(Item->GetItemName()))
+		if (Items.Contains(Item->GetItemName())) // 지랄 여기서 또 문제가 터진다고? 그냥 contain쓰지말자
 		{
 			(*Items.Find(Item->GetItemName()))->IncreaseCount();
 		}
 		else
 		{
-			Items.Add(Item->GetItemName(), Item);
+			Items.Emplace(Item->GetItemName(), Item);
 		}
 	}
 

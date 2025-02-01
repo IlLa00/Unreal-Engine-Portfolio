@@ -43,7 +43,6 @@ void ACItem_DamageBuff::BeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 	
 	for (int i = 0; i < 4; i++)
 	{
-		PrintLine();
 		(*Weapons[i]).OnDamageBuff();
 	}
 

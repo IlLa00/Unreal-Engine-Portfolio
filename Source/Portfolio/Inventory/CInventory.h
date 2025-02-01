@@ -27,7 +27,8 @@ public:
 	void AddItemToInventory(ACItem_Test* Item);
 
 private:
-	TMap<FName, ACItem_Test*> Items;
+	UPROPERTY()
+		TMap<FName, ACItem_Test*> Items;
 
 	TSubclassOf<UCInventoryWidget> WidgetClass;
 	UCInventoryWidget* Widget;
