@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
+#include "../DataTable/CItemDataTable.h"
 #include "CItem.generated.h"
 
 class USkeletalMeshComponent;
@@ -23,7 +24,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	virtual void Tick(float DeltaTime) override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual float GetValue() { return Value; }
 
@@ -38,10 +38,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		UBoxComponent* BoxComp;
 
+	UPROPERTY(EditDefaultsOnly)
+		UStaticMeshComponent* MeshComp;
+
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
-		TObjectPtr<UAbilitySystemComponent> ASC;
+		TObjectPtr<UAbilitySystemComponent> ASC; // ¹öÇÁ ¾ø¾Ù²¨¸é ÀÌ°Íµµ ±»ÀÌ?
+
 
 protected:
-	UCItemDataAsset* DataAsset;
-	float Value;
+	UCItemDataAsset* DataAsset; // ÀÖ¾î¾ßµÊ?
+	float Value; // ¹öÇÁ¾ø¾Ù²¨¸é ±»ÀÌ?
+
+	UDataTable* DataTable;
+
+	FItemDataTable Row;
 };

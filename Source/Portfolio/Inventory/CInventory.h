@@ -2,11 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "../DataTable/CItemDataTable.h"
 #include "CInventory.generated.h"
 
 class UCInventoryWidget;
 class ACPlayer;
-class ACItem_Test;
 
 UCLASS()
 class PORTFOLIO_API UCInventory : public UObject
@@ -19,16 +19,20 @@ public:
 public:
 	virtual void PostInitProperties() override;
 
-	FORCEINLINE TMap<FName, ACItem_Test*> GetItems() { return Items; }
+	FORCEINLINE TMap<FName, FItemDataTable> GetItemDatas() { return ItemDatas; }
+	FORCEINLINE TMap<FName, int32> GetItemCount() { return ItemCount; }
 
 	void OnOffInventoryWidget();
 	void SetOwner(ACPlayer* InOwner);
 
-	void AddItemToInventory(ACItem_Test* Item);
+	void AddItemToInventory(const FItemDataTable Row);
 
 private:
 	UPROPERTY()
-		TMap<FName, ACItem_Test*> Items;
+		TMap<FName, FItemDataTable> ItemDatas;
+
+	UPROPERTY()
+		TMap<FName, int32> ItemCount;
 
 	TSubclassOf<UCInventoryWidget> WidgetClass;
 	UCInventoryWidget* Widget;

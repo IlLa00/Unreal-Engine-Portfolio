@@ -3,7 +3,7 @@
 #include "Widget/CInventoryWidget.h"
 #include "Player/CPlayer.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Item/CItem_Test.h"
+#include "DataTable/CItemDataTable.h"
 
 UCInventory::UCInventory()
 {
@@ -14,6 +14,8 @@ UCInventory::UCInventory()
 void UCInventory::PostInitProperties()
 {
 	Super::PostInitProperties();
+
+	AddToRoot();
 
 }
 
@@ -34,6 +36,7 @@ void UCInventory::OnOffInventoryWidget()
 		Owner->GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 		Owner->GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 	}
+	
 }
 
 void UCInventory::SetOwner(ACPlayer* InOwner)
@@ -41,20 +44,29 @@ void UCInventory::SetOwner(ACPlayer* InOwner)
 	Owner = InOwner;
 }
 
-void UCInventory::AddItemToInventory(ACItem_Test* Item)
+void UCInventory::AddItemToInventory(const FItemDataTable Row)
 {
-	CheckNull(Item);
+	if (ItemDatas.IsEmpty())
+		PrintLine(); // 대체 왜걸림?
 
-	if (Item->GetItemName().IsValid() && !Item->GetItemName().ToString().IsEmpty())
+
+	if (Row.Name.IsValid())
 	{
-		if (Items.Contains(Item->GetItemName())) // 지랄 여기서 또 문제가 터진다고? 그냥 contain쓰지말자
+		if (ItemDatas.Contains(Row.Name)) // 동일한 값이 있으면
 		{
-			(*Items.Find(Item->GetItemName()))->IncreaseCount();
+			int32* Count = ItemCount.Find(Row.Name);
+
+			++(*Count); 
+
+			CLog::Print(*Count);
+			ItemCount.Emplace(Row.Name, *Count);
 		}
-		else
+		else // 동일한 값이 없으면 = 새로운 값이면
 		{
-			Items.Emplace(Item->GetItemName(), Item);
+			int32 Count = 1;
+
+			ItemDatas.Emplace(Row.Name, Row);
+			ItemCount.Emplace(Row.Name, Count);
 		}
 	}
-
 }

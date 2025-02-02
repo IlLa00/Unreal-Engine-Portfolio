@@ -4,7 +4,8 @@
 #include "Components/TextBlock.h"
 #include "Player/CPlayer.h"
 #include "Inventory/CInventory.h"
-#include "Item/CItem_Test.h"
+#include "Item/CItem.h"
+#include "DataTable/CItemDataTable.h"
 
 bool UCInventoryWidget::Initialize()
 {
@@ -37,15 +38,23 @@ void UCInventoryWidget::NativeConstruct()
 		Button->WidgetStyle.Normal.TintColor = FSlateColor(FLinearColor(0, 0, 0, 0.3));
 	}
 
-	for (const auto& Item : Player->GetInventory()->GetItems())
+	for (const auto& ItemData : Player->GetInventory()->GetItemDatas())
 	{
 		Buttons[Index]->WidgetStyle.Normal.TintColor = FSlateColor(FLinearColor(1, 1, 1, 1));
 
-		Buttons[Index]->WidgetStyle.Normal.SetResourceObject(Item.Value->GetItemTexture());
-		Buttons[Index]->WidgetStyle.Hovered.SetResourceObject(Item.Value->GetItemTexture());
-		Buttons[Index]->WidgetStyle.Pressed.SetResourceObject(Item.Value->GetItemTexture());
+		Buttons[Index]->WidgetStyle.Normal.SetResourceObject(ItemData.Value.Texture);
+		Buttons[Index]->WidgetStyle.Hovered.SetResourceObject(ItemData.Value.Texture);
+		Buttons[Index]->WidgetStyle.Pressed.SetResourceObject(ItemData.Value.Texture);
 
-		Texts[Index]->SetText(FText::AsNumber(Item.Value->GetCount()));
+		for (const auto& ItemCount : Player->GetInventory()->GetItemCount())
+		{
+			if (ItemCount.Key == ItemData.Key)
+			{
+				Texts[Index]->SetText(FText::AsNumber(ItemCount.Value));
+
+				break;
+			}
+		}
 
 		Index++;
 	}
