@@ -14,6 +14,8 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/WidgetComponent.h"
+#include "CAnimInstance.h"
+
 
 void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* OwnerInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -50,9 +52,11 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 		ACBoss* Boss = Cast<ACBoss>(OwnerInfo->AvatarActor);
 		if (Boss)
 		{
-			if (Boss->GetBossDataAsset())
+			if (Boss->GetBossDataAsset() && !Boss->GetCurrentMontage())
 			{
 				MontageToPlay = Boss->GetBossDataAsset()->MontageDatas.DeadMontage;
+
+				PrintLine();
 
 				Super::ActivateAbility(Handle, OwnerInfo, ActivationInfo, TriggerEventData);
 				Dead(Boss);
@@ -63,13 +67,12 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 
 void UAI_Dead::Dead(ACharacter* Character)
 {
-	// 이렇게 분류하는게 맞을까싶음 인터페이스 쓸생각하자
 	if (Character->IsA<ACMonster>())
 	{
 		ACMonster* Monster = Cast<ACMonster>(Character);
 		CheckNull(Monster);
 
-		Monster->GetController()->UnPossess(); // 이걸로 감지컴포넌트 안꺼지면 캐스트하자. 컨트롤러 삭제도해야하지않나?
+		Monster->GetController()->UnPossess(); 
 
 		TArray<UShapeComponent*> OutComps;
 		Monster->GetComponents<UShapeComponent>(OutComps);
@@ -102,8 +105,6 @@ void UAI_Dead::Dead(ACharacter* Character)
 		ACBoss* Boss = Cast<ACBoss>(Character);
 		CheckNull(Boss);
 
-		Boss->GetController()->UnPossess(); 
-
 		TArray<UShapeComponent*> OutComps;
 		Boss->GetComponents<UShapeComponent>(OutComps);
 
@@ -114,8 +115,14 @@ void UAI_Dead::Dead(ACharacter* Character)
 
 		Boss->GetComponentByClass<UWidgetComponent>()->Deactivate();
 		Boss->GetComponentByClass<UTextRenderComponent>()->Deactivate();
-		Boss->GetComponentByClass<UFloatingPawnMovement>()->Deactivate();
-		Boss->GetComponentByClass<UCharacterMovementComponent>()->Activate();
+
+		Boss->GetFloatingComp()->Deactivate();
+		Boss->GetCharacterMovement()->Activate();
+
+		UCAnimInstance* Anim = Cast<UCAnimInstance>(Boss->GetMesh()->GetAnimInstance());
+		CheckNull(Anim);
+
+		Anim->IsFly = false;
 
 		Boss->SetWidget(false);
 

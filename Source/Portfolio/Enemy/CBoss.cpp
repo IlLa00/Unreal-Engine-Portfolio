@@ -70,5 +70,6 @@ void ACBoss::SetWidget(bool state)
 		CheckNull(BossWidget);
 
 		BossWidget->RemoveFromParent();
+		BossWidget = nullptr;
 	}
 }
