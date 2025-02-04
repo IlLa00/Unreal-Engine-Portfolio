@@ -52,7 +52,8 @@ void UAI_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 		ACBoss* Boss = Cast<ACBoss>(OwnerInfo->AvatarActor);
 		if (Boss)
 		{
-			if (Boss->GetBossDataAsset() && !Boss->GetCurrentMontage())
+
+			if (Boss->GetBossDataAsset())
 			{
 				MontageToPlay = Boss->GetBossDataAsset()->MontageDatas.DeadMontage;
 
@@ -104,6 +105,8 @@ void UAI_Dead::Dead(ACharacter* Character)
 	{
 		ACBoss* Boss = Cast<ACBoss>(Character);
 		CheckNull(Boss);
+
+		Boss->GetController()->UnPossess();
 
 		TArray<UShapeComponent*> OutComps;
 		Boss->GetComponents<UShapeComponent>(OutComps);

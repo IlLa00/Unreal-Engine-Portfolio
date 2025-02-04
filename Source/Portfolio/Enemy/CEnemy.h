@@ -70,5 +70,5 @@ protected:
 		TObjectPtr<UCAIAttributeSet> AIAttribute;
 	
 protected:
-	TSubclassOf<UCDamageWidget> DamageWidgetClass;
+	TSubclassOf<UCDamageWidget> DamageWidgetClass;	
 };
