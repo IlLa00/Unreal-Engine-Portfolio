@@ -20,13 +20,10 @@ void UCWeaponAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribu
 
 		if (GetCurrentProficiency() >= GetBaseProficiency())
 		{
-			
 			SetBaseDamage(GetBaseDamage() + 5.f);
 			SetCurrentDamage(GetBaseDamage());
 
 			SetCurrentProficiency(0.f);
-
-			CLog::Print(GetCurrentDamage());
 		}
 	}
 }
