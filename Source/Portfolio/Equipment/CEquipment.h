@@ -38,6 +38,10 @@ public:
 
 	void Reload();
 
+
+	UFUNCTION()
+		void UpdateProficiency(float NewValue);
+
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "DataAsset")
 		UCWeaponDataAsset* DataAsset; // 이게 여기있어야함?

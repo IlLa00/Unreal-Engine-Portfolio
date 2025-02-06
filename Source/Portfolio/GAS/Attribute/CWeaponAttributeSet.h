@@ -13,6 +13,8 @@
 
 class UCWeaponDataAsset;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateProficiency, float, NewValue);
+
 UCLASS()
 class PORTFOLIO_API UCWeaponAttributeSet : public UAttributeSet
 {
@@ -38,4 +40,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS Attribute", meta = (AllowPrivateAccess = true))
 		FGameplayAttributeData CurrentProficiency;
 	ATTRIBUTE_ACCESSORS(UCWeaponAttributeSet, CurrentProficiency);
+
+public:
+	FUpdateProficiency OnUpdateProficiency;
 };

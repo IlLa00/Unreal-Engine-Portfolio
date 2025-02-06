@@ -31,6 +31,10 @@ ACWeapon::ACWeapon()
 
 	CHelpers::GetClass(&BPDamageBuffEffect, "/Game/GAS/BP_GE_DamageBuff");
 	CheckNull(BPDamageBuffEffect);
+
+	CHelpers::GetClass(&BPProficencyEffect, "/Game/GAS/BP_GE_UpdateWeaponProficiency");
+	CheckNull(BPProficencyEffect);
+	
 }
 
 void ACWeapon::BeginPlay()
@@ -44,6 +48,10 @@ void ACWeapon::BeginPlay()
 	{
 		AttackCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ACWeapon::BeginOverlap);
 	}
+
+	if (Attribute)
+		Attribute->OnUpdateProficiency.AddDynamic(this, &ACWeapon::UpdateProficiency);
+
 }
 
 void ACWeapon::Tick(float DeltaTime)
@@ -64,6 +72,15 @@ void ACWeapon::OnDamageBuff()
 	DamageBuffEffectHandle = ASC->MakeOutgoingSpec(BPDamageBuffEffect, 1.0f, EffectContext);
 
 	ASC->ApplyGameplayEffectSpecToSelf(*DamageBuffEffectHandle.Data.Get());
+}
+
+void ACWeapon::UpdateProficiency(float NewValue)
+{
+	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+
+	ProficiencyEffectHandle = ASC->MakeOutgoingSpec(BPProficencyEffect, 1.0f, EffectContext);
+
+	ASC->ApplyGameplayEffectSpecToSelf(*ProficiencyEffectHandle.Data.Get());
 }
 
 void ACWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

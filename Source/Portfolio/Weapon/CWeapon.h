@@ -48,6 +48,9 @@ public:
 
 	virtual void OnDamageBuff();
 
+	UFUNCTION()
+		void UpdateProficiency(float NewValue);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		USceneComponent* RootComp;
@@ -73,6 +76,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 		TSubclassOf<UGameplayEffect> BPDamageBuffEffect;
 
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+		TSubclassOf<UGameplayEffect> BPProficencyEffect;
+
 protected:
 	UCWeaponDataAsset* DataAsset;
 	FGameplayAbilitySpec WeaponAbilitySpec;
@@ -83,4 +89,5 @@ protected:
 	float Proficiency;
 
 	FGameplayEffectSpecHandle DamageBuffEffectHandle;
+	FGameplayEffectSpecHandle ProficiencyEffectHandle;
 };

@@ -62,6 +62,11 @@ void ACEquipment::BeginPlay()
 		EquipWeapon[3]->SetActorHiddenInGame(true);
 	}
 
+
+	for (const auto& Weapon : EquipWeapon)
+	{
+		Weapon->GetAttiribute()->OnUpdateProficiency.AddDynamic(this, &ACEquipment::UpdateProficiency);
+	}
 }
 
 void ACEquipment::Tick(float DeltaTime)
@@ -184,4 +189,9 @@ void ACEquipment::Reload()
 	{
 		CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle);
 	}
+}
+
+void ACEquipment::UpdateProficiency(float NewValue)
+{
+	// OwnerCharacter->
 }
