@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "CStorm.generated.h"
 
+class USkeletalMeshComponent;
 class UParticleSystemComponent;
 class UProjectileMovementComponent;
 class UBoxComponent;
@@ -20,15 +21,12 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	virtual void Tick(float DeltaTime) override;
-
-public:
 	UFUNCTION()
 	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
-	USceneComponent* RootComp;
+	USkeletalMeshComponent* RootGravityComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 	UBoxComponent* BoxComp;

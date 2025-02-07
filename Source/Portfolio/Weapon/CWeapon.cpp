@@ -75,12 +75,14 @@ void ACWeapon::OnDamageBuff()
 }
 
 void ACWeapon::UpdateProficiency(float NewValue)
-{
+{	
 	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
 
 	ProficiencyEffectHandle = ASC->MakeOutgoingSpec(BPProficencyEffect, 1.0f, EffectContext);
 
 	ASC->ApplyGameplayEffectSpecToSelf(*ProficiencyEffectHandle.Data.Get());
+
+	SpawnEffect();
 }
 
 void ACWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

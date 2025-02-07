@@ -32,6 +32,12 @@ public:
 protected:
 	UFUNCTION()
 	virtual void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+		 
+	UFUNCTION()
+		void UpdateProficiency(float NewValue);
+
+	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent)
+		void SpawnEffect();
 
 public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -47,9 +53,6 @@ public:
 	virtual UBoxComponent* GetAttackComp() override { return AttackCollisionComp; }
 
 	virtual void OnDamageBuff();
-
-	UFUNCTION()
-		void UpdateProficiency(float NewValue);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")

@@ -168,6 +168,7 @@ void ACEquipment::OffMainAction()
 void ACEquipment::OnSubAction()
 {
 	CheckNull(CurrentEquipWeapon);
+	CheckNull(CurrentEquipWeapon->GetAbilitySystemComponent());
 
 	CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetWeaponSubAbilitySpec().Handle);
 

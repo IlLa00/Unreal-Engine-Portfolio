@@ -14,15 +14,13 @@
 
 ACStorm::ACStorm()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	CHelpers::CreateSceneComponent(this, &RootGravityComp, "RootGravityComp");
+	CheckNull(RootGravityComp);
 
-	CHelpers::CreateSceneComponent(this, &RootComp, "RootComp");
-	CheckNull(RootComp);
-
-	CHelpers::CreateSceneComponent(this, &BoxComp, "BoxComp",RootComp);
+	CHelpers::CreateSceneComponent(this, &BoxComp, "BoxComp", RootGravityComp);
 	CheckNull(BoxComp);
 
-	CHelpers::CreateSceneComponent(this, &ParticleComp, "ParticleComp", RootComp);
+	CHelpers::CreateSceneComponent(this, &ParticleComp, "ParticleComp", RootGravityComp);
 	CheckNull(ParticleComp);
 	ParticleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
@@ -37,12 +35,6 @@ void ACStorm::BeginPlay()
 	Super::BeginPlay();
 
 	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ACStorm::OnBoxBeginOverlap);
-}
-
-void ACStorm::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 
 void ACStorm::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
