@@ -57,8 +57,8 @@ bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& 
 	return false;
 }
 ```
-> AI의 행동들은 모두 GamplayAbility로 관리합니다.            
-https://github.com/user-attachments/assets/821d0465-898d-4258-a077-b1d675c4e5dc              
+![1-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/475dd146-60ad-4fcb-98b4-0f18538b33b3)        
+> AI의 행동들은 모두 GamplayAbility로 관리합니다.                 
 이렇게 GameplayTag로 상태와 능력을 관리합니다.
 ## GAS의 Ability를 가진 객체.    
 ### Player 
@@ -66,15 +66,20 @@ https://github.com/user-attachments/assets/821d0465-898d-4258-a077-b1d675c4e5dc
 (대충 펫소환하는 움짤)
 ### Weapon 
 - 각각 고유의 Ability를 보유하고 있으며, 플레이어가 어떤 무기를 들고있는지에 따라 발동하는 어빌리티가 다릅니다.          
-  - Sword는 콤보 공격을 가능하게 하는 Ability를 보유하고 있습니다.(대충 콤보공격하는 움짤)
+  - Sword는 콤보 공격을 가능하게 하는 Ability를 보유하고 있습니다.
+    ![bandicam2025-02-0920-45-06-406-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/e4f23f45-0514-4edb-8ef4-76aac524966c)         
     - Sword와 충돌이 된 액터의 어트리뷰트는 Sword의 공격력 만큼 영향을 받습니다.             
-  - Rifle은 0.1초마다 LineTrace를 진행하는 Ability를 보유하고 있습니다.(대충 총쏘는 움짤)
+  - Rifle은 0.1초마다 LineTrace를 진행하는 Ability를 보유하고 있습니다.        
+    ![bandicam2025-02-0920-54-48-016-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/25e29c49-3053-45ac-9c7a-76eca9500bf1)         
     - 라인트레이스에 영향을 받은 액터의 어트리뷰트가 Rifle의 공격력만큼 영향을 받습니다.
-  - HookGun은 바라보고 있는 방향에 갈고리 총을 쏘고 지면에 닿으면 그 지점으로 날아가는 Ability를 보유하고 있습니다.(대충 갈고리총 쏘는 움짤)      
-  - RPG는 몬스터와 닿으면 주변에 SphereTrace를 진행하는 로켓을 발사하는 Ability를 보유하고 있습니다. (대충 로켓 쏘는 움짤)        
+  - HookGun은 바라보고 있는 방향에 갈고리 총을 쏘고 지면에 닿으면 그 지점으로 날아가는 Ability를 보유하고 있습니다.              
+    ![bandicam2025-02-0921-56-59-360-ezgif com-video-to-gif-converter (1)](https://github.com/user-attachments/assets/2460d136-08b3-415d-8c05-c08a21be6c42)       
+  - RPG는 몬스터와 닿으면 주변에 SphereTrace를 진행하는 로켓을 발사하는 Ability를 보유하고 있습니다.      
+    ![bandicam2025-02-0922-23-34-677-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/f7095deb-9f2c-4d5f-89f9-f11226203f7e)       
+ 
 ### AI 
-- Attack, Dead Ability를 공통으로 보유하고 있고 Boss를 제외하고 GetHit Ability를 보유하고 있습니다. (대충 AI들이 공격하고 죽는 움짤)
-
+- Attack, Dead Ability를 공통으로 보유하고 있고 Boss를 제외하고 GetHit Ability를 보유하고 있습니다.
+![bandicam2025-02-0922-41-25-118-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/78c57001-46a0-4277-8d3a-b33a6d9b12cf)        
 ## GameplayEffect와 Attribute와의 연동.
 - 플레이어는 특정 어빌리티를 발동하면 스테미너가 감소하는 GameplayEffect가 발동됩니다.
 > Sword의 Ability를 발동하는 사진입니다.     
@@ -86,12 +91,14 @@ FGameplayEffectSpecHandle EffectSpecHandle = Player->GetAbilitySystemComponent()
 
 Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data.Get(), Player->GetAbilitySystemComponent());
 ```
-- GameplayEffect가 정상적으로 실행이 되면 Stamina가 감소됩니다.    
-(대충 뛰면 칼을 휘두르면 움짤)     
+- GameplayEffect가 정상적으로 실행이 되면 Stamina가 감소됩니다.    (윗 내용 바꿔야함!!!!!!!!!!)
+![bandicam2025-02-0922-56-08-109-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/87228e25-69d9-43e7-951c-f480c889a13d)      
+
 
 ## GameplayEffect와 GameplayCue와의 연동.   
-- GameplayEffect
-  
+- GameplayEffect      
+![bandicam2025-02-0923-10-30-030-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/6f557243-17af-4dc8-9a50-253a82118c39)
+
 ## 그외 기술
 ### Level    
 - **버추얼 텍스처 스트리밍**을 사용해 랜드스케이프 대규모 환경 텍스쳐 로딩을 최적화하여 텍스처 스트리밍 풀이 초과하는 오류를 해결하였습니다.(스샷추가)                  
@@ -99,7 +106,8 @@ Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpec
 
 ### Inventroy
 - 데이터 테이블을 이용해 아이템들의 정보를 읽고 플레이어와 오버랩 시, 아이템이 인벤토리에 들어갑니다.
-- **TMap**을 이용해 빠른 검색 기능으로 동일한 아이템을 획득 시, 수량을 증가시킵니다.
+- **TMap**을 이용해 빠른 검색 기능으로 동일한 아이템을 획득 시, 수량을 증가시킵니다.       
+![bandicam2025-02-1000-16-40-566-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/185d723a-5802-4f22-9b1b-99a14c0a82b3)
 
 ### AI
 - AI는 기본적으로 **CAIInterface**를 상속받아 인터페이스의 장점인 다형성과 코드의 재사용성을 이용해 유연한 코드를 구현해보았습니다.         
@@ -107,18 +115,20 @@ Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpec
     
 ### Boss
 - 공중에 떠있을 때 Z축을 크게 감지를 하지못하는 시각감지를 잘 쓰지 못하는 문제가 발생해 **AIPerceptionConfig_Hearing**으로 감지를 설정했습니다.
-- **FloatingPawnMovementComponent**를 이용해 Boss가 공중에 뜨게 구현했습니다.
-    
+- **FloatingPawnMovementComponent**를 이용해 Boss가 공중에 뜨게 구현했습니다.      
+![bandicam2025-02-1000-01-08-621-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/bedf2ea9-8b5c-4acb-8182-e6a80e0fe167)          
+![bandicam2025-02-1000-07-53-750-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/e7d6451a-28bc-42e1-af55-eeeac9614186)         
+
 ### Monster
 - GameMode가 관리하는 Spawner 클래스로 스폰되며 **SpawnActorDeferred**로 데이터 에셋의 값들을 읽어와 몬스터들의 메시와 애님클래스가 설정된 뒤에 스폰됩니다.         
 - **AIPerceptionConfig_Sight**로 감지하며 플레이어와 펫중 플레이어를 우선순위로 타겟팅합니다.  
 
 ### Portal
 - 플레이어와 오버랩 이벤트 발생 시, 특정 지형으로 이동할 수 있게하는 위젯을 띄웁니다.        
-- 실제 텔레포트 로직은 GameMode에서 실행합니다.    
-(대충 텔레포트 하는 움짤)
+- 실제 텔레포트 로직은 GameMode에서 실행합니다.      
+![bandicam2025-02-1000-29-54-829-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/ceafd9ef-8347-4349-ab9d-1ab3ee7f66a9)      
 
 ### Item
 - 몬스터나 보스가 죽으면 아이템을 드롭합니다.        
 - 아이템의 종류에 따라 아이템을 먹을 시, 고유의 GE 발동이 됩니다.        
-(대충 아이템 먹는 움짤)
+(대충 아이템 먹는 움짤 <- 이거 인벤토리랑 통합)
