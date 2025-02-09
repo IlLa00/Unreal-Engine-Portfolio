@@ -61,12 +61,6 @@ void ACEquipment::BeginPlay()
 
 		EquipWeapon[3]->SetActorHiddenInGame(true);
 	}
-
-
-	for (const auto& Weapon : EquipWeapon)
-	{
-		Weapon->GetAttiribute()->OnUpdateProficiency.AddDynamic(this, &ACEquipment::UpdateProficiency);
-	}
 }
 
 void ACEquipment::Tick(float DeltaTime)
@@ -114,9 +108,6 @@ void ACEquipment::Equip(int32 slot)
 	}
 	else
 		OwnerCharacter->GetPlayerWidget()->ShowCurrentBullet(false);
-
-	// 우클릭 풀어야됨
-	// todo.. 현재 장비해제하면 위젯도 아무것도 없게 만들어야함
 }
 
 void ACEquipment::Begin_Equip()
@@ -136,7 +127,6 @@ void ACEquipment::Begin_Equip()
 		}
 
 		CurrentEquipWeapon = nullptr;
-
 	}
 
 	NewWeapon->SetActorHiddenInGame(false);
@@ -150,35 +140,41 @@ void ACEquipment::Begin_Equip()
 void ACEquipment::OnMainAction()
 {
 	CheckNull(CurrentEquipWeapon);
+	CheckNull(CurrentEquipWeapon->GetAbilitySystemComponent());
+
+	OwnerCharacter->SetUsePawnControlRotation(false);
 
 	CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetWeaponAbilitySpec().Handle);
-
-	// todo.. 총제외 스테미너 감소
 }
 
 void ACEquipment::OffMainAction()
 {
-	CheckNull(CurrentEquipWeapon); 
+	CheckNull(CurrentEquipWeapon);
+	CheckNull(CurrentEquipWeapon->GetAbilitySystemComponent());
+
+	if(!OwnerCharacter->GetTagContainer().HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Sub.Aim"))))
+		OwnerCharacter->SetUsePawnControlRotation(true);
 
 	CurrentEquipWeapon->GetAbilitySystemComponent()->CancelAbilityHandle(CurrentEquipWeapon->GetWeaponAbilitySpec().Handle);
 }
-
-
 
 void ACEquipment::OnSubAction()
 {
 	CheckNull(CurrentEquipWeapon);
 	CheckNull(CurrentEquipWeapon->GetAbilitySystemComponent());
 
-	CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetWeaponSubAbilitySpec().Handle);
+	OwnerCharacter->SetUsePawnControlRotation(false);
 
+	CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetWeaponSubAbilitySpec().Handle);
 }
 
 void ACEquipment::OffSubAction()
 {
 	CheckNull(CurrentEquipWeapon);
-	
-	// todo.. 여기 서브능력 진행중인지 아닌지 검사하는 조건 추가해야할듯
+	CheckNull(CurrentEquipWeapon->GetAbilitySystemComponent());
+
+	OwnerCharacter->SetUsePawnControlRotation(true);
+
 	CurrentEquipWeapon->GetAbilitySystemComponent()->CancelAbilityHandle(CurrentEquipWeapon->GetWeaponSubAbilitySpec().Handle);
 }
 
@@ -190,9 +186,4 @@ void ACEquipment::Reload()
 	{
 		CurrentEquipWeapon->GetAbilitySystemComponent()->TryActivateAbility(CurrentEquipWeapon->GetAbilitySystemComponent()->FindAbilitySpecFromClass(UReloadRifle::StaticClass())->Handle);
 	}
-}
-
-void ACEquipment::UpdateProficiency(float NewValue)
-{
-	// OwnerCharacter->
 }

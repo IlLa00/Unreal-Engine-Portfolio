@@ -160,11 +160,11 @@ void ACPlayer::Tick(float DeltaTime)
 		}
 	}
 
-	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Sub.Aim")))) // 아무것도 안하고 있을 
-	{
-		GetSpringArmComp()->TargetArmLength = 100.f;
-		SetUsePawnControlRotation(false);
-	}
+	//if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Sub.Aim")))) // 아무것도 안하고 있을 
+	//{
+	//	GetSpringArmComp()->TargetArmLength = 100.f;
+	//	SetUsePawnControlRotation(false);
+	//}
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -248,6 +248,8 @@ void ACPlayer::OnMoveRight(float Axis)
 
 void ACPlayer::OnSprint()
 {
+	CheckNull(ASC);
+
 	if (!TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Sprint"))))
 	{
 		TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Idle")));
@@ -256,12 +258,15 @@ void ACPlayer::OnSprint()
 		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Sprint")));
 	}
 	
+
 	// todo.. 어빌리티있는지 확인
 	ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(USprint::StaticClass())->Handle); // todo.. 스테미너 조건 검사
 }
 
 void ACPlayer::OffSprint()
 {
+	CheckNull(ASC);
+
 	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Sprint"))))
 	{
 		TagContainer.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Sprint")));
@@ -275,6 +280,8 @@ void ACPlayer::OffSprint()
 
 void ACPlayer::OnSummon()
 {
+	CheckNull(ASC);
+
 	if (!TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Ability.Summon"))))
 	{
 		ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(USummon::StaticClass())->Handle);
@@ -289,53 +296,71 @@ void ACPlayer::OnSummon()
 
 void ACPlayer::OnEquipFirstSlot()
 {
+	CheckNull(Equipment);
+
 	Equipment->Equip(1);
 }
 
 void ACPlayer::OnEquipSecondSlot()
 {
+	CheckNull(Equipment);
+
 	Equipment->Equip(2);
 }
 
 void ACPlayer::OnEquipThirdSlot()
 {
+	CheckNull(Equipment);
+
 	Equipment->Equip(3);
 }
 
 void ACPlayer::OnEquipLastSlot()
 {
+	CheckNull(Equipment);
+
 	Equipment->Equip(4);
 }
 
 void ACPlayer::OnMainAction()
 {
-	// SetUsePawnControlRotation(false); //  todo.. 아무것도 안들때도 되어버림
+	CheckNull(Equipment);
+
 	Equipment->OnMainAction();
 }
 
 void ACPlayer::OffMainAction()
 {
-	// SetUsePawnControlRotation(true);
+	CheckNull(Equipment);
+
 	Equipment->OffMainAction();
 }
 
 void ACPlayer::OnSubAction()
 {
+	CheckNull(Equipment);
+
 	Equipment->OnSubAction();
 }
 
 void ACPlayer::OffSubAction()
 {
+	CheckNull(Equipment);
+
 	Equipment->OffSubAction();
 }
 
 void ACPlayer::OnReload()
 {
+	CheckNull(Equipment);
+
 	Equipment->Reload();
 }
 
 void ACPlayer::OnJump()
 {
+	CheckNull(ASC);
+
 	if (!GetCharacterMovement()->IsFalling())
 	{
 		ASC->TryActivateAbility(ASC->FindAbilitySpecFromClass(UJump::StaticClass())->Handle);
@@ -344,6 +369,8 @@ void ACPlayer::OnJump()
 
 void ACPlayer::OffJump()
 {
+	CheckNull(ASC);
+
 	ASC->CancelAbilityHandle(ASC->FindAbilitySpecFromClass(USummon::StaticClass())->Handle);
 }
 

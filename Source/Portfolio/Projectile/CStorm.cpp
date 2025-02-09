@@ -49,7 +49,7 @@ void ACStorm::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		ACPlayer* Player = Cast<ACPlayer>(OtherActor);
 		CheckNull(Player);
 
-		Player->LaunchCharacter(FVector(0, 0, 1000), false, false);
+		Player->LaunchCharacter(FVector(0, 0, 500), false, false);
 
 		if(Player->GetAttributeSet())
 			Player->GetAttributeSet()->SetCurrentHealth(Player->GetAttributeSet()->GetCurrentHealth() - Boss->GetAIAttributeSet()->GetCurrentDamage());
@@ -59,7 +59,7 @@ void ACStorm::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		ACPet* Pet = Cast<ACPet>(OtherActor);
 		CheckNull(Pet);
 
-		Pet->LaunchCharacter(FVector(0, 0, 1000), false, false);
+		Pet->LaunchCharacter(FVector(0, 0, 500), false, false);
 
 		if (Pet->GetAIAttributeSet())
 			Pet->GetAIAttributeSet()->SetCurrentHealth(Pet->GetAIAttributeSet()->GetCurrentHealth() - Boss->GetAIAttributeSet()->GetCurrentDamage());

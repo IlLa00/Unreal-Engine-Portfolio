@@ -8,6 +8,8 @@
 
 void UCAnimNotifyState_Collision::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
+	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
+
 	if (MeshComp->GetOwner()->GetClass()->ImplementsInterface(UCAttackCompInterface::StaticClass())) // 적군
 	{
 		ICAttackCompInterface* Owner = Cast<ICAttackCompInterface>(MeshComp->GetOwner());
@@ -39,6 +41,8 @@ void UCAnimNotifyState_Collision::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 
 void UCAnimNotifyState_Collision::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
+	Super::NotifyEnd(MeshComp, Animation, EventReference);
+
 	if (MeshComp->GetOwner()->GetClass()->ImplementsInterface(UCAttackCompInterface::StaticClass())) // 적군
 	{
 		ICAttackCompInterface* Owner = Cast<ICAttackCompInterface>(MeshComp->GetOwner());

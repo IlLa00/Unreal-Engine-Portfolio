@@ -68,7 +68,6 @@ void URifle::Shoot()
 	FVector End = Start + Player->GetCameraComp()->GetForwardVector() * 5000.f;
 
 	TArray<AActor*> IgnoreActors;
-
 	FHitResult HitResult;
 
 	FCollisionObjectQueryParams Parms;
