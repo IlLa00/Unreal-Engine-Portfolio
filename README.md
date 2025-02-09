@@ -57,8 +57,8 @@ bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& 
 	return false;
 }
 ```
-> AI의 행동들은 모두 GamplayAbility로 관리합니다.    
-(대충 AI들이 행동하는 움짤)         
+> AI의 행동들은 모두 GamplayAbility로 관리합니다.            
+https://github.com/user-attachments/assets/821d0465-898d-4258-a077-b1d675c4e5dc              
 이렇게 GameplayTag로 상태와 능력을 관리합니다.
 ## GAS의 Ability를 가진 객체.    
 ### Player 
