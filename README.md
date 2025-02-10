@@ -62,8 +62,8 @@ bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& 
 이렇게 GameplayTag로 상태와 능력을 관리합니다.
 ## GAS의 Ability를 가진 객체.    
 ### Player 
-- Sprint, Jump, Summon(펫 소환) Ability를 보유합니다.     
-(대충 펫소환하는 움짤)
+- Sprint, Jump, Summon(펫 소환) Ability를 보유합니다.
+![bandicam2025-02-1023-05-08-839-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/8259e0fa-5485-4ceb-b43d-6445bf01925a)        
 ### Weapon 
 - 각각 고유의 Ability를 보유하고 있으며, 플레이어가 어떤 무기를 들고있는지에 따라 발동하는 어빌리티가 다릅니다.          
   - Sword는 콤보 공격을 가능하게 하는 Ability를 보유하고 있습니다.
@@ -123,8 +123,8 @@ ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 <img src="https://github.com/user-attachments/assets/c7746e40-52f7-4cc2-bd5c-8fdc92a9d6c8" width="800px" height="400px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>      
 ### Item - Inventory
 - 데이터 테이블을 이용해 아이템들의 정보를 읽고 몬스터나 보스가 죽으면 아이템이 스폰되며 플레이어와 오버랩 시, 아이템이 인벤토리에 들어갑니다.
-- **아이템의 정보를 담는 TMap** 하나와, **수량정보를 담당하는 TMap** 하나를 이용하여 빠른 검색 기능을 이용해 동일한 아이템이 들어오면 수량정보를 담당하는 TMap의 Value값을 올리고, 새로운 아이템이 들어오면 두개의 TMap에 새로운 값을 넣습니다. (영상수정해야됨)                        
-![bandicam2025-02-1000-16-40-566-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/185d723a-5802-4f22-9b1b-99a14c0a82b3)
+- **아이템의 정보를 담는 TMap** 하나와, **수량정보를 담당하는 TMap** 하나를 이용하여 빠른 검색 기능을 이용해 동일한 아이템이 들어오면 수량정보를 담당하는 TMap의 Value값을 올리고, 새로운 아이템이 들어오면 두개의 TMap에 새로운 값을 넣습니다.                        
+![bandicam2025-02-1023-15-26-447-ezgif com-video-to-gif-converter (1)](https://github.com/user-attachments/assets/f9317c49-bacf-401d-a401-860d39ac6977)       
 ```c++
 void UCInventory::AddItemToInventory(const FItemDataTable Row)
 {
