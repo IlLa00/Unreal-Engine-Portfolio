@@ -62,7 +62,7 @@ bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& 
 이렇게 GameplayTag로 상태와 능력을 관리합니다.
 ## GAS의 Ability를 가진 객체.    
 ### Player 
-- Sprint, Jump, Summon(펫 소환) Ability를 보유합니다.
+- Sprint, Jump, Summon(펫 소환) Ability를 보유합니다.     
 (대충 펫소환하는 움짤)
 ### Weapon 
 - 각각 고유의 Ability를 보유하고 있으며, 플레이어가 어떤 무기를 들고있는지에 따라 발동하는 어빌리티가 다릅니다.          
@@ -72,7 +72,7 @@ bool UCBTDecorator_TagCheck::CalculateRawConditionValue(UBehaviorTreeComponent& 
   - Rifle은 0.1초마다 LineTrace를 진행하는 Ability를 보유하고 있습니다.        
     ![bandicam2025-02-0920-54-48-016-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/25e29c49-3053-45ac-9c7a-76eca9500bf1)         
     - 라인트레이스에 영향을 받은 액터의 어트리뷰트가 Rifle의 공격력만큼 영향을 받습니다.
-  - HookGun은 바라보고 있는 방향에 갈고리 총을 쏘고 지면에 닿으면 그 지점으로 날아가는 Ability를 보유하고 있습니다.              
+  - HookGun은 바라보고 있는 방향에 CableComponent를 이용해 갈고리 총을 쏘고 지면에 닿으면 그 지점으로 날아가는 Ability를 보유하고 있습니다.              
     ![bandicam2025-02-0921-56-59-360-ezgif com-video-to-gif-converter (1)](https://github.com/user-attachments/assets/2460d136-08b3-415d-8c05-c08a21be6c42)       
   - RPG는 몬스터와 닿으면 주변에 SphereTrace를 진행하는 로켓을 발사하는 Ability를 보유하고 있습니다.      
     ![bandicam2025-02-0922-23-34-677-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/f7095deb-9f2c-4d5f-89f9-f11226203f7e)       
@@ -106,9 +106,8 @@ FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(BPMovementEff
 ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 ```
 - GameplayEffect가 정상적으로 실행이 되면 Stamina가 감소됩니다.
-![bandicam2025-02-0922-56-08-109-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/87228e25-69d9-43e7-951c-f480c889a13d)      
-
-
+- 플레이어는 특정 어빌리티를 발동하지 않을 때는 스테미너가 다시 채워지는 GameplayEffect가 발동됩니다.      
+![bandicam2025-02-0922-56-08-109-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/87228e25-69d9-43e7-951c-f480c889a13d)        
 ## GameplayEffect와 GameplayCue와의 연동.   
 - 특정 GameplayEffect가 발생되면 GameplayEffect 클래스에서 지정된 **GameplayCue Tag**가 호출됩니다.
 - **GameplayCue Tag**가 호출되면, **GameplayCue Notfiy Static**을 상속받은 **GameplayCue**가 발동됩니다.       
@@ -117,7 +116,8 @@ ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 ## 그외 기술
 ### Level    
 - **버추얼 텍스처 스트리밍**을 사용해 랜드스케이프 대규모 환경 텍스쳐 로딩을 최적화하여 텍스처 스트리밍 풀이 초과하고 픽셀이 깨지는 오류를 해결하였습니다.                 
-- **네비게이션 인보커**를 사용해 런타임에서 네비게이션 메시를 필요한 만큼 생성하게 만들어 에디터에서 수많은 네비게이션 메시를 빌드하지 않게 했습니다, 이는 AI의 NavigationInvokerComponent와 이어집니다.        
+- **네비게이션 인보커**를 사용해 런타임에서 네비게이션 메시를 필요한 만큼 생성하게 만들어 에디터에서 수많은 네비게이션 메시를 빌드하지 않게 했습니다, 이는 AI의 NavigationInvokerComponent와 이어집니다.
+> 버추얼 텍스처 스트리밍을 키기 전과 후의 비교.      
 <img src="https://github.com/user-attachments/assets/4df9a1aa-eca8-4474-940f-b0058c7c0f83" width="800px" height="400px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>       
 <img src="https://github.com/user-attachments/assets/2e9d93c0-24c6-4e5b-834d-6ca38868e716" width="400px" height="100px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>      
 <img src="https://github.com/user-attachments/assets/c7746e40-52f7-4cc2-bd5c-8fdc92a9d6c8" width="800px" height="400px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>      
@@ -153,16 +153,12 @@ void UCInventory::AddItemToInventory(const FItemDataTable Row)
 - **NavigationInvokerComponent**로 객체 주변에 자동으로 필요한만큼 네비게이션 메시를 생성합니다.      
 <img src="https://github.com/user-attachments/assets/907520c6-9f44-4946-98d3-ea2f2f6b820d" width="600px" height="100px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
 <img src="https://github.com/user-attachments/assets/27c1f77c-6f31-4339-a984-82121126e565" width="600px" height="200px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
-<img src="https://github.com/user-attachments/assets/fc11cce6-b949-4e52-95a8-b506e5ae24eb" width="600px" height="200px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
-
-
-    
+<img src="https://github.com/user-attachments/assets/fc11cce6-b949-4e52-95a8-b506e5ae24eb" width="600px" height="200px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>      
 ### Boss
 - 공중에 떠있을 때 Z축을 크게 감지를 하지못하는 시각감지를 잘 쓰지 못하는 문제가 발생해 **AIPerceptionConfig_Hearing**으로 감지를 설정했습니다.
 - **FloatingPawnMovementComponent**를 이용해 Boss가 공중에 뜨게 구현했습니다.      
 ![bandicam2025-02-1000-01-08-621-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/bedf2ea9-8b5c-4acb-8182-e6a80e0fe167)          
 ![bandicam2025-02-1000-07-53-750-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/e7d6451a-28bc-42e1-af55-eeeac9614186)         
-
 ### Monster
 - GameMode가 관리하는 Spawner 클래스로 스폰되며 **SpawnActorDeferred**로 데이터 에셋의 값들을 읽어와 몬스터들의 메시와 애님클래스가 설정된 뒤에 스폰됩니다.
 - SetMesh(FName Area)라는 커스텀 함수로 플레이어가 속한 지형에 따라 스폰되는 몬스터의 메시를 조정합니다.     
