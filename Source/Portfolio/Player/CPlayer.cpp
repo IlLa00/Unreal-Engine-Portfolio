@@ -146,7 +146,7 @@ void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Idle")))) // 아무것도 안하고 있을 때
+	if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.State.Idle")))) 
 	{
 		if (AttributeSet->GetCurrentStamina() < AttributeSet->GetBaseStamina())
 			ASC->ApplyGameplayEffectSpecToSelf(*RegenerateStminaHandle.Data.Get());
@@ -159,12 +159,6 @@ void ACPlayer::Tick(float DeltaTime)
 			TextComp->SetText(FText::FromString(Tag.ToString()));
 		}
 	}
-
-	//if (TagContainer.HasTag(FGameplayTag::RequestGameplayTag(FName("Character.Action.Sub.Aim")))) // 아무것도 안하고 있을 
-	//{
-	//	GetSpringArmComp()->TargetArmLength = 100.f;
-	//	SetUsePawnControlRotation(false);
-	//}
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
