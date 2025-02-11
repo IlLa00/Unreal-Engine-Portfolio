@@ -23,6 +23,9 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+	void Hit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 	USceneComponent* RootComp;

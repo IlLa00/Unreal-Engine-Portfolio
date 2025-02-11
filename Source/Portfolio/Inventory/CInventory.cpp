@@ -65,24 +65,3 @@ void UCInventory::AddItemToInventory(const FItemDataTable Row)
 		}
 	}
 }
-void UCInventory::AddItemToInventory(const FItemDataTable Row)
-{
-	if (Row.Name.IsValid())
-	{
-		if (ItemDatas.Contains(Row.Name)) 
-		{
-			int32* Count = ItemCount.Find(Row.Name);
-
-			++(*Count); 
-
-			ItemCount.Emplace(Row.Name, *Count);
-		}
-		else 
-		{
-			int32 Count = 1;
-
-			ItemDatas.Emplace(Row.Name, Row);
-			ItemCount.Emplace(Row.Name, Count);
-		}
-	}
-}

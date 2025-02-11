@@ -38,6 +38,8 @@ void ACRocket::BeginPlay()
 {
 	Super::BeginPlay();
 
+	BoxComp->OnComponentHit.AddDynamic(this, &ACRocket::Hit);
+
 }
 
 void ACRocket::Tick(float DeltaTime)
@@ -46,10 +48,10 @@ void ACRocket::Tick(float DeltaTime)
 
 	FHitResult HitResult;
 
-	FCollisionObjectQueryParams QueryParams;
-	QueryParams.AddObjectTypesToQuery(ECollisionChannel::ECC_Pawn);
-	QueryParams.AddObjectTypesToQuery(ECollisionChannel::ECC_WorldStatic);
-	QueryParams.AddObjectTypesToQuery(ECollisionChannel::ECC_WorldDynamic);
+	//FCollisionObjectQueryParams QueryParams;
+	//QueryParams.AddObjectTypesToQuery(ECollisionChannel::ECC_Pawn);
+	//QueryParams.AddObjectTypesToQuery(ECollisionChannel::ECC_WorldStatic);
+	//QueryParams.AddObjectTypesToQuery(ECollisionChannel::ECC_WorldDynamic);
 
 	FCollisionShape Shape;
 	Shape.MakeSphere(1000.f);
@@ -64,12 +66,13 @@ void ACRocket::Tick(float DeltaTime)
 	Ignores.Add(GetOwner());
 	Ignores.Add(GetOwner()->GetOwner());
 
+
+
 	if (UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 10.f, 100.f, Query, false, Ignores, EDrawDebugTrace::ForOneFrame, HitResult, true))
 	{
 		if (HitResult.GetActor()->IsA<ATriggerVolume>()) return;
 		if (HitResult.GetActor()->IsA<ACRPG>()) return;
 
-		CLog::Print(HitResult.GetComponent()->GetOwner()->GetName());
 
 		if (ExplosionParticle)
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionParticle, HitResult.Location);
@@ -82,5 +85,10 @@ void ACRocket::Tick(float DeltaTime)
 		Destroy();
 	}
 
+}
+
+void ACRocket::Hit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	PrintLine();
 }
 
