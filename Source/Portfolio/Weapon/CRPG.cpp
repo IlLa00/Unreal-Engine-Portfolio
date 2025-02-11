@@ -11,6 +11,7 @@
 #include "GAS/Attribute/CAIAttributeSet.h"
 #include "Player/CPlayer.h"
 #include "GAS/Attribute/CCharacterAttributeSet.h"
+#include "Particles/ParticleSystem.h"
 
 ACRPG::ACRPG()
 {
@@ -23,6 +24,9 @@ ACRPG::ACRPG()
 
 	CHelpers::CreateSceneComponent(this, &SplineComp, "SplineComp", RootComp);
 	CheckNull(SplineComp);
+
+	CHelpers::GetAsset(&ExplosionParticle, "/Game/Assets/Explosions/Particles/P_ImpactExplosion4");
+	CheckNull(ExplosionParticle);
 
 	AttachSocketName = "hand_r_RPG";
 }
@@ -89,7 +93,8 @@ void ACRPG::SphereTrace(FVector Location)
 
 				Player->GetAttributeSet()->SetCurrentHealth(Player->GetAttributeSet()->GetCurrentHealth() - Attribute->GetCurrentDamage());
 			}
-			
 		}
 	}
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionParticle, Location);
 }

@@ -6,6 +6,7 @@
 
 class USplineComponent;
 class ACRocket;
+class UParticleSystem;
 
 UCLASS()
 class PORTFOLIO_API ACRPG : public ACWeapon
@@ -25,6 +26,9 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		USplineComponent* SplineComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Particle")
+		UParticleSystem* ExplosionParticle;
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Rocket")

@@ -58,7 +58,6 @@ void UCAIAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, 
 
 	if (NewValue <= 0.f) 
 	{
-
 		TagHelpers::AIChangeStateTag(AI->GetTagContainer(), "AI.Action.Dead");
 
 		ACWeapon* Weapon = Cast<ACWeapon>(LastDamageCauser);

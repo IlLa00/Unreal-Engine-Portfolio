@@ -3,7 +3,6 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "Particles/ParticleSystem.h"
 #include "Weapon/CRPG.h"
 #include "Engine/TriggerVolume.h"
 
@@ -28,67 +27,23 @@ ACRocket::ACRocket()
 
 	CHelpers::CreateActorComponent(this, &ProjectileComp, "ProjectileComp");
 	CheckNull(ProjectileComp);
-
-	CHelpers::GetAsset(&ExplosionParticle, "/Game/Assets/Explosions/Particles/P_ImpactExplosion4");
-	CheckNull(ExplosionParticle);
-
 }
 
 void ACRocket::BeginPlay()
 {
 	Super::BeginPlay();
 
-	BoxComp->OnComponentHit.AddDynamic(this, &ACRocket::Hit);
+	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ACRocket::Overlap);
 
 }
 
-void ACRocket::Tick(float DeltaTime)
+void ACRocket::Overlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::Tick(DeltaTime);
+	ACRPG* RPG = Cast<ACRPG>(GetOwner());
+	CheckNull(RPG);
 
-	FHitResult HitResult;
+	RPG->SphereTrace(GetActorLocation());
 
-	//FCollisionObjectQueryParams QueryParams;
-	//QueryParams.AddObjectTypesToQuery(ECollisionChannel::ECC_Pawn);
-	//QueryParams.AddObjectTypesToQuery(ECollisionChannel::ECC_WorldStatic);
-	//QueryParams.AddObjectTypesToQuery(ECollisionChannel::ECC_WorldDynamic);
-
-	FCollisionShape Shape;
-	Shape.MakeSphere(1000.f);
-
-	TArray<TEnumAsByte<EObjectTypeQuery>> Query;
-	Query.Add(EObjectTypeQuery::ObjectTypeQuery1);
-	Query.Add(EObjectTypeQuery::ObjectTypeQuery2);
-	Query.Add(EObjectTypeQuery::ObjectTypeQuery3);
-
-	TArray<AActor*> Ignores;
-	Ignores.Add(this);
-	Ignores.Add(GetOwner());
-	Ignores.Add(GetOwner()->GetOwner());
-
-
-
-	if (UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 10.f, 100.f, Query, false, Ignores, EDrawDebugTrace::ForOneFrame, HitResult, true))
-	{
-		if (HitResult.GetActor()->IsA<ATriggerVolume>()) return;
-		if (HitResult.GetActor()->IsA<ACRPG>()) return;
-
-
-		if (ExplosionParticle)
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionParticle, HitResult.Location);
-
-		ACRPG* RPG = Cast<ACRPG>(GetOwner());
-		CheckNull(RPG);
-
-		RPG->SphereTrace(HitResult.Location);
-
-		Destroy();
-	}
-
-}
-
-void ACRocket::Hit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
-	PrintLine();
+	Destroy();
 }
 

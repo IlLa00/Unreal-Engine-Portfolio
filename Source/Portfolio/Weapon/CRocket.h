@@ -7,8 +7,6 @@
 class UBoxComponent;
 class UProjectileMovementComponent;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSphereTrace, FVector, Location);
-
 UCLASS()
 class PORTFOLIO_API ACRocket : public AActor
 {
@@ -21,10 +19,8 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	virtual void Tick(float DeltaTime) override;
-
 	UFUNCTION()
-	void Hit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+		void Overlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
@@ -38,11 +34,4 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 	UProjectileMovementComponent* ProjectileComp;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Particle")
-	UParticleSystem* ExplosionParticle;
-
-public:
-	FSphereTrace OnSphereTrace;
-
 };

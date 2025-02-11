@@ -16,6 +16,7 @@ ACSword::ACSword()
 
 	AttachSocketName = "hand_r_Sword";
 
+
 }
 
 void ACSword::BeginPlay()
