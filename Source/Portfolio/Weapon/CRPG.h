@@ -20,14 +20,14 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UFUNCTION()
-	void SphereTrace(FVector Location);
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+		void SphereTrace(FVector Location);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 		USplineComponent* SplineComp;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Particle")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Particle")
 		UParticleSystem* ExplosionParticle;
 
 public:

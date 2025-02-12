@@ -70,7 +70,7 @@ void ACRPG::BeginPlay()
 
 }
 
-void ACRPG::SphereTrace(FVector Location)
+void ACRPG::SphereTrace_Implementation(FVector Location)
 {
 	TArray<AActor*> Ignores;
 	TArray<FHitResult> HitResults;
@@ -95,6 +95,4 @@ void ACRPG::SphereTrace(FVector Location)
 			}
 		}
 	}
-
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionParticle, Location);
 }
